@@ -3,11 +3,11 @@
     xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
   <modelVersion>4.0.0</modelVersion>
   <parent>
-    <groupId>br.com.james.simulador.ui</groupId>
+    <groupId>br.com.james.simulador</groupId>
     <artifactId>Simulador-Z808</artifactId>
     <version>0.0.1</version>
   </parent>
-  <groupId>br.com.james.simulador</groupId>
+  <groupId>br.com.james.simulador.ui</groupId>
   <artifactId>Interface-Grafica</artifactId>
   <version>1.0-SNAPSHOT</version>
   <name>Interface Grafica</name>
