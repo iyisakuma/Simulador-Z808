@@ -1,4 +1,4 @@
-package br.com.james.maquina.virtual;
+package br.com.james.simulador.maquina.virtual;
 
 import junit.framework.Test;
 import junit.framework.TestCase;
