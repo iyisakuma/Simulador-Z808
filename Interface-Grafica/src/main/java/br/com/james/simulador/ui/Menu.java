@@ -3,7 +3,6 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/GUIForms/JFrame.java to edit this template
  */
 package br.com.james.simulador.ui;
-
 /**
  *
  * @author xandi
@@ -26,21 +25,127 @@ public class Menu extends javax.swing.JFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
+        jScrollPane2 = new javax.swing.JScrollPane();
+        taCodigo = new javax.swing.JTextArea();
+        bRun = new javax.swing.JButton();
+        jScrollPane1 = new javax.swing.JScrollPane();
+        tbRegistradores = new javax.swing.JTable();
+        btClear = new javax.swing.JButton();
+        jScrollPane3 = new javax.swing.JScrollPane();
+        taConsole = new javax.swing.JTextArea();
+        labelConsole = new javax.swing.JLabel();
+
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+
+        taCodigo.setColumns(20);
+        taCodigo.setRows(5);
+        jScrollPane2.setViewportView(taCodigo);
+
+        bRun.setText("Run");
+        bRun.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                bRunActionPerformed(evt);
+            }
+        });
+
+        tbRegistradores.setModel(new javax.swing.table.DefaultTableModel(
+            new Object [][] {
+                {"CL", "0000000000000000b"},
+                {"RI", "0000000000000000b"},
+                {"REM", "0000000000000000b"},
+                {"RBM", "0000000000000000b"},
+                {"AX", "0000000000000000b"},
+                {"DX", "0000000000000000b"},
+                {"SP", "0000000000000000b"},
+                {"SI", "0000000000000000b"},
+                {"SR", "0000000000000000b"}
+            },
+            new String [] {
+                "Name", "Value"
+            }
+        ) {
+            boolean[] canEdit = new boolean [] {
+                false, false
+            };
+
+            public boolean isCellEditable(int rowIndex, int columnIndex) {
+                return canEdit [columnIndex];
+            }
+        });
+        jScrollPane1.setViewportView(tbRegistradores);
+        if (tbRegistradores.getColumnModel().getColumnCount() > 0) {
+            tbRegistradores.getColumnModel().getColumn(0).setResizable(false);
+            tbRegistradores.getColumnModel().getColumn(1).setResizable(false);
+        }
+
+        btClear.setText("Clear");
+        btClear.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btClearActionPerformed(evt);
+            }
+        });
+
+        taConsole.setEditable(false);
+        taConsole.setColumns(20);
+        taConsole.setRows(5);
+        taConsole.setText("Console\n");
+        jScrollPane3.setViewportView(taConsole);
+
+        labelConsole.setText("Console");
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 400, Short.MAX_VALUE)
+            .addGroup(layout.createSequentialGroup()
+                .addContainerGap()
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jScrollPane3, javax.swing.GroupLayout.DEFAULT_SIZE, 726, Short.MAX_VALUE)
+                    .addGroup(layout.createSequentialGroup()
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(labelConsole, javax.swing.GroupLayout.PREFERRED_SIZE, 79, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addGroup(layout.createSequentialGroup()
+                                .addComponent(bRun)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(btClear)))
+                        .addGap(0, 0, Short.MAX_VALUE))
+                    .addComponent(jScrollPane2))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 330, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap())
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 300, Short.MAX_VALUE)
+            .addGroup(layout.createSequentialGroup()
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(bRun)
+                    .addComponent(btClear))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 422, Short.MAX_VALUE)
+                    .addComponent(jScrollPane2))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(labelConsole)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, 126, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap())
         );
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
+
+    private void bRunActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_bRunActionPerformed
+        // TODO add your handling code here:
+        taCodigo.setEnabled(false);
+        taConsole.setText("Compilou");
+    }//GEN-LAST:event_bRunActionPerformed
+
+    private void btClearActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btClearActionPerformed
+        // TODO add your handling code here:
+        taCodigo.setText(null);
+        taCodigo.setEnabled(true);
+        taConsole.setText("Console");
+    }//GEN-LAST:event_btClearActionPerformed
 
     /**
      * @param args the command line arguments
@@ -73,10 +178,20 @@ public class Menu extends javax.swing.JFrame {
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
                 new Menu().setVisible(true);
+                //
             }
         });
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton bRun;
+    private javax.swing.JButton btClear;
+    private javax.swing.JScrollPane jScrollPane1;
+    private javax.swing.JScrollPane jScrollPane2;
+    private javax.swing.JScrollPane jScrollPane3;
+    private javax.swing.JLabel labelConsole;
+    private javax.swing.JTextArea taCodigo;
+    private javax.swing.JTextArea taConsole;
+    private javax.swing.JTable tbRegistradores;
     // End of variables declaration//GEN-END:variables
 }
