@@ -1,8 +1,14 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/GUIForms/JFrame.java to edit this template
- */
 package br.com.james.simulador.ui;
+
+import br.com.james.simulador.maquina.virtual.Executor;
+import br.com.james.simulador.maquina.virtual.RegistradorEnum;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import javax.swing.table.DefaultTableModel;
+
 /**
  *
  * @author xandi
@@ -25,6 +31,7 @@ public class Menu extends javax.swing.JFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
+        jProgressBar1 = new javax.swing.JProgressBar();
         btRun = new javax.swing.JButton();
         btClear = new javax.swing.JButton();
         panelTabela = new javax.swing.JPanel();
@@ -39,6 +46,7 @@ public class Menu extends javax.swing.JFrame {
         labelConsole = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setTitle("Simulador Z808");
 
         btRun.setText("Run");
         btRun.addActionListener(new java.awt.event.ActionListener() {
@@ -98,11 +106,12 @@ public class Menu extends javax.swing.JFrame {
             panelTabelaLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(panelTabelaLayout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 172, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 381, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
         txtCodigo.setColumns(20);
+        txtCodigo.setLineWrap(true);
         txtCodigo.setRows(5);
         txtCodigo.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
         jScrollPane2.setViewportView(txtCodigo);
@@ -197,9 +206,18 @@ public class Menu extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void btRunActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btRunActionPerformed
-        // TODO add your handling code here:
-        txtCodigo.setEnabled(false);
-        txtConsole.setText("Compilou");
+        initRegistradores();
+//
+//        var numeroInstrucoes = txtCodigo.getRows();
+//        var codigoAtual = binarioParaDecimal(registradores.get(RegistradorEnum.IP));
+//
+//        while (codigoAtual < numeroInstrucoes) {
+//            var instrucao = instrucoes.get(codigoAtual);
+//            Executor.run(instrucao, registradores);
+//            atualizaTabela(registradores);
+//            codigoAtual = binarioParaDecimal(registradores.get(RegistradorEnum.IP));
+//        }
+        atualizaTabela(registradores);
     }//GEN-LAST:event_btRunActionPerformed
 
     private void btClearActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btClearActionPerformed
@@ -247,6 +265,7 @@ public class Menu extends javax.swing.JFrame {
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btClear;
     private javax.swing.JButton btRun;
+    private javax.swing.JProgressBar jProgressBar1;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JScrollPane jScrollPane3;
@@ -258,4 +277,27 @@ public class Menu extends javax.swing.JFrame {
     private javax.swing.JTextArea txtCodigo;
     private javax.swing.JTextArea txtConsole;
     // End of variables declaration//GEN-END:variables
+
+    private static Map<RegistradorEnum, String> registradores = new HashMap();
+    private static List<String> instrucoes = new ArrayList<>();
+    
+    private void initRegistradores() {
+        Arrays.asList(RegistradorEnum.values())
+                .stream()
+                .forEach(registrador -> registradores.put(registrador, "0000000000000000"));
+    }
+    
+    private int binarioParaDecimal(String binario) {
+        var somador = 0;
+        
+        return somador;
+    }
+    
+    private void atualizaTabela(Map<RegistradorEnum, String> registradores) {
+        var dtm = (DefaultTableModel) tbRegistradores.getModel();
+        dtm.setRowCount(0);
+        Arrays.asList(RegistradorEnum.values())
+                .stream()
+                .forEach(registrador -> dtm.addRow(new Object[]{registrador, registradores.get(registrador) + "b"}));
+    }
 }
