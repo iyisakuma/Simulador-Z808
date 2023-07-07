@@ -15,18 +15,7 @@ public class Executor {
     }
     
     private static Mnemonico getMnemonico(String instrucao){
-        var bytes = instrucao.length() / 8;//Quantos bytes tem na instrucao
-        var opcode = "";
-        switch (bytes) {
-            case 2:
-                opcode = String.copyValueOf(instrucao.toCharArray(), 0, 16);
-                break;
-            case 1, 3:
-                opcode = String.copyValueOf(instrucao.toCharArray(), 0, 8);
-                break;
-            default:
-                throw new IllegalArgumentException("Instrução não reconhecida.");
-        }
+        var opcode = String.copyValueOf(instrucao.toCharArray(), 0, 8);
         //Retorna Mnemonico associado ao opcode
         return Mnemonico.getByBytes(opcode);
     }
