@@ -28,6 +28,6 @@ public class Executor {
                 throw new IllegalArgumentException("Instrução não reconhecida.");
         }
         //Retorna Mnemonico associado ao opcode
-        return Mnemonico.valueOf(opcode);
+        return Mnemonico.getByBytes(opcode);
     }
 }

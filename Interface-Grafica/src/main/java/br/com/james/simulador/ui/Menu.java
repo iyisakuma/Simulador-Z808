@@ -207,16 +207,16 @@ public class Menu extends javax.swing.JFrame {
 
     private void btRunActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btRunActionPerformed
         initRegistradores();
-//
-//        var numeroInstrucoes = txtCodigo.getRows();
-//        var codigoAtual = binarioParaDecimal(registradores.get(RegistradorEnum.IP));
-//
-//        while (codigoAtual < numeroInstrucoes) {
-//            var instrucao = instrucoes.get(codigoAtual);
-//            Executor.run(instrucao, registradores);
-//            atualizaTabela(registradores);
-//            codigoAtual = binarioParaDecimal(registradores.get(RegistradorEnum.IP));
-//        }
+        initInstrucoes(txtCodigo.getText());
+        var numeroInstrucoes = txtCodigo.getRows();
+        var codigoAtual = binarioParaDecimal(registradores.get(RegistradorEnum.IP));
+
+        while (codigoAtual < numeroInstrucoes) {
+            var instrucao = instrucoes.get(codigoAtual);
+            Executor.run(instrucao, registradores);
+            atualizaTabela(registradores);
+            codigoAtual = binarioParaDecimal(registradores.get(RegistradorEnum.IP));
+        }
         atualizaTabela(registradores);
     }//GEN-LAST:event_btRunActionPerformed
 
@@ -287,9 +287,19 @@ public class Menu extends javax.swing.JFrame {
                 .forEach(registrador -> registradores.put(registrador, "0000000000000000"));
     }
     
+    private void initInstrucoes(String instrucoes){
+        Menu.instrucoes = Arrays.asList(instrucoes.split("\n"));
+    }
+    
     private int binarioParaDecimal(String binario) {
         var somador = 0;
-        
+        var expoente = 0;
+        for(int i = binario.toCharArray().length-1; i>=0; i--){
+            if(binario.toCharArray()[i] == '1'){
+                somador += Math.pow(2, expoente);
+            }
+            expoente++;
+        }
         return somador;
     }
     
