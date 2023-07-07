@@ -16,7 +16,7 @@ public enum Mnemonico implements Acao {
     JUMP("11101011") {
         @Override
         public Map<RegistradorEnum, String> acao(String instrucao, Map<RegistradorEnum, String> registradores) {
-            registradores.replace(IP, String.copyValueOf(instrucao.toCharArray(), 8, 24));
+            registradores.replace(IP, String.copyValueOf(instrucao.toCharArray(), 8, 16));
             return registradores;
         }
     },
@@ -25,7 +25,7 @@ public enum Mnemonico implements Acao {
         public Map<RegistradorEnum, String> acao(String instrucao, Map<RegistradorEnum, String> registradores) {
             var valor = registradores.get(SR);
             if (valor != null && valor.charAt(7) == '1') { //Se ZF == 1
-                registradores.replace(IP, String.copyValueOf(instrucao.toCharArray(), 8, 24));
+                registradores.replace(IP, String.copyValueOf(instrucao.toCharArray(), 8, 16));
             }
             return registradores;
         }
@@ -35,7 +35,7 @@ public enum Mnemonico implements Acao {
         public Map<RegistradorEnum, String> acao(String instrucao, Map<RegistradorEnum, String> registradores) {
             var valor = registradores.get(SR);
             if (valor != null && valor.charAt(7) != '1') { //Se ZF != 1
-                registradores.replace(IP, String.copyValueOf(instrucao.toCharArray(), 8, 24));
+                registradores.replace(IP, String.copyValueOf(instrucao.toCharArray(), 8, 16));
             }
             return registradores;
         }
