@@ -66,6 +66,19 @@ public enum Mnemonico implements Acao {
             }
             return registradores;
         }
+    },
+    READ("00010010") {
+        @Override
+        public Map<RegistradorEnum, String> acao(String instrucao, Map<RegistradorEnum, String> registradores) {
+            throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+
+        }
+    },
+    WRITE("00001000") {
+        @Override
+        public Map<RegistradorEnum, String> acao(String instrucao, Map<RegistradorEnum, String> registradores) {
+            throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+        }
         
         @Override
         public boolean isNumberOfBitsValid(String number) {
@@ -306,23 +319,19 @@ public enum Mnemonico implements Acao {
         }
     };
     private final String valorBinario;
-    
-    Mnemonico(String valorBinario) {
+
+    private Mnemonico(String valorBinario) {
         this.valorBinario = valorBinario;
     }
-    
-    public String getValorBinario() {
-        return valorBinario;
-    }
-    
-    // TODO: todos os opcodes devem estar aqui!!!
+
     /**
-     * @param bits: bits em String
+     * 2.Não esquecer de colocar o upcode aqui tbm!
+     *
+     * @param bytes: bytens em String
      * @return Mnemonico equivalente ao opcode
      */
-    public static Mnemonico getByBytes(String bits) {
-        switch (bits) {
-            // DESVIO
+    public static Mnemonico getByBytes(String bytes) {
+        switch (bytes) {
             case "11101011" -> {
                 return JUMP;
             }
@@ -334,6 +343,12 @@ public enum Mnemonico implements Acao {
             }
             case "01111010" -> {
                 return JP;
+            }
+            case "00010010" -> {
+                return READ;
+            }
+            case "00001000" -> {
+                return WRITE;
             }
             // -------------------------------------------------
             // LÓGICAS
@@ -367,7 +382,7 @@ public enum Mnemonico implements Acao {
             }
             // -------------------------------------------------
             default ->
-                    throw new IllegalArgumentException("Não existe mnemônico que equivale a " + bits);
+                throw new IllegalArgumentException("Não existe mnmônico equivale a " + bytes);
         }
     }
     
