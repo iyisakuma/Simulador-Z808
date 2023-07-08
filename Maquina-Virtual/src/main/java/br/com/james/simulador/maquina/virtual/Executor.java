@@ -11,6 +11,7 @@ import java.util.Map;
 public class Executor {
     
     public static void run(String instrucao, Map<RegistradorEnum, String> registradores){
+        atualizaEndereco(registradores);
         getMnemonico(instrucao).acao(instrucao, registradores);
     }
     
@@ -29,5 +30,13 @@ public class Executor {
         }
         //Retorna Mnemonico associado ao opcode
         return Mnemonico.getByBytes(opcode);
+    }
+
+    private static void atualizaEndereco(Map<RegistradorEnum, String> registradores) {
+        var enderecoBinario = registradores.get(RegistradorEnum.IP);
+        var enderecoDecimal = Util.binarioParaDecimal(enderecoBinario);
+        enderecoDecimal++;
+        enderecoBinario = String.format("%16s", Integer.toBinaryString(enderecoDecimal)).replaceAll(" ", "0");
+        registradores.replace(RegistradorEnum.IP, enderecoBinario);
     }
 }
