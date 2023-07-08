@@ -75,6 +75,10 @@ public enum Mnemonico implements Acao {
     AND_REG_REG("00100011"){
         @Override
         public Map<RegistradorEnum, String> acao(String instrucao, Map<RegistradorEnum, String> registradores) {
+            if (!isNumberOfBitsValid(instrucao)){
+                throw new IllegalArgumentException(String.format("Instrução: %s possui %d bit(s) e deveria possuir 16 bits!",
+                        instrucao, instrucao.length()));
+            }
             var ax = registradores.get(AX);
             var sr = new StringBuilder(registradores.get(SR)).reverse();
             
@@ -100,12 +104,16 @@ public enum Mnemonico implements Acao {
         
         @Override
         public boolean isNumberOfBitsValid(String number) {
-            return false;
+            return number.length() == 16;
         }
     },
     AND_REG_OP("00100101"){
         @Override
         public Map<RegistradorEnum, String> acao(String instrucao, Map<RegistradorEnum, String> registradores) {
+            if (!isNumberOfBitsValid(instrucao)){
+                throw new IllegalArgumentException(String.format("Instrução: %s possui %d bit(s) e deveria possuir 24 bits!",
+                        instrucao, instrucao.length()));
+            }
             var ax = registradores.get(AX);
             var sr = new StringBuilder(registradores.get(SR)).reverse();
             
@@ -128,12 +136,16 @@ public enum Mnemonico implements Acao {
         
         @Override
         public boolean isNumberOfBitsValid(String number) {
-            return false;
+            return number.length() == 24;
         }
     },
     NOT_REG("11111000"){
         @Override
         public Map<RegistradorEnum, String> acao(String instrucao, Map<RegistradorEnum, String> registradores) {
+            if (!isNumberOfBitsValid(instrucao)){
+                throw new IllegalArgumentException(String.format("Instrução: %s possui %d bit(s) e deveria possuir 16 bits!",
+                        instrucao, instrucao.length()));
+            }
             var ax = registradores.get(AX);
             var sr = new StringBuilder(registradores.get(SR)).reverse();
             
@@ -156,12 +168,16 @@ public enum Mnemonico implements Acao {
         
         @Override
         public boolean isNumberOfBitsValid(String number) {
-            return false;
+            return number.length() == 16;
         }
     },
     OR_REG_REG("00001011"){
         @Override
         public Map<RegistradorEnum, String> acao(String instrucao, Map<RegistradorEnum, String> registradores) {
+            if (!isNumberOfBitsValid(instrucao)){
+                throw new IllegalArgumentException(String.format("Instrução: %s possui %d bit(s) e deveria possuir 16 bits!",
+                        instrucao, instrucao.length()));
+            }
             var ax = registradores.get(AX);
             var sr = new StringBuilder(registradores.get(SR)).reverse();
             
@@ -187,12 +203,16 @@ public enum Mnemonico implements Acao {
         
         @Override
         public boolean isNumberOfBitsValid(String number) {
-            return false;
+            return number.length() == 16;
         }
     },
     OR_REG_OP("00001101"){
         @Override
         public Map<RegistradorEnum, String> acao(String instrucao, Map<RegistradorEnum, String> registradores) {
+            if (!isNumberOfBitsValid(instrucao)){
+                throw new IllegalArgumentException(String.format("Instrução: %s possui %d bit(s) e deveria possuir 24 bits!",
+                        instrucao, instrucao.length()));
+            }
             var ax = registradores.get(AX);
             var sr = new StringBuilder(registradores.get(SR)).reverse();
             
@@ -215,29 +235,74 @@ public enum Mnemonico implements Acao {
         
         @Override
         public boolean isNumberOfBitsValid(String number) {
-            return false;
+            return number.length() == 24;
         }
     },
     XOR_REG_REG("00110011"){
         @Override
         public Map<RegistradorEnum, String> acao(String instrucao, Map<RegistradorEnum, String> registradores) {
-            return null;
+            if (!isNumberOfBitsValid(instrucao)){
+                throw new IllegalArgumentException(String.format("Instrução: %s possui %d bit(s) e deveria possuir 16 bits!",
+                        instrucao, instrucao.length()));
+            }
+            var ax = registradores.get(AX);
+            var sr = new StringBuilder(registradores.get(SR)).reverse();
+            
+            var operand = instrucao.substring(8, 16);
+            var finalValue = new StringBuilder();
+            
+            if (operand.equalsIgnoreCase(DX.getEndereco())) {
+                var dx = new StringBuilder(registradores.get(DX));
+                for (int i = 0; i < ax.toCharArray().length; i++) {
+                    finalValue.append(ax.charAt(i) == dx.charAt(i) ? '0' : '1');
+                }
+            } else if (operand.equalsIgnoreCase(AX.getEndereco())) {
+                finalValue.append("0".repeat(ax.toCharArray().length));
+            } else {
+                throw new IllegalArgumentException(String.format("Operando: %s não existe!", operand));
+            }
+            
+            fillRegisterSR(sr, finalValue, true);
+            registradores.replace(SR, sr.reverse().toString());
+            registradores.replace(AX, finalValue.toString());
+            return registradores;
         }
         
         @Override
         public boolean isNumberOfBitsValid(String number) {
-            return false;
+            return number.length() == 16;
         }
     },
     XOR_REG_OP("00110101"){
         @Override
         public Map<RegistradorEnum, String> acao(String instrucao, Map<RegistradorEnum, String> registradores) {
-            return null;
+            if (!isNumberOfBitsValid(instrucao)){
+                throw new IllegalArgumentException(String.format("Instrução: %s possui %d bit(s) e deveria possuir 24 bits!",
+                        instrucao, instrucao.length()));
+            }
+            var ax = registradores.get(AX);
+            var sr = new StringBuilder(registradores.get(SR)).reverse();
+            
+            var operand = instrucao.substring(8, 24);
+            var finalValue = new StringBuilder();
+            
+            if (ax.contentEquals("1".repeat(ax.toCharArray().length)) || ax.contentEquals("0".repeat(ax.toCharArray().length))){
+                finalValue.append("0".repeat(ax.toCharArray().length));
+            } else {
+                for (int i = 0; i < ax.toCharArray().length; i++) {
+                    finalValue.append(ax.charAt(i) == operand.charAt(i) ? '0' : '1');
+                }
+            }
+            
+            fillRegisterSR(sr, finalValue, true);
+            registradores.replace(SR, sr.reverse().toString());
+            registradores.replace(AX, finalValue.toString());
+            return registradores;
         }
         
         @Override
         public boolean isNumberOfBitsValid(String number) {
-            return false;
+            return number.length() == 24;
         }
     };
     private final String valorBinario;
