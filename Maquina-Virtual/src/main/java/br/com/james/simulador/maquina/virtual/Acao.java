@@ -7,5 +7,7 @@ import java.util.Map;
  * @author yujisakuma
  */
 public interface Acao {
-    public Map<RegistradorEnum, String> acao(String instrucao, Map<RegistradorEnum, String> registradores);
+    Map<RegistradorEnum, String> acao(String instrucao, Map<RegistradorEnum, String> registradores);
+    
+    boolean  isNumberOfBitsValid(String number);
 }
