@@ -2,11 +2,13 @@ package br.com.james.simulador.ui;
 
 import br.com.james.simulador.maquina.virtual.Executor;
 import br.com.james.simulador.maquina.virtual.RegistradorEnum;
+import br.com.james.simulador.maquina.virtual.Util;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.logging.Logger;
 import javax.swing.table.DefaultTableModel;
 
 /**
@@ -208,16 +210,25 @@ public class Menu extends javax.swing.JFrame {
     private void btRunActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btRunActionPerformed
         initRegistradores();
         initInstrucoes(txtCodigo.getText());
-        var numeroInstrucoes = txtCodigo.getRows();
-        var codigoAtual = binarioParaDecimal(registradores.get(RegistradorEnum.IP));
-
-        while (codigoAtual < numeroInstrucoes) {
-            var instrucao = instrucoes.get(codigoAtual);
-            Executor.run(instrucao, registradores);
-            atualizaTabela(registradores);
-            codigoAtual = binarioParaDecimal(registradores.get(RegistradorEnum.IP));
+        if (!instrucoes.isEmpty()) {
+            try {
+                var codigoAtual = Util.binarioParaDecimal(registradores.get(RegistradorEnum.IP));
+                while (ehFimExecucao(codigoAtual)) {
+                    var instrucao = instrucoes.get(codigoAtual);
+                    if (instrucao.equals("11101110")) {
+                        break;
+                    }
+                    Executor.run(instrucao, registradores);
+                    atualizaTabela(registradores);
+                    codigoAtual = Util.binarioParaDecimal(registradores.get(RegistradorEnum.IP));
+                }
+                atualizaTabela(registradores);
+                finalizaExecucao();
+            } catch (Exception ex) {
+                ex.printStackTrace();
+                mostraErro(ex);
+            }
         }
-        atualizaTabela(registradores);
     }//GEN-LAST:event_btRunActionPerformed
 
     private void btClearActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btClearActionPerformed
@@ -280,34 +291,36 @@ public class Menu extends javax.swing.JFrame {
 
     private static Map<RegistradorEnum, String> registradores = new HashMap();
     private static List<String> instrucoes = new ArrayList<>();
-    
+
     private void initRegistradores() {
         Arrays.asList(RegistradorEnum.values())
                 .stream()
                 .forEach(registrador -> registradores.put(registrador, "0000000000000000"));
     }
-    
-    private void initInstrucoes(String instrucoes){
-        Menu.instrucoes = Arrays.asList(instrucoes.split("\n"));
-    }
-    
-    private int binarioParaDecimal(String binario) {
-        var somador = 0;
-        var expoente = 0;
-        for(int i = binario.toCharArray().length-1; i>=0; i--){
-            if(binario.toCharArray()[i] == '1'){
-                somador += Math.pow(2, expoente);
-            }
-            expoente++;
+
+    private void initInstrucoes(String instrucoes) {
+        if (!instrucoes.isEmpty()) {
+            Menu.instrucoes = Arrays.asList(instrucoes.trim().split("\n"));
         }
-        return somador;
     }
-    
+
     private void atualizaTabela(Map<RegistradorEnum, String> registradores) {
         var dtm = (DefaultTableModel) tbRegistradores.getModel();
         dtm.setRowCount(0);
         Arrays.asList(RegistradorEnum.values())
                 .stream()
                 .forEach(registrador -> dtm.addRow(new Object[]{registrador, registradores.get(registrador) + "b"}));
+    }
+
+    private void finalizaExecucao() {
+        txtConsole.setText("---------------------------Execução Finalizada---------------------------");
+    }
+
+    private void mostraErro(Exception ex) {
+        txtConsole.setText(ex.getMessage());
+    }
+
+    private boolean ehFimExecucao(int codigoAtual) {
+        return codigoAtual >= 0 && codigoAtual < instrucoes.size();
     }
 }
