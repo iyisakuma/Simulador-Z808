@@ -15,8 +15,7 @@ public class Executor {
     }
     
     private static Mnemonico getMnemonico(String instrucao){
-        var opcode = String.copyValueOf(instrucao.toCharArray(), 0, 8);
-        //Retorna Mnemonico associado ao opcode
+        var opcode = instrucao.substring(0, 8);
         return Mnemonico.getByBytes(opcode);
     }
 }
