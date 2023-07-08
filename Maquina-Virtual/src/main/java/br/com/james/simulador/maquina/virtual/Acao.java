@@ -9,5 +9,5 @@ import java.util.Map;
 public interface Acao {
     Map<RegistradorEnum, String> acao(String instrucao, Map<RegistradorEnum, String> registradores);
     
-    boolean isNumberOfBitsValid(String number);
+    boolean  isNumberOfBitsValid(String number);
 }

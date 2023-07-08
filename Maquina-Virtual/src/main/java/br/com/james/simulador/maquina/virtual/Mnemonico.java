@@ -15,7 +15,7 @@ public enum Mnemonico implements Acao {
      * 2. Certificar que tenha 1 byte ou 2 bytes (depende da instrução). Além
      * disso, implementar o metódo ação para cada Mnemonico novo!
      */
-    JUMP("11101011") {
+    JUMP("11101011", 24) {
         @Override
         public Map<RegistradorEnum, String> acao(String instrucao, Map<RegistradorEnum, String> registradores) {
             registradores.replace(IP, String.copyValueOf(instrucao.toCharArray(), 8, 16));
@@ -27,7 +27,7 @@ public enum Mnemonico implements Acao {
             return false;
         }
     },
-    JZ("01110100") {
+    JZ("01110100", 24) {
         @Override
         public Map<RegistradorEnum, String> acao(String instrucao, Map<RegistradorEnum, String> registradores) {
             var valor = registradores.get(SR);
@@ -42,7 +42,7 @@ public enum Mnemonico implements Acao {
             return false;
         }
     },
-    JNZ("01110101") {
+    JNZ("01110101", 24) {
         @Override
         public Map<RegistradorEnum, String> acao(String instrucao, Map<RegistradorEnum, String> registradores) {
             var valor = registradores.get(SR);
@@ -57,7 +57,7 @@ public enum Mnemonico implements Acao {
             return false;
         }
     },
-    JP("01111010") {
+    JP("01111010", 24) {
         @Override
         public Map<RegistradorEnum, String> acao(String instrucao, Map<RegistradorEnum, String> registradores) {
             var valor = registradores.get(SR);
@@ -66,15 +66,25 @@ public enum Mnemonico implements Acao {
             }
             return registradores;
         }
+        
+        @Override
+        public boolean isNumberOfBitsValid(String number) {
+            return false;
+        }
     },
-    READ("00010010") {
+    READ("00010010", 24) {
         @Override
         public Map<RegistradorEnum, String> acao(String instrucao, Map<RegistradorEnum, String> registradores) {
             throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
 
         }
+        
+        @Override
+        public boolean isNumberOfBitsValid(String number) {
+            return false;
+        }
     },
-    WRITE("00001000") {
+    WRITE("00001000", 24) {
         @Override
         public Map<RegistradorEnum, String> acao(String instrucao, Map<RegistradorEnum, String> registradores) {
             throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
@@ -85,12 +95,12 @@ public enum Mnemonico implements Acao {
             return false;
         }
     },
-    AND_REG_REG("00100011"){
+    AND_REG_REG("00100011", 16){
         @Override
         public Map<RegistradorEnum, String> acao(String instrucao, Map<RegistradorEnum, String> registradores) {
             if (!isNumberOfBitsValid(instrucao)){
-                throw new IllegalArgumentException(String.format("Instrução: %s possui %d bit(s) e deveria possuir 16 bits!",
-                        instrucao, instrucao.length()));
+                throw new IllegalArgumentException(String.format("Instrução: %s possui %d bit(s) e deveria possuir %d bits!",
+                        instrucao, instrucao.length(), this.getNumberOfBits()));
             }
             var ax = registradores.get(AX);
             var sr = new StringBuilder(registradores.get(SR)).reverse();
@@ -117,15 +127,15 @@ public enum Mnemonico implements Acao {
         
         @Override
         public boolean isNumberOfBitsValid(String number) {
-            return number.length() == 16;
+            return number.length() == this.getNumberOfBits();
         }
     },
-    AND_REG_OP("00100101"){
+    AND_REG_OP("00100101", 24){
         @Override
         public Map<RegistradorEnum, String> acao(String instrucao, Map<RegistradorEnum, String> registradores) {
             if (!isNumberOfBitsValid(instrucao)){
-                throw new IllegalArgumentException(String.format("Instrução: %s possui %d bit(s) e deveria possuir 24 bits!",
-                        instrucao, instrucao.length()));
+                throw new IllegalArgumentException(String.format("Instrução: %s possui %d bit(s) e deveria possuir %d bits!",
+                        instrucao, instrucao.length(), this.getNumberOfBits()));
             }
             var ax = registradores.get(AX);
             var sr = new StringBuilder(registradores.get(SR)).reverse();
@@ -133,7 +143,7 @@ public enum Mnemonico implements Acao {
             var operand = instrucao.substring(8, 24);
             var finalValue = new StringBuilder();
             
-            if (ax.contentEquals("0".repeat(ax.toCharArray().length))){
+            if (ax.equalsIgnoreCase("0".repeat(ax.toCharArray().length))){
                 finalValue.append(ax);
             } else {
                 for (int i = 0; i < ax.toCharArray().length; i++) {
@@ -149,15 +159,15 @@ public enum Mnemonico implements Acao {
         
         @Override
         public boolean isNumberOfBitsValid(String number) {
-            return number.length() == 24;
+            return number.length() == this.getNumberOfBits();
         }
     },
-    NOT_REG("11111000"){
+    NOT_REG("11111000", 16){
         @Override
         public Map<RegistradorEnum, String> acao(String instrucao, Map<RegistradorEnum, String> registradores) {
             if (!isNumberOfBitsValid(instrucao)){
-                throw new IllegalArgumentException(String.format("Instrução: %s possui %d bit(s) e deveria possuir 16 bits!",
-                        instrucao, instrucao.length()));
+                throw new IllegalArgumentException(String.format("Instrução: %s possui %d bit(s) e deveria possuir %d bits!",
+                        instrucao, instrucao.length(), this.getNumberOfBits()));
             }
             var ax = registradores.get(AX);
             var sr = new StringBuilder(registradores.get(SR)).reverse();
@@ -181,15 +191,15 @@ public enum Mnemonico implements Acao {
         
         @Override
         public boolean isNumberOfBitsValid(String number) {
-            return number.length() == 16;
+            return number.length() == this.getNumberOfBits();
         }
     },
-    OR_REG_REG("00001011"){
+    OR_REG_REG("00001011", 16){
         @Override
         public Map<RegistradorEnum, String> acao(String instrucao, Map<RegistradorEnum, String> registradores) {
             if (!isNumberOfBitsValid(instrucao)){
-                throw new IllegalArgumentException(String.format("Instrução: %s possui %d bit(s) e deveria possuir 16 bits!",
-                        instrucao, instrucao.length()));
+                throw new IllegalArgumentException(String.format("Instrução: %s possui %d bit(s) e deveria possuir %d bits!",
+                        instrucao, instrucao.length(), this.getNumberOfBits()));
             }
             var ax = registradores.get(AX);
             var sr = new StringBuilder(registradores.get(SR)).reverse();
@@ -216,15 +226,15 @@ public enum Mnemonico implements Acao {
         
         @Override
         public boolean isNumberOfBitsValid(String number) {
-            return number.length() == 16;
+            return number.length() == this.getNumberOfBits();
         }
     },
-    OR_REG_OP("00001101"){
+    OR_REG_OP("00001101", 24){
         @Override
         public Map<RegistradorEnum, String> acao(String instrucao, Map<RegistradorEnum, String> registradores) {
             if (!isNumberOfBitsValid(instrucao)){
-                throw new IllegalArgumentException(String.format("Instrução: %s possui %d bit(s) e deveria possuir 24 bits!",
-                        instrucao, instrucao.length()));
+                throw new IllegalArgumentException(String.format("Instrução: %s possui %d bit(s) e deveria possuir %d bits!",
+                        instrucao, instrucao.length(), this.getNumberOfBits()));
             }
             var ax = registradores.get(AX);
             var sr = new StringBuilder(registradores.get(SR)).reverse();
@@ -232,7 +242,7 @@ public enum Mnemonico implements Acao {
             var operand = instrucao.substring(8, 24);
             var finalValue = new StringBuilder();
             
-            if (ax.contentEquals("1".repeat(ax.toCharArray().length))){
+            if (ax.equalsIgnoreCase("1".repeat(ax.toCharArray().length))){
                 finalValue.append(ax);
             } else {
                 for (int i = 0; i < ax.toCharArray().length; i++) {
@@ -248,15 +258,15 @@ public enum Mnemonico implements Acao {
         
         @Override
         public boolean isNumberOfBitsValid(String number) {
-            return number.length() == 24;
+            return number.length() == this.getNumberOfBits();
         }
     },
-    XOR_REG_REG("00110011"){
+    XOR_REG_REG("00110011", 16){
         @Override
         public Map<RegistradorEnum, String> acao(String instrucao, Map<RegistradorEnum, String> registradores) {
             if (!isNumberOfBitsValid(instrucao)){
-                throw new IllegalArgumentException(String.format("Instrução: %s possui %d bit(s) e deveria possuir 16 bits!",
-                        instrucao, instrucao.length()));
+                throw new IllegalArgumentException(String.format("Instrução: %s possui %d bit(s) e deveria possuir %d bits!",
+                        instrucao, instrucao.length(), this.getNumberOfBits()));
             }
             var ax = registradores.get(AX);
             var sr = new StringBuilder(registradores.get(SR)).reverse();
@@ -283,15 +293,15 @@ public enum Mnemonico implements Acao {
         
         @Override
         public boolean isNumberOfBitsValid(String number) {
-            return number.length() == 16;
+            return number.length() == this.getNumberOfBits();
         }
     },
-    XOR_REG_OP("00110101"){
+    XOR_REG_OP("00110101", 24){
         @Override
         public Map<RegistradorEnum, String> acao(String instrucao, Map<RegistradorEnum, String> registradores) {
             if (!isNumberOfBitsValid(instrucao)){
-                throw new IllegalArgumentException(String.format("Instrução: %s possui %d bit(s) e deveria possuir 24 bits!",
-                        instrucao, instrucao.length()));
+                throw new IllegalArgumentException(String.format("Instrução: %s possui %d bit(s) e deveria possuir %d bits!",
+                        instrucao, instrucao.length(), this.getNumberOfBits()));
             }
             var ax = registradores.get(AX);
             var sr = new StringBuilder(registradores.get(SR)).reverse();
@@ -299,7 +309,7 @@ public enum Mnemonico implements Acao {
             var operand = instrucao.substring(8, 24);
             var finalValue = new StringBuilder();
             
-            if (ax.contentEquals("1".repeat(ax.toCharArray().length)) || ax.contentEquals("0".repeat(ax.toCharArray().length))){
+            if (ax.equalsIgnoreCase("1".repeat(ax.toCharArray().length)) || ax.equalsIgnoreCase("0".repeat(ax.toCharArray().length))){
                 finalValue.append("0".repeat(ax.toCharArray().length));
             } else {
                 for (int i = 0; i < ax.toCharArray().length; i++) {
@@ -315,23 +325,82 @@ public enum Mnemonico implements Acao {
         
         @Override
         public boolean isNumberOfBitsValid(String number) {
-            return number.length() == 24;
+            return number.length() == this.getNumberOfBits();
+        }
+    },
+    CMP_REG_REG("00111011", 16){
+        @Override
+        public Map<RegistradorEnum, String> acao(String instrucao, Map<RegistradorEnum, String> registradores) {
+            if (!isNumberOfBitsValid(instrucao)){
+                throw new IllegalArgumentException(String.format("Instrução: %s possui %d bit(s) e deveria possuir %d bits!",
+                        instrucao, instrucao.length(), this.getNumberOfBits()));
+            }
+            var ax = registradores.get(AX);
+            var sr = new StringBuilder(registradores.get(SR)).reverse();
+            
+            var operand = instrucao.substring(8, 16);
+            char finalValue;
+            
+            if (operand.equalsIgnoreCase(DX.getEndereco())) {
+                finalValue = ax.equalsIgnoreCase(registradores.get(DX)) ? '1' : '0';
+            } else {
+                throw new IllegalArgumentException(String.format("Operando: %s não existe!", operand));
+            }
+            
+            sr.setCharAt(8, finalValue);
+            registradores.replace(SR, sr.reverse().toString());
+            return registradores;
+        }
+        
+        @Override
+        public boolean isNumberOfBitsValid(String number) {
+            return number.length() == this.getNumberOfBits();
+        }
+    },
+    CMP_REG_OP("00111101", 24){
+        @Override
+        public Map<RegistradorEnum, String> acao(String instrucao, Map<RegistradorEnum, String> registradores) {
+            if (!isNumberOfBitsValid(instrucao)){
+                throw new IllegalArgumentException(String.format("Instrução: %s possui %d bit(s) e deveria possuir %d bits!",
+                        instrucao, instrucao.length(), this.getNumberOfBits()));
+            }
+            var ax = registradores.get(AX);
+            var sr = new StringBuilder(registradores.get(SR)).reverse();
+            
+            var operand = instrucao.substring(8, 24);
+            var finalValue = ax.equalsIgnoreCase(operand) ? '1' : '0';
+            
+            sr.setCharAt(8, finalValue);
+            registradores.replace(SR, sr.reverse().toString());
+            return registradores;
+        }
+        
+        @Override
+        public boolean isNumberOfBitsValid(String number) {
+            return number.length() == this.getNumberOfBits();
         }
     };
     private final String valorBinario;
-
-    private Mnemonico(String valorBinario) {
+    private final int numberOfBits;
+    
+    Mnemonico(String valorBinario, int numberOfBits) {
         this.valorBinario = valorBinario;
+        this.numberOfBits = numberOfBits;
     }
-
+    
+    public int getNumberOfBits() {
+        return numberOfBits;
+    }
+    
+    // TODO: colocar os opcodes aqui!!!
     /**
-     * 2.Não esquecer de colocar o upcode aqui tbm!
-     *
      * @param bytes: bytens em String
      * @return Mnemonico equivalente ao opcode
      */
     public static Mnemonico getByBytes(String bytes) {
         switch (bytes) {
+            // -------------------------------------------------
+            // DESVIO
             case "11101011" -> {
                 return JUMP;
             }
@@ -344,6 +413,8 @@ public enum Mnemonico implements Acao {
             case "01111010" -> {
                 return JP;
             }
+            // -------------------------------------------------
+            // L/S
             case "00010010" -> {
                 return READ;
             }
@@ -379,6 +450,14 @@ public enum Mnemonico implements Acao {
             case "11111000" ->
             {
                 return NOT_REG;
+            }
+            case "00111011" ->
+            {
+                return CMP_REG_REG;
+            }
+            case "00111101" ->
+            {
+                return CMP_REG_OP;
             }
             // -------------------------------------------------
             default ->
