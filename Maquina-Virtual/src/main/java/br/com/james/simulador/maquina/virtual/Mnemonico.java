@@ -49,6 +49,19 @@ public enum Mnemonico implements Acao {
             }
             return registradores;
         }
+    },
+    READ("00010010") {
+        @Override
+        public Map<RegistradorEnum, String> acao(String instrucao, Map<RegistradorEnum, String> registradores) {
+            throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+
+        }
+    },
+    WRITE("00001000") {
+        @Override
+        public Map<RegistradorEnum, String> acao(String instrucao, Map<RegistradorEnum, String> registradores) {
+            throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+        }
     };
     private final String valorBinario;
 
@@ -75,6 +88,12 @@ public enum Mnemonico implements Acao {
             }
             case "01111010" -> {
                 return JP;
+            }
+            case "00010010" -> {
+                return READ;
+            }
+            case "00001000" -> {
+                return WRITE;
             }
             default ->
                 throw new IllegalArgumentException("Não existe mnmônico equivale a " + bytes);
