@@ -2,13 +2,13 @@ package br.com.james.simulador.ui;
 
 import br.com.james.simulador.maquina.virtual.Executor;
 import br.com.james.simulador.maquina.virtual.RegistradorEnum;
+import br.com.james.simulador.maquina.virtual.TipoEnderecamento;
 import br.com.james.simulador.maquina.virtual.Util;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.logging.Logger;
 import javax.swing.table.DefaultTableModel;
 
 /**
@@ -209,12 +209,14 @@ public class Menu extends javax.swing.JFrame {
 
     private void btRunActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btRunActionPerformed
         initRegistradores();
-        initInstrucoes(txtCodigo.getText());
+        initMemoria(txtCodigo.getText());
         if (!instrucoes.isEmpty()) {
             try {
                 var codigoAtual = Util.binarioParaDecimal(registradores.get(RegistradorEnum.IP));
                 while (ehFimExecucao(codigoAtual)) {
-                    var instrucao = instrucoes.get(codigoAtual);
+                    var instrucao = Menu.instrucoes.get(codigoAtual);
+                    carregaRBM(instrucao);
+                    //Fim de execução
                     if (instrucao.equals("11101110")) {
                         break;
                     }
@@ -290,7 +292,8 @@ public class Menu extends javax.swing.JFrame {
     // End of variables declaration//GEN-END:variables
 
     private static Map<RegistradorEnum, String> registradores = new HashMap();
-    private static List<String> instrucoes = new ArrayList<>();
+    private static List<String> instrucoes;
+    private static List<String> dados;
 
     private void initRegistradores() {
         Arrays.asList(RegistradorEnum.values())
@@ -298,9 +301,19 @@ public class Menu extends javax.swing.JFrame {
                 .forEach(registrador -> registradores.put(registrador, "0000000000000000"));
     }
 
-    private void initInstrucoes(String instrucoes) {
+    private void initMemoria(String instrucoes) {
+        Menu.instrucoes = new ArrayList<>();
+        Menu.dados = new ArrayList<>();
         if (!instrucoes.isEmpty()) {
-            Menu.instrucoes = Arrays.asList(instrucoes.trim().split("\n"));
+            Arrays.asList(instrucoes.trim().split("\n"))
+                    .forEach(instrucao -> {
+                        if (instrucao.contains("#")) {
+                            dados.add(instrucao.substring(1));
+                        } else {
+                            Menu.instrucoes.add(instrucao);
+                        }
+                        return;
+                    });
         }
     }
 
@@ -322,5 +335,26 @@ public class Menu extends javax.swing.JFrame {
 
     private boolean ehFimExecucao(int codigoAtual) {
         return codigoAtual >= 0 && codigoAtual < instrucoes.size();
+    }
+
+    private void carregaRBM(String instrucao) {
+        var tamanhoInstrucao = instrucao.length();
+        var operando = instrucao.substring(8, tamanhoInstrucao - 1);
+        if (tamanhoInstrucao > 7 && tamanhoInstrucao % 2 == 1) {
+            var tipoEnderecamento = TipoEnderecamento.getByBit(instrucao.charAt(tamanhoInstrucao - 1));
+            switch (tipoEnderecamento) {
+                case IMEDIATO:
+                    registradores.replace(RegistradorEnum.RBM, operando);
+                    return;
+                case DIRETO:
+                    var endereco = Util.binarioParaDecimal(operando);
+                    if (endereco >= dados.size()) {
+                        throw new IndexOutOfBoundsException("Endereço de momória inexistente");
+                    }
+                    var valor = dados.get(endereco);
+                    registradores.replace(RegistradorEnum.RBM, valor);
+                    return;
+            }
+        }
     }
 }
