@@ -210,21 +210,24 @@ public class Menu extends javax.swing.JFrame {
     private void btRunActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btRunActionPerformed
         initRegistradores();
         initInstrucoes(txtCodigo.getText());
-        if(!instrucoes.isEmpty()){
-        try {
-            var codigoAtual = Util.binarioParaDecimal(registradores.get(RegistradorEnum.IP));
-            while (ehFimExecucao(codigoAtual)) {
-                var instrucao = instrucoes.get(codigoAtual);
-                Executor.run(instrucao, registradores);
+        if (!instrucoes.isEmpty()) {
+            try {
+                var codigoAtual = Util.binarioParaDecimal(registradores.get(RegistradorEnum.IP));
+                while (ehFimExecucao(codigoAtual)) {
+                    var instrucao = instrucoes.get(codigoAtual);
+                    if (instrucao.equals("11101110")) {
+                        break;
+                    }
+                    Executor.run(instrucao, registradores);
+                    atualizaTabela(registradores);
+                    codigoAtual = Util.binarioParaDecimal(registradores.get(RegistradorEnum.IP));
+                }
                 atualizaTabela(registradores);
-                codigoAtual = Util.binarioParaDecimal(registradores.get(RegistradorEnum.IP));
+                finalizaExecucao();
+            } catch (Exception ex) {
+                ex.printStackTrace();
+                mostraErro(ex);
             }
-            atualizaTabela(registradores);
-            finalizaExecucao();
-        } catch (Exception ex) {
-            ex.printStackTrace();
-            mostraErro(ex);
-        }
         }
     }//GEN-LAST:event_btRunActionPerformed
 
