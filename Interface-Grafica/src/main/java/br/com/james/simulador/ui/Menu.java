@@ -9,6 +9,7 @@ import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import javax.swing.ImageIcon;
 import javax.swing.table.DefaultTableModel;
 
 /**
@@ -49,7 +50,9 @@ public class Menu extends javax.swing.JFrame {
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("Simulador Z808");
+        setIconImage((new javax.swing.ImageIcon(getClass().getResource("/iconLaunch.png")).getImage()));
 
+        btRun.setIcon(new javax.swing.ImageIcon(getClass().getResource("/botaoPlayIMG.png"))); // NOI18N
         btRun.setText("Run");
         btRun.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -57,6 +60,7 @@ public class Menu extends javax.swing.JFrame {
             }
         });
 
+        btClear.setIcon(new javax.swing.ImageIcon(getClass().getResource("/botaoClearIMG.png"))); // NOI18N
         btClear.setText("Clear");
         btClear.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -131,7 +135,7 @@ public class Menu extends javax.swing.JFrame {
             panelCodigoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(panelCodigoLayout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(jScrollPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 320, Short.MAX_VALUE)
+                .addComponent(jScrollPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 312, Short.MAX_VALUE)
                 .addContainerGap())
         );
 
@@ -207,6 +211,12 @@ public class Menu extends javax.swing.JFrame {
         setLocationRelativeTo(null);
     }// </editor-fold>//GEN-END:initComponents
 
+    private void btClearActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btClearActionPerformed
+        // TODO add your handling code here:
+        txtCodigo.setText(null);
+        txtCodigo.setEnabled(true);
+    }//GEN-LAST:event_btClearActionPerformed
+
     private void btRunActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btRunActionPerformed
         initRegistradores();
         initMemoria(txtCodigo.getText());
@@ -232,12 +242,6 @@ public class Menu extends javax.swing.JFrame {
             }
         }
     }//GEN-LAST:event_btRunActionPerformed
-
-    private void btClearActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btClearActionPerformed
-        // TODO add your handling code here:
-        txtCodigo.setText(null);
-        txtCodigo.setEnabled(true);
-    }//GEN-LAST:event_btClearActionPerformed
 
     /**
      * @param args the command line arguments
