@@ -4,13 +4,21 @@ import br.com.james.simulador.maquina.virtual.Executor;
 import br.com.james.simulador.maquina.virtual.RegistradorEnum;
 import br.com.james.simulador.maquina.virtual.TipoEnderecamento;
 import br.com.james.simulador.maquina.virtual.Util;
+import java.awt.Color;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import javax.swing.ImageIcon;
+import javax.swing.BorderFactory;
+import javax.swing.border.EmptyBorder;
+import javax.swing.event.DocumentEvent;
+import javax.swing.event.DocumentListener;
 import javax.swing.table.DefaultTableModel;
+import javax.swing.text.BadLocationException;
+import javax.swing.text.DefaultStyledDocument;
+import javax.swing.text.Style;
+import javax.swing.text.StyleConstants;
 
 /**
  *
@@ -23,6 +31,8 @@ public class Menu extends javax.swing.JFrame {
      */
     public Menu() {
         initComponents();
+        numeracaoTextArea();
+        espacamentoTopoCodigo();
     }
 
     /**
@@ -43,6 +53,8 @@ public class Menu extends javax.swing.JFrame {
         panelCodigo = new javax.swing.JPanel();
         jScrollPane2 = new javax.swing.JScrollPane();
         txtCodigo = new javax.swing.JTextArea();
+        jScrollPane4 = new javax.swing.JScrollPane();
+        numeracaoCod = new javax.swing.JTextPane();
         panelConsole = new javax.swing.JPanel();
         jScrollPane3 = new javax.swing.JScrollPane();
         txtConsole = new javax.swing.JTextArea();
@@ -50,7 +62,7 @@ public class Menu extends javax.swing.JFrame {
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("Simulador Z808");
-        setIconImage((new javax.swing.ImageIcon(getClass().getResource("/iconLaunch.png")).getImage()));
+        setIconImage((new javax.swing.ImageIcon(getClass().getResource("/iconLauncher.png")).getImage()));
 
         btRun.setIcon(new javax.swing.ImageIcon(getClass().getResource("/botaoPlayIMG.png"))); // NOI18N
         btRun.setText("Run");
@@ -112,30 +124,38 @@ public class Menu extends javax.swing.JFrame {
             panelTabelaLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(panelTabelaLayout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 381, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 560, Short.MAX_VALUE)
+                .addContainerGap())
         );
 
         txtCodigo.setColumns(20);
+        txtCodigo.setFont(new java.awt.Font("Monospaced", 0, 12)); // NOI18N
         txtCodigo.setLineWrap(true);
         txtCodigo.setRows(5);
-        txtCodigo.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
+        txtCodigo.setBorder(null);
         jScrollPane2.setViewportView(txtCodigo);
+
+        numeracaoCod.setEditable(false);
+        jScrollPane4.setViewportView(numeracaoCod);
 
         javax.swing.GroupLayout panelCodigoLayout = new javax.swing.GroupLayout(panelCodigo);
         panelCodigo.setLayout(panelCodigoLayout);
         panelCodigoLayout.setHorizontalGroup(
             panelCodigoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(panelCodigoLayout.createSequentialGroup()
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, panelCodigoLayout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(jScrollPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 714, Short.MAX_VALUE)
+                .addComponent(jScrollPane4, javax.swing.GroupLayout.PREFERRED_SIZE, 45, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 663, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap())
         );
         panelCodigoLayout.setVerticalGroup(
             panelCodigoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(panelCodigoLayout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(jScrollPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 312, Short.MAX_VALUE)
+                .addGroup(panelCodigoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jScrollPane4)
+                    .addComponent(jScrollPane2))
                 .addContainerGap())
         );
 
@@ -201,7 +221,7 @@ public class Menu extends javax.swing.JFrame {
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
                         .addComponent(panelCodigo, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addGap(18, 18, 18)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(panelConsole, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addComponent(panelTabela, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addContainerGap())
@@ -214,6 +234,7 @@ public class Menu extends javax.swing.JFrame {
     private void btClearActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btClearActionPerformed
         // TODO add your handling code here:
         txtCodigo.setText(null);
+        numeracaoCod.setText(null);
         txtCodigo.setEnabled(true);
     }//GEN-LAST:event_btClearActionPerformed
 
@@ -286,7 +307,9 @@ public class Menu extends javax.swing.JFrame {
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JScrollPane jScrollPane3;
+    private javax.swing.JScrollPane jScrollPane4;
     private javax.swing.JLabel labelConsole;
+    private javax.swing.JTextPane numeracaoCod;
     private javax.swing.JPanel panelCodigo;
     private javax.swing.JPanel panelConsole;
     private javax.swing.JPanel panelTabela;
@@ -360,5 +383,60 @@ public class Menu extends javax.swing.JFrame {
                     return;
             }
         }
+    }
+
+    private void numeracaoTextArea() {
+        txtCodigo.getDocument().addDocumentListener(new DocumentListener() {
+            @Override
+            public void insertUpdate(DocumentEvent e) {
+                atualizaLinhasCodigo();
+            }
+
+            @Override
+            public void removeUpdate(DocumentEvent e) {
+                atualizaLinhasCodigo();
+            }
+
+            @Override
+            public void changedUpdate(DocumentEvent e) {
+                atualizaLinhasCodigo();
+            }
+        });
+    }
+
+    private void atualizaLinhasCodigo() {
+        // Obtém o conteúdo do texto da JTextArea
+        String text = txtCodigo.getText();
+
+        // Cria um documento para o JTextPane
+        DefaultStyledDocument doc = new DefaultStyledDocument();
+
+        // Define o estilo da fonte para a numeração
+        Style style = doc.addStyle("LineNumbersStyle", null);
+        StyleConstants.setFontFamily(style, "Monospaced");
+        StyleConstants.setFontSize(style, 12);
+        StyleConstants.setForeground(style, Color.GRAY);
+
+        try {
+            // Divide o texto em linhas
+            String[] lines = text.split("\n");
+            // Adiciona a numeração das linhas ao documento
+            for (int i = 0; i < lines.length; i++) {
+                String line = (i + 1) + "\n";
+                doc.insertString(doc.getLength(), line, style);
+            }
+        } catch (BadLocationException e) {
+            e.printStackTrace();
+        }
+
+        // Define o documento atualizado para o JTextPane
+        numeracaoCod.setDocument(doc);
+    }
+
+    private void espacamentoTopoCodigo() {
+        int topSpacing = 5; // Espaçamento desejado no topo em pixels
+        txtCodigo.setBorder(BorderFactory.createCompoundBorder(
+                new EmptyBorder(topSpacing, 0, 0, 0),
+                txtCodigo.getBorder()));
     }
 }
