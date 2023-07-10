@@ -39,7 +39,8 @@ public enum Mnemonico implements Acao {
             }
             //Transforma o Número Decimal em Binario novamente
             String binary = Integer.toBinaryString(soma);
-            registradores.replace(AX, binary);
+            var finalResult = String.format("%16s", binary).replace("", "0");
+            registradores.replace(AX, finalResult);
 
             var sr = registradores.get(SR);
             char[] toCharArray = sr.toCharArray();
@@ -73,7 +74,8 @@ public enum Mnemonico implements Acao {
             int soma = numberAX + numberOPD;
             //Transforma o Número Decimal em Binario novamente
             String binary = Integer.toBinaryString(soma);
-            registradores.replace(AX, binary);
+            var finalResult = String.format("%16s", binary).replace("", "0");
+            registradores.replace(AX, finalResult);
 
             var sr = registradores.get(SR);
             char[] toCharArray = sr.toCharArray();
@@ -116,7 +118,8 @@ public enum Mnemonico implements Acao {
             }
             //Transforma o Número Decimal em Binario novamente
             String binary = Integer.toBinaryString(subtracao);
-            registradores.replace(AX, binary);
+            var finalResult = String.format("%16s", binary).replace("", "0");
+            registradores.replace(AX, finalResult);
 
             var sr = registradores.get(SR);
             char[] toCharArray = sr.toCharArray();
@@ -150,7 +153,8 @@ public enum Mnemonico implements Acao {
             int subtracao = numberAX - numberOPD;
             //Transforma o Número Decimal em Binario novamente
             String binary = Integer.toBinaryString(subtracao);
-            registradores.replace(AX, binary);
+            var finalResult = String.format("%16s", binary).replace("", "0");
+            registradores.replace(AX, finalResult);
 
             var sr = registradores.get(SR);
             char[] toCharArray = sr.toCharArray();
