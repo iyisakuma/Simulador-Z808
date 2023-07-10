@@ -1,8 +1,17 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/GUIForms/JFrame.java to edit this template
- */
 package br.com.james.simulador.ui;
+
+import br.com.james.simulador.maquina.virtual.Executor;
+import br.com.james.simulador.maquina.virtual.RegistradorEnum;
+import br.com.james.simulador.maquina.virtual.TipoEnderecamento;
+import br.com.james.simulador.maquina.virtual.Util;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import javax.swing.ImageIcon;
+import javax.swing.table.DefaultTableModel;
+
 /**
  *
  * @author xandi
@@ -25,29 +34,41 @@ public class Menu extends javax.swing.JFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        jScrollPane2 = new javax.swing.JScrollPane();
-        taCodigo = new javax.swing.JTextArea();
-        bRun = new javax.swing.JButton();
+        jProgressBar1 = new javax.swing.JProgressBar();
+        btRun = new javax.swing.JButton();
+        btClear = new javax.swing.JButton();
+        panelTabela = new javax.swing.JPanel();
         jScrollPane1 = new javax.swing.JScrollPane();
         tbRegistradores = new javax.swing.JTable();
-        btClear = new javax.swing.JButton();
+        panelCodigo = new javax.swing.JPanel();
+        jScrollPane2 = new javax.swing.JScrollPane();
+        txtCodigo = new javax.swing.JTextArea();
+        panelConsole = new javax.swing.JPanel();
         jScrollPane3 = new javax.swing.JScrollPane();
-        taConsole = new javax.swing.JTextArea();
+        txtConsole = new javax.swing.JTextArea();
         labelConsole = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setTitle("Simulador Z808");
+        setIconImage((new javax.swing.ImageIcon(getClass().getResource("/iconLaunch.png")).getImage()));
 
-        taCodigo.setColumns(20);
-        taCodigo.setRows(5);
-        jScrollPane2.setViewportView(taCodigo);
-
-        bRun.setText("Run");
-        bRun.addActionListener(new java.awt.event.ActionListener() {
+        btRun.setIcon(new javax.swing.ImageIcon(getClass().getResource("/botaoPlayIMG.png"))); // NOI18N
+        btRun.setText("Run");
+        btRun.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                bRunActionPerformed(evt);
+                btRunActionPerformed(evt);
             }
         });
 
+        btClear.setIcon(new javax.swing.ImageIcon(getClass().getResource("/botaoClearIMG.png"))); // NOI18N
+        btClear.setText("Clear");
+        btClear.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btClearActionPerformed(evt);
+            }
+        });
+
+        tbRegistradores.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
         tbRegistradores.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
                 {"CL", "0000000000000000b"},
@@ -78,20 +99,77 @@ public class Menu extends javax.swing.JFrame {
             tbRegistradores.getColumnModel().getColumn(1).setResizable(false);
         }
 
-        btClear.setText("Clear");
-        btClear.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btClearActionPerformed(evt);
-            }
-        });
+        javax.swing.GroupLayout panelTabelaLayout = new javax.swing.GroupLayout(panelTabela);
+        panelTabela.setLayout(panelTabelaLayout);
+        panelTabelaLayout.setHorizontalGroup(
+            panelTabelaLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(panelTabelaLayout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 318, Short.MAX_VALUE)
+                .addContainerGap())
+        );
+        panelTabelaLayout.setVerticalGroup(
+            panelTabelaLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(panelTabelaLayout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 381, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+        );
 
-        taConsole.setEditable(false);
-        taConsole.setColumns(20);
-        taConsole.setRows(5);
-        taConsole.setText("Console\n");
-        jScrollPane3.setViewportView(taConsole);
+        txtCodigo.setColumns(20);
+        txtCodigo.setLineWrap(true);
+        txtCodigo.setRows(5);
+        txtCodigo.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
+        jScrollPane2.setViewportView(txtCodigo);
 
+        javax.swing.GroupLayout panelCodigoLayout = new javax.swing.GroupLayout(panelCodigo);
+        panelCodigo.setLayout(panelCodigoLayout);
+        panelCodigoLayout.setHorizontalGroup(
+            panelCodigoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(panelCodigoLayout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(jScrollPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 714, Short.MAX_VALUE)
+                .addContainerGap())
+        );
+        panelCodigoLayout.setVerticalGroup(
+            panelCodigoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(panelCodigoLayout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(jScrollPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 312, Short.MAX_VALUE)
+                .addContainerGap())
+        );
+
+        txtConsole.setEditable(false);
+        txtConsole.setColumns(20);
+        txtConsole.setRows(5);
+        txtConsole.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
+        jScrollPane3.setViewportView(txtConsole);
+
+        labelConsole.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
         labelConsole.setText("Console");
+
+        javax.swing.GroupLayout panelConsoleLayout = new javax.swing.GroupLayout(panelConsole);
+        panelConsole.setLayout(panelConsoleLayout);
+        panelConsoleLayout.setHorizontalGroup(
+            panelConsoleLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(panelConsoleLayout.createSequentialGroup()
+                .addContainerGap()
+                .addGroup(panelConsoleLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(panelConsoleLayout.createSequentialGroup()
+                        .addComponent(labelConsole, javax.swing.GroupLayout.PREFERRED_SIZE, 79, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(0, 0, Short.MAX_VALUE))
+                    .addComponent(jScrollPane3, javax.swing.GroupLayout.Alignment.TRAILING))
+                .addContainerGap())
+        );
+        panelConsoleLayout.setVerticalGroup(
+            panelConsoleLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(panelConsoleLayout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(labelConsole)
+                .addGap(9, 9, 9)
+                .addComponent(jScrollPane3, javax.swing.GroupLayout.DEFAULT_SIZE, 184, Short.MAX_VALUE)
+                .addContainerGap())
+        );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -100,52 +178,70 @@ public class Menu extends javax.swing.JFrame {
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jScrollPane3, javax.swing.GroupLayout.DEFAULT_SIZE, 726, Short.MAX_VALUE)
+                    .addComponent(panelCodigo, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addGroup(layout.createSequentialGroup()
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(labelConsole, javax.swing.GroupLayout.PREFERRED_SIZE, 79, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addGroup(layout.createSequentialGroup()
-                                .addComponent(bRun)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(btClear)))
+                        .addGap(8, 8, 8)
+                        .addComponent(btRun)
+                        .addGap(31, 31, 31)
+                        .addComponent(btClear)
                         .addGap(0, 0, Short.MAX_VALUE))
-                    .addComponent(jScrollPane2))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 330, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap())
+                    .addComponent(panelConsole, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(panelTabela, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(12, 12, 12))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
+                .addGap(12, 12, 12)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(bRun)
+                    .addComponent(btRun)
                     .addComponent(btClear))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGap(18, 18, 18)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 422, Short.MAX_VALUE)
-                    .addComponent(jScrollPane2))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(labelConsole)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, 126, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addGroup(layout.createSequentialGroup()
+                        .addComponent(panelCodigo, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addGap(18, 18, 18)
+                        .addComponent(panelConsole, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(panelTabela, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addContainerGap())
         );
 
         pack();
+        setLocationRelativeTo(null);
     }// </editor-fold>//GEN-END:initComponents
-
-    private void bRunActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_bRunActionPerformed
-        // TODO add your handling code here:
-        taCodigo.setEnabled(false);
-        taConsole.setText("Compilou");
-    }//GEN-LAST:event_bRunActionPerformed
 
     private void btClearActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btClearActionPerformed
         // TODO add your handling code here:
-        taCodigo.setText(null);
-        taCodigo.setEnabled(true);
-        taConsole.setText("Console");
+        txtCodigo.setText(null);
+        txtCodigo.setEnabled(true);
     }//GEN-LAST:event_btClearActionPerformed
+
+    private void btRunActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btRunActionPerformed
+        initRegistradores();
+        initMemoria(txtCodigo.getText());
+        if (!instrucoes.isEmpty()) {
+            try {
+                var codigoAtual = Util.binarioParaDecimal(registradores.get(RegistradorEnum.IP));
+                while (ehFimExecucao(codigoAtual)) {
+                    var instrucao = Menu.instrucoes.get(codigoAtual);
+                    carregaRBM(instrucao);
+                    //Fim de execução
+                    if (instrucao.equals("11101110")) {
+                        break;
+                    }
+                    Executor.run(instrucao, registradores);
+                    atualizaTabela(registradores);
+                    codigoAtual = Util.binarioParaDecimal(registradores.get(RegistradorEnum.IP));
+                }
+                atualizaTabela(registradores);
+                finalizaExecucao();
+            } catch (Exception ex) {
+                ex.printStackTrace();
+                mostraErro(ex);
+            }
+        }
+    }//GEN-LAST:event_btRunActionPerformed
 
     /**
      * @param args the command line arguments
@@ -184,14 +280,85 @@ public class Menu extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JButton bRun;
     private javax.swing.JButton btClear;
+    private javax.swing.JButton btRun;
+    private javax.swing.JProgressBar jProgressBar1;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JScrollPane jScrollPane3;
     private javax.swing.JLabel labelConsole;
-    private javax.swing.JTextArea taCodigo;
-    private javax.swing.JTextArea taConsole;
+    private javax.swing.JPanel panelCodigo;
+    private javax.swing.JPanel panelConsole;
+    private javax.swing.JPanel panelTabela;
     private javax.swing.JTable tbRegistradores;
+    private javax.swing.JTextArea txtCodigo;
+    private javax.swing.JTextArea txtConsole;
     // End of variables declaration//GEN-END:variables
+
+    private static Map<RegistradorEnum, String> registradores = new HashMap();
+    private static List<String> instrucoes;
+    private static List<String> dados;
+
+    private void initRegistradores() {
+        Arrays.asList(RegistradorEnum.values())
+                .stream()
+                .forEach(registrador -> registradores.put(registrador, "0000000000000000"));
+    }
+
+    private void initMemoria(String instrucoes) {
+        Menu.instrucoes = new ArrayList<>();
+        Menu.dados = new ArrayList<>();
+        if (!instrucoes.isEmpty()) {
+            Arrays.asList(instrucoes.trim().split("\n"))
+                    .forEach(instrucao -> {
+                        if (instrucao.contains("#")) {
+                            dados.add(instrucao.substring(1));
+                        } else {
+                            Menu.instrucoes.add(instrucao);
+                        }
+                        return;
+                    });
+        }
+    }
+
+    private void atualizaTabela(Map<RegistradorEnum, String> registradores) {
+        var dtm = (DefaultTableModel) tbRegistradores.getModel();
+        dtm.setRowCount(0);
+        Arrays.asList(RegistradorEnum.values())
+                .stream()
+                .forEach(registrador -> dtm.addRow(new Object[]{registrador, registradores.get(registrador) + "b"}));
+    }
+
+    private void finalizaExecucao() {
+        txtConsole.setText("---------------------------Execução Finalizada---------------------------");
+    }
+
+    private void mostraErro(Exception ex) {
+        txtConsole.setText(ex.getMessage());
+    }
+
+    private boolean ehFimExecucao(int codigoAtual) {
+        return codigoAtual >= 0 && codigoAtual < instrucoes.size();
+    }
+
+    private void carregaRBM(String instrucao) {
+        var tamanhoInstrucao = instrucao.length();
+        var operando = instrucao.substring(8, tamanhoInstrucao - 1);
+        if (tamanhoInstrucao > 7 && tamanhoInstrucao % 2 == 1) {
+            var tipoEnderecamento = TipoEnderecamento.getByBit(instrucao.charAt(tamanhoInstrucao - 1));
+            switch (tipoEnderecamento) {
+                case IMEDIATO:
+                    registradores.replace(RegistradorEnum.RBM, operando);
+                    return;
+                case DIRETO:
+                    var endereco = Util.binarioParaDecimal(operando);
+                    if (endereco >= dados.size()) {
+                        throw new IndexOutOfBoundsException("Endereço de momória inexistente");
+                    }
+                    var valor = dados.get(endereco);
+                    registradores.replace(RegistradorEnum.RBM, valor);
+                    return;
+            }
+        }
+    }
 }
