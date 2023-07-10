@@ -40,6 +40,8 @@ public class Menu extends javax.swing.JFrame {
         panelTabela = new javax.swing.JPanel();
         jScrollPane1 = new javax.swing.JScrollPane();
         tbRegistradores = new javax.swing.JTable();
+        jScrollPane4 = new javax.swing.JScrollPane();
+        taObservacoes = new javax.swing.JTextArea();
         panelCodigo = new javax.swing.JPanel();
         jScrollPane2 = new javax.swing.JScrollPane();
         txtCodigo = new javax.swing.JTextArea();
@@ -99,21 +101,32 @@ public class Menu extends javax.swing.JFrame {
             tbRegistradores.getColumnModel().getColumn(1).setResizable(false);
         }
 
+        taObservacoes.setEditable(false);
+        taObservacoes.setColumns(20);
+        taObservacoes.setRows(5);
+        taObservacoes.setText("Observações:\n1. Para instruções do tipo operando é necessário especificar \nse o endereçamento é imediato ou direto, utilizamos o bit \nmenos significativo para esta função sendo 0 direto, já o 1 \né imediato. \n2. Para inicializar uma constante é necessário utilizar um \n# seguido da representação binária do número, \nexemplo: Para inicizaliar a constante 1 será, #0000000101");
+        jScrollPane4.setViewportView(taObservacoes);
+
         javax.swing.GroupLayout panelTabelaLayout = new javax.swing.GroupLayout(panelTabela);
         panelTabela.setLayout(panelTabelaLayout);
         panelTabelaLayout.setHorizontalGroup(
             panelTabelaLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(panelTabelaLayout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 318, Short.MAX_VALUE)
-                .addContainerGap())
+                .addGroup(panelTabelaLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jScrollPane4)
+                    .addGroup(panelTabelaLayout.createSequentialGroup()
+                        .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 318, Short.MAX_VALUE)
+                        .addContainerGap())))
         );
         panelTabelaLayout.setVerticalGroup(
             panelTabelaLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(panelTabelaLayout.createSequentialGroup()
                 .addContainerGap()
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 381, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jScrollPane4)
+                .addContainerGap())
         );
 
         txtCodigo.setColumns(20);
@@ -286,10 +299,12 @@ public class Menu extends javax.swing.JFrame {
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JScrollPane jScrollPane3;
+    private javax.swing.JScrollPane jScrollPane4;
     private javax.swing.JLabel labelConsole;
     private javax.swing.JPanel panelCodigo;
     private javax.swing.JPanel panelConsole;
     private javax.swing.JPanel panelTabela;
+    private javax.swing.JTextArea taObservacoes;
     private javax.swing.JTable tbRegistradores;
     private javax.swing.JTextArea txtCodigo;
     private javax.swing.JTextArea txtConsole;
