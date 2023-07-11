@@ -2,15 +2,10 @@
 
 ### _Repositório para o projeto máquina virtual do sistema computacional hipotético Z808_
 
-#### Tecnologias Utilizadas 💻
-
-| Java |
-|------|
-|  17  |
-
-#### Observação 🚩
+### Observações 🚩
 
 * Para mais especificações sobre o trabalho, olhar a seguinte pasta: _Docs_
+* Integrantes: Alexandre Cardoso, Arthur Teles, Claudinei Lima, Igor Sakuma, Hyhickle Umetsubo, Luhan Moura, Mauricio Mucci
 * Apresentação em vídeo do checkpoint 1/7: https://www.youtube.com/watch?v=B0Xyzax42kE&feature=youtu.be
 
 ### Objetivo 🎯
@@ -87,3 +82,9 @@ descrição.
 * Os valores dos registradores são exibidos em:
 
 ![Interface](Docs/registradores.png)
+
+#### Tecnologias Utilizadas 💻
+
+| Java |
+|------|
+|  17  |
