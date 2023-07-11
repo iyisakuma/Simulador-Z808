@@ -77,9 +77,6 @@ descrição.
 
 ![Interface](Docs/registradores.png)
 
-
-
-
 #### Tecnologias Utilizadas 💻
 
 | Java |
