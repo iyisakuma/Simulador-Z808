@@ -2,6 +2,17 @@
 
 ### _Repositório para o projeto máquina virtual do sistema computacional hipotético Z808_
 
+#### Tecnologias Utilizadas 💻
+
+| Java |
+|------|
+|  17  |
+
+#### Observação 🚩
+
+* Para mais especificações sobre o trabalho, olhar a seguinte pasta: _Docs_
+* Apresentação em vídeo do checkpoint 1/7: https://www.youtube.com/watch?v=B0Xyzax42kE&feature=youtu.be
+
 ### Objetivo 🎯
 
 * Consiste em implementar a máquina virtual (emulador) do sistema computacional Z808 - conforme apresentado no livro _Tradução de programas da montagem a
@@ -76,14 +87,3 @@ descrição.
 * Os valores dos registradores são exibidos em:
 
 ![Interface](Docs/registradores.png)
-
-#### Tecnologias Utilizadas 💻
-
-| Java |
-|------|
-|  17  |
-
-#### Observação 🚩
-
-* Para mais especificações sobre o trabalho, olhar a seguinte pasta: _Docs_
-* Apresentação em vídeo do checkpoint 1/7: https://www.youtube.com/watch?v=B0Xyzax42kE&feature=youtu.be
