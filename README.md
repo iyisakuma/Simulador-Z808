@@ -2,6 +2,12 @@
 
 ### _Repositório para o projeto máquina virtual do sistema computacional hipotético Z808_
 
+### Observações 🚩
+
+* Para mais especificações sobre o trabalho, olhar a seguinte pasta: _Docs_
+* Integrantes: Alexandre Cardoso, Arthur Teles, Claudinei Lima, Igor Sakuma, Hyhickle Umetsubo, Luhan Moura, Mauricio Mucci
+* Apresentação em vídeo do checkpoint 1/7: https://www.youtube.com/watch?v=B0Xyzax42kE&feature=youtu.be
+
 ### Objetivo 🎯
 
 * Consiste em implementar a máquina virtual (emulador) do sistema computacional Z808 - conforme apresentado no livro _Tradução de programas da montagem a
@@ -57,14 +63,28 @@ descrição.
   incrementando até seu limite, causando um desvio para o endereço 0 (zero), caracterizada como uma exceção de 
   "Stack Overflow", caso haja uma tentativa de empilhar com a pilha cheia. A estrutura da pilha é a seguinte:
 
-![Screenshot 3](Docs/tabela_3.png)
+![Esquema_Pilha](Docs/tabela_3.png)
+
+6. Interface Gráfica
+
+![Interface](Docs/interface.png)
+
+* A interface gráfica possui 3 áreas principais: caixa de texto para instruções, caixa de texto para o console e 
+  uma tabela dos registradores.
+* As instruções são inseridas em:
+
+![Interface](Docs/instrucoes.png)
+
+* Os erros ou exceções são exibidos em:
+
+![Interface](Docs/console.png)
+
+* Os valores dos registradores são exibidos em:
+
+![Interface](Docs/registradores.png)
 
 #### Tecnologias Utilizadas 💻
 
 | Java |
 |------|
 |  17  |
-
-#### Observação 🚩
-
-* Para mais especificações sobre o trabalho, olhar a seguinte pasta: _Docs_
