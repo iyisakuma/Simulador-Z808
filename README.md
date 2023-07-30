@@ -6,7 +6,10 @@
 
 * Para mais especificações sobre o trabalho, olhar a seguinte pasta: _Docs_
 * Integrantes: Alexandre Cardoso, Arthur Teles, Claudinei Lima, Igor Sakuma, Hyhickle Umetsubo, Luhan Moura, Mauricio Mucci
-* Apresentação em vídeo do checkpoint 1/7: https://www.youtube.com/watch?v=B0Xyzax42kE&feature=youtu.be
+* Apresentação em vídeo do checkpoint 1/4: https://www.youtube.com/watch?v=B0Xyzax42kE&feature=youtu.be
+* Apresentação em vídeo do checkpoint 2/4: -
+* Apresentação em vídeo do checkpoint 3/4: -
+* Apresentação em vídeo do checkpoint 4/4: -
 
 ### Objetivo 🎯
 
