@@ -623,9 +623,9 @@ public enum Mnemonico implements Acao {
             case "00101011" -> {
                 return SUB_AX_REG;
             }
-//            case "00100101" -> {
-//                return SUB_AX_OPD;
-//            }
+//          case "00100101" -> {
+//              return SUB_AX_OPD;
+//          }
             default ->
                 throw new IllegalArgumentException("Não existe mnmônico equivale a " + bytes);
         }
