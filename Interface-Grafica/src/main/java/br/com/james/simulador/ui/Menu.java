@@ -5,8 +5,11 @@ import br.com.james.simulador.maquina.virtual.Executor;
 import br.com.james.simulador.maquina.virtual.RegistradorEnum;
 import br.com.james.simulador.maquina.virtual.TipoEnderecamento;
 import br.com.james.simulador.maquina.virtual.Util;
+import java.io.BufferedReader;
 import java.io.File;
 import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Paths;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
@@ -51,12 +54,15 @@ public class Menu extends javax.swing.JFrame {
         btBuild = new javax.swing.JButton();
         txtArquivoFonte = new javax.swing.JTextField();
         lblArquivoFonte = new javax.swing.JLabel();
-        jScrollPane1 = new javax.swing.JScrollPane();
-        tbRegistradores = new javax.swing.JTable();
         lblArquivoObjeto = new javax.swing.JLabel();
         txtArquivoObjeto = new javax.swing.JTextField();
         rdArquivoFonte = new javax.swing.JRadioButton();
         rdArquivoObjeto = new javax.swing.JRadioButton();
+        jTabbedPane1 = new javax.swing.JTabbedPane();
+        jScrollPane1 = new javax.swing.JScrollPane();
+        tbRegistradores = new javax.swing.JTable();
+        jScrollPane4 = new javax.swing.JScrollPane();
+        jTable1 = new javax.swing.JTable();
 
         javax.swing.GroupLayout DialogErroLayout = new javax.swing.GroupLayout(DialogErro.getContentPane());
         DialogErro.getContentPane().setLayout(DialogErroLayout);
@@ -132,12 +138,12 @@ public class Menu extends javax.swing.JFrame {
         panelCodigoLayout.setVerticalGroup(
             panelCodigoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(panelCodigoLayout.createSequentialGroup()
-                .addContainerGap()
+                .addGap(34, 34, 34)
                 .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 195, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGap(18, 18, 18)
                 .addComponent(labelConsole)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, 202, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, 170, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
@@ -167,6 +173,29 @@ public class Menu extends javax.swing.JFrame {
         lblArquivoFonte.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
         lblArquivoFonte.setIcon(new javax.swing.ImageIcon(getClass().getResource("/lista.png"))); // NOI18N
         lblArquivoFonte.setText("Arquivo Fonte");
+
+        lblArquivoObjeto.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
+        lblArquivoObjeto.setIcon(new javax.swing.ImageIcon(getClass().getResource("/codigo-binario.png"))); // NOI18N
+        lblArquivoObjeto.setText("Arquivo Objeto");
+
+        txtArquivoObjeto.setEditable(false);
+        txtArquivoObjeto.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                txtArquivoObjetoActionPerformed(evt);
+            }
+        });
+
+        buttonGroup1.add(rdArquivoFonte);
+        rdArquivoFonte.setSelected(true);
+        rdArquivoFonte.setText("Arquivo Fonte");
+        rdArquivoFonte.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                rdArquivoFonteActionPerformed(evt);
+            }
+        });
+
+        buttonGroup1.add(rdArquivoObjeto);
+        rdArquivoObjeto.setText("Arquivo Objeto");
 
         tbRegistradores.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
         tbRegistradores.setModel(new javax.swing.table.DefaultTableModel(
@@ -199,28 +228,22 @@ public class Menu extends javax.swing.JFrame {
             tbRegistradores.getColumnModel().getColumn(1).setResizable(false);
         }
 
-        lblArquivoObjeto.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
-        lblArquivoObjeto.setIcon(new javax.swing.ImageIcon(getClass().getResource("/codigo-binario.png"))); // NOI18N
-        lblArquivoObjeto.setText("Arquivo Objeto");
+        jTabbedPane1.addTab("Registradores", jScrollPane1);
 
-        txtArquivoObjeto.setEditable(false);
-        txtArquivoObjeto.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                txtArquivoObjetoActionPerformed(evt);
+        jTable1.setModel(new javax.swing.table.DefaultTableModel(
+            new Object [][] {
+                {null, null, null, null},
+                {null, null, null, null},
+                {null, null, null, null},
+                {null, null, null, null}
+            },
+            new String [] {
+                "Title 1", "Title 2", "Title 3", "Title 4"
             }
-        });
+        ));
+        jScrollPane4.setViewportView(jTable1);
 
-        buttonGroup1.add(rdArquivoFonte);
-        rdArquivoFonte.setSelected(true);
-        rdArquivoFonte.setText("Arquivo Fonte");
-        rdArquivoFonte.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                rdArquivoFonteActionPerformed(evt);
-            }
-        });
-
-        buttonGroup1.add(rdArquivoObjeto);
-        rdArquivoObjeto.setText("Arquivo Objeto");
+        jTabbedPane1.addTab("Tabela de Simbolos", jScrollPane4);
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -238,8 +261,8 @@ public class Menu extends javax.swing.JFrame {
                             .addGroup(layout.createSequentialGroup()
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(jTabbedPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE)
                                     .addComponent(lblArquivoFonte, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                    .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE)
                                     .addComponent(txtArquivoFonte)
                                     .addComponent(lblArquivoObjeto, javax.swing.GroupLayout.DEFAULT_SIZE, 361, Short.MAX_VALUE)
                                     .addComponent(txtArquivoObjeto)))))
@@ -272,8 +295,7 @@ public class Menu extends javax.swing.JFrame {
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
-                        .addGap(8, 8, 8)
-                        .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 259, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(jTabbedPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 267, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                         .addComponent(lblArquivoFonte, javax.swing.GroupLayout.PREFERRED_SIZE, 22, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
@@ -302,8 +324,9 @@ public class Menu extends javax.swing.JFrame {
     }//GEN-LAST:event_btClearActionPerformed
 
     private void btRunActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btRunActionPerformed
-        initRegistradores();
-        if (!instrucoes.isEmpty()) {
+        if (!txtArquivoObjeto.getText().isBlank()) {
+            initRegistradores();
+            initMemoria();
             try {
                 var codigoAtual = Util.binarioParaDecimal(registradores.get(RegistradorEnum.IP));
                 while (ehFimExecucao(codigoAtual)) {
@@ -421,6 +444,9 @@ public class Menu extends javax.swing.JFrame {
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JScrollPane jScrollPane3;
+    private javax.swing.JScrollPane jScrollPane4;
+    private javax.swing.JTabbedPane jTabbedPane1;
+    private javax.swing.JTable jTable1;
     private javax.swing.JLabel labelConsole;
     private javax.swing.JLabel lblArquivoFonte;
     private javax.swing.JLabel lblArquivoObjeto;
@@ -435,9 +461,9 @@ public class Menu extends javax.swing.JFrame {
     private javax.swing.JTextArea txtConsole;
     // End of variables declaration//GEN-END:variables
 
-    private static Map<RegistradorEnum, String> registradores = new HashMap();
-    private static Map<Integer, String> instrucoes;
-    private static Map<Integer, String> dados;
+    private static final Map<RegistradorEnum, String> registradores = new HashMap();
+    private static final Map<Integer, String> instrucoes = new HashMap();
+    private static final Map<Integer, String> dados = new HashMap();
 
     private void initRegistradores() {
         Arrays.asList(RegistradorEnum.values())
@@ -445,19 +471,18 @@ public class Menu extends javax.swing.JFrame {
                 .forEach(registrador -> registradores.put(registrador, "0000000000000000"));
     }
 
-    private void initMemoria(int linha, String instrucoes) {
-        Menu.instrucoes = new HashMap();
-        Menu.dados = new HashMap();
-        if (!instrucoes.isEmpty()) {
-            Arrays.asList(instrucoes.trim().split("\n"))
-                    .forEach(instrucao -> {
-                        if (instrucao.contains("#")) {
-                            dados.put(linha, instrucao.substring(1));
-                        } else {
-                            Menu.instrucoes.put(linha, instrucao);
-                        }
-                        return;
-                    });
+    private void initMemoria() {try {
+            BufferedReader reader = abreArquivoObjeto();
+            var linha = reader.readLine();
+            var numeroLinha = Integer.valueOf(linha.split("_")[0]);
+            var instrucao = linha.split("_")[1];
+            if (instrucao.contains("#")) {
+                dados.put(numeroLinha, instrucao.substring(1));
+            } else {
+                Menu.instrucoes.put(numeroLinha, instrucao);
+            }
+        } catch (Exception ex) {
+            txtConsole.setText("Nao foi possivel abrir o arquivo objeto.");
         }
     }
 
@@ -500,5 +525,10 @@ public class Menu extends javax.swing.JFrame {
                     return;
             }
         }
+    }
+
+    private BufferedReader abreArquivoObjeto() throws IOException {
+        var path = Paths.get(txtArquivoObjeto.getText());
+        return Files.newBufferedReader(path);
     }
 }
