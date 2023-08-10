@@ -39,8 +39,6 @@ public class Menu extends javax.swing.JFrame {
         btRun = new javax.swing.JButton();
         btClear = new javax.swing.JButton();
         panelTabela = new javax.swing.JPanel();
-        jScrollPane1 = new javax.swing.JScrollPane();
-        tbRegistradores = new javax.swing.JTable();
         panelCodigo = new javax.swing.JPanel();
         jScrollPane2 = new javax.swing.JScrollPane();
         txtCodigo = new javax.swing.JTextArea();
@@ -49,8 +47,13 @@ public class Menu extends javax.swing.JFrame {
         txtConsole = new javax.swing.JTextArea();
         labelConsole = new javax.swing.JLabel();
         btUpload = new javax.swing.JButton();
+        btBuild = new javax.swing.JButton();
         txtUpload = new javax.swing.JTextField();
-        labelConsole1 = new javax.swing.JLabel();
+        lblArquivoFonte = new javax.swing.JLabel();
+        jScrollPane1 = new javax.swing.JScrollPane();
+        tbRegistradores = new javax.swing.JTable();
+        jTextField1 = new javax.swing.JTextField();
+        lblArquivoObjeto = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("Simulador Z808");
@@ -71,6 +74,97 @@ public class Menu extends javax.swing.JFrame {
                 btClearActionPerformed(evt);
             }
         });
+
+        javax.swing.GroupLayout panelTabelaLayout = new javax.swing.GroupLayout(panelTabela);
+        panelTabela.setLayout(panelTabelaLayout);
+        panelTabelaLayout.setHorizontalGroup(
+            panelTabelaLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 0, Short.MAX_VALUE)
+        );
+        panelTabelaLayout.setVerticalGroup(
+            panelTabelaLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 0, Short.MAX_VALUE)
+        );
+
+        txtCodigo.setEditable(false);
+        txtCodigo.setColumns(20);
+        txtCodigo.setLineWrap(true);
+        txtCodigo.setRows(5);
+        txtCodigo.setText("Faça upload de um arquivo com a extensão .txt que contenha as instruções de máquina");
+        txtCodigo.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
+        jScrollPane2.setViewportView(txtCodigo);
+
+        javax.swing.GroupLayout panelCodigoLayout = new javax.swing.GroupLayout(panelCodigo);
+        panelCodigo.setLayout(panelCodigoLayout);
+        panelCodigoLayout.setHorizontalGroup(
+            panelCodigoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addComponent(jScrollPane2, javax.swing.GroupLayout.Alignment.TRAILING)
+        );
+        panelCodigoLayout.setVerticalGroup(
+            panelCodigoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(panelCodigoLayout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 377, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+        );
+
+        txtConsole.setEditable(false);
+        txtConsole.setColumns(20);
+        txtConsole.setRows(5);
+        txtConsole.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
+        jScrollPane3.setViewportView(txtConsole);
+
+        labelConsole.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
+        labelConsole.setText("Console");
+
+        javax.swing.GroupLayout panelConsoleLayout = new javax.swing.GroupLayout(panelConsole);
+        panelConsole.setLayout(panelConsoleLayout);
+        panelConsoleLayout.setHorizontalGroup(
+            panelConsoleLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(panelConsoleLayout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(labelConsole, javax.swing.GroupLayout.PREFERRED_SIZE, 79, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+            .addGroup(panelConsoleLayout.createSequentialGroup()
+                .addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, 1065, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(0, 0, Short.MAX_VALUE))
+        );
+        panelConsoleLayout.setVerticalGroup(
+            panelConsoleLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(panelConsoleLayout.createSequentialGroup()
+                .addGap(9, 9, 9)
+                .addComponent(labelConsole)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, 225, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+        );
+
+        btUpload.setIcon(new javax.swing.ImageIcon(getClass().getResource("/botaoUploadIMG .png"))); // NOI18N
+        btUpload.setText("Upload");
+        btUpload.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btUploadActionPerformed(evt);
+            }
+        });
+
+        btBuild.setIcon(new javax.swing.ImageIcon(getClass().getResource("/ferramentas.png"))); // NOI18N
+        btBuild.setText("Build");
+        btBuild.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btBuildActionPerformed(evt);
+            }
+        });
+
+        txtUpload.setEditable(false);
+        txtUpload.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                txtUploadActionPerformed(evt);
+            }
+        });
+
+        lblArquivoFonte.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
+        lblArquivoFonte.setIcon(new javax.swing.ImageIcon(getClass().getResource("/lista.png"))); // NOI18N
+        lblArquivoFonte.setText("Arquivo Fonte");
 
         tbRegistradores.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
         tbRegistradores.setModel(new javax.swing.table.DefaultTableModel(
@@ -103,97 +197,16 @@ public class Menu extends javax.swing.JFrame {
             tbRegistradores.getColumnModel().getColumn(1).setResizable(false);
         }
 
-        javax.swing.GroupLayout panelTabelaLayout = new javax.swing.GroupLayout(panelTabela);
-        panelTabela.setLayout(panelTabelaLayout);
-        panelTabelaLayout.setHorizontalGroup(
-            panelTabelaLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(panelTabelaLayout.createSequentialGroup()
-                .addContainerGap()
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE)
-                .addContainerGap())
-        );
-        panelTabelaLayout.setVerticalGroup(
-            panelTabelaLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(panelTabelaLayout.createSequentialGroup()
-                .addContainerGap()
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 310, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-        );
-
-        txtCodigo.setEditable(false);
-        txtCodigo.setColumns(20);
-        txtCodigo.setLineWrap(true);
-        txtCodigo.setRows(5);
-        txtCodigo.setText("Faça upload de um arquivo com a extensão .txt que contenha as instruções de máquina.");
-        txtCodigo.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
-        jScrollPane2.setViewportView(txtCodigo);
-
-        javax.swing.GroupLayout panelCodigoLayout = new javax.swing.GroupLayout(panelCodigo);
-        panelCodigo.setLayout(panelCodigoLayout);
-        panelCodigoLayout.setHorizontalGroup(
-            panelCodigoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(panelCodigoLayout.createSequentialGroup()
-                .addContainerGap()
-                .addComponent(jScrollPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 714, Short.MAX_VALUE)
-                .addContainerGap())
-        );
-        panelCodigoLayout.setVerticalGroup(
-            panelCodigoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(panelCodigoLayout.createSequentialGroup()
-                .addContainerGap()
-                .addComponent(jScrollPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 312, Short.MAX_VALUE)
-                .addContainerGap())
-        );
-
-        txtConsole.setEditable(false);
-        txtConsole.setColumns(20);
-        txtConsole.setRows(5);
-        txtConsole.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
-        jScrollPane3.setViewportView(txtConsole);
-
-        labelConsole.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
-        labelConsole.setText("Console");
-
-        javax.swing.GroupLayout panelConsoleLayout = new javax.swing.GroupLayout(panelConsole);
-        panelConsole.setLayout(panelConsoleLayout);
-        panelConsoleLayout.setHorizontalGroup(
-            panelConsoleLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(panelConsoleLayout.createSequentialGroup()
-                .addContainerGap()
-                .addGroup(panelConsoleLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jScrollPane3, javax.swing.GroupLayout.DEFAULT_SIZE, 714, Short.MAX_VALUE)
-                    .addGroup(panelConsoleLayout.createSequentialGroup()
-                        .addComponent(labelConsole, javax.swing.GroupLayout.PREFERRED_SIZE, 79, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(0, 0, Short.MAX_VALUE)))
-                .addContainerGap())
-        );
-        panelConsoleLayout.setVerticalGroup(
-            panelConsoleLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(panelConsoleLayout.createSequentialGroup()
-                .addGap(9, 9, 9)
-                .addComponent(labelConsole)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jScrollPane3, javax.swing.GroupLayout.DEFAULT_SIZE, 184, Short.MAX_VALUE)
-                .addContainerGap())
-        );
-
-        btUpload.setIcon(new javax.swing.ImageIcon(getClass().getResource("/botaoUploadIMG .png"))); // NOI18N
-        btUpload.setText("Upload");
-        btUpload.addActionListener(new java.awt.event.ActionListener() {
+        jTextField1.setEditable(false);
+        jTextField1.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btUploadActionPerformed(evt);
+                jTextField1ActionPerformed(evt);
             }
         });
 
-        txtUpload.setEditable(false);
-        txtUpload.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                txtUploadActionPerformed(evt);
-            }
-        });
-
-        labelConsole1.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
-        labelConsole1.setText("File");
+        lblArquivoObjeto.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
+        lblArquivoObjeto.setIcon(new javax.swing.ImageIcon(getClass().getResource("/codigo-binario.png"))); // NOI18N
+        lblArquivoObjeto.setText("Arquivo Objeto");
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -202,22 +215,30 @@ public class Menu extends javax.swing.JFrame {
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(panelCodigo, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addGroup(layout.createSequentialGroup()
                         .addGap(8, 8, 8)
-                        .addComponent(btRun)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(btClear)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(btUpload)
-                        .addGap(0, 372, Short.MAX_VALUE))
-                    .addComponent(panelConsole, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                        .addComponent(panelTabela, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addComponent(txtUpload, javax.swing.GroupLayout.DEFAULT_SIZE, 336, Short.MAX_VALUE))
-                    .addComponent(labelConsole1, javax.swing.GroupLayout.PREFERRED_SIZE, 79, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(layout.createSequentialGroup()
+                                .addComponent(btRun)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(btBuild)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(btClear)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(btUpload)
+                                .addGap(0, 0, Short.MAX_VALUE))
+                            .addComponent(panelCodigo, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(panelTabela, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE)
+                            .addComponent(lblArquivoFonte, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(jTextField1)
+                            .addComponent(lblArquivoObjeto, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(txtUpload)))
+                    .addGroup(layout.createSequentialGroup()
+                        .addComponent(panelConsole, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(0, 0, Short.MAX_VALUE)))
                 .addContainerGap())
         );
         layout.setVerticalGroup(
@@ -226,21 +247,27 @@ public class Menu extends javax.swing.JFrame {
                 .addGap(12, 12, 12)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(btRun)
+                    .addComponent(btUpload)
+                    .addComponent(btBuild)
                     .addComponent(btClear)
-                    .addComponent(btUpload))
-                .addGap(18, 18, 18)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(panelTabela, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(panelCodigo, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                    .addComponent(lblArquivoFonte))
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
-                        .addGap(18, 18, 18)
-                        .addComponent(panelConsole, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addGroup(layout.createSequentialGroup()
-                        .addGap(29, 29, 29)
-                        .addComponent(labelConsole1)
+                        .addGap(1, 1, 1)
+                        .addComponent(txtUpload, javax.swing.GroupLayout.PREFERRED_SIZE, 38, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(txtUpload, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addComponent(lblArquivoObjeto)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, 39, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(18, 18, 18)
+                        .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 259, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(layout.createSequentialGroup()
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(panelCodigo, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(panelTabela, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(panelConsole, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap())
         );
 
@@ -300,6 +327,14 @@ public class Menu extends javax.swing.JFrame {
       
     }//GEN-LAST:event_txtUploadActionPerformed
 
+    private void btBuildActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btBuildActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_btBuildActionPerformed
+
+    private void jTextField1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jTextField1ActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_jTextField1ActionPerformed
+
     /**
      * @param args the command line arguments
      */
@@ -336,6 +371,7 @@ public class Menu extends javax.swing.JFrame {
         });
     }
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton btBuild;
     private javax.swing.JButton btClear;
     private javax.swing.JButton btRun;
     private javax.swing.JButton btUpload;
@@ -343,8 +379,10 @@ public class Menu extends javax.swing.JFrame {
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JScrollPane jScrollPane3;
+    private javax.swing.JTextField jTextField1;
     private javax.swing.JLabel labelConsole;
-    private javax.swing.JLabel labelConsole1;
+    private javax.swing.JLabel lblArquivoFonte;
+    private javax.swing.JLabel lblArquivoObjeto;
     private javax.swing.JPanel panelCodigo;
     private javax.swing.JPanel panelConsole;
     private javax.swing.JPanel panelTabela;
