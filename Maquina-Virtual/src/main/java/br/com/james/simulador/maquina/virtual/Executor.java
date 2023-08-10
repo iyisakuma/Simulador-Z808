@@ -2,6 +2,7 @@
 package br.com.james.simulador.maquina.virtual;
 
 import java.util.Map;
+import javax.swing.JTextArea;
 
 
 /**
@@ -9,10 +10,14 @@ import java.util.Map;
  * @author yujisakuma
  */
 public class Executor {
-    
-    public static void run(String instrucao, Map<RegistradorEnum, String> registradores){
+    private JTextArea console;
+
+    public Executor(JTextArea console) {
+        this.console = console;
+    }
+    public void run(String instrucao, Map<RegistradorEnum, String> registradores){
         atualizaEndereco(registradores);
-        getMnemonico(instrucao).acao(instrucao, registradores);
+        getMnemonico(instrucao).acao(instrucao, registradores, console);
     }
     
     private static Mnemonico getMnemonico(String instrucao){
