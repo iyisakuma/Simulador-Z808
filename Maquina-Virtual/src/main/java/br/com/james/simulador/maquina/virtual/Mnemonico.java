@@ -3,6 +3,7 @@ package br.com.james.simulador.maquina.virtual;
 import java.util.Map;
 
 import static br.com.james.simulador.maquina.virtual.RegistradorEnum.*;
+import javax.swing.JTextArea;
 
 /**
  *
@@ -15,9 +16,9 @@ public enum Mnemonico implements Acao {
      * Certificar que tenha 1 byte ou 2 bytes (depende da instrução). Além
      * disso, implementar o metódo ação para cada Mnemonico novo!
      */
-    ADD_AX_REG("03", 16) {
+    ADD_AX_REG("00000011", 16) {
         @Override
-        public Map<RegistradorEnum, String> acao(String instrucao, Map<RegistradorEnum, String> registradores) {
+        public Map<RegistradorEnum, String> acao(String instrucao, Map<RegistradorEnum, String> registradores, JTextArea console) {
             if (!isNumberOfBitsValid(instrucao)) {
                 throw new IllegalArgumentException(String.format("Instrução: %s possui %d bit(s) e deveria possuir %d bits!",
                         instrucao, instrucao.length(), this.getNumberOfBits()));
@@ -59,9 +60,9 @@ public enum Mnemonico implements Acao {
             return false;
         }
     },
-    ADD_AX_OPD("05", 24) {
+    ADD_AX_OPD("00000101", 24) {
         @Override
-        public Map<RegistradorEnum, String> acao(String instrucao, Map<RegistradorEnum, String> registradores) {
+        public Map<RegistradorEnum, String> acao(String instrucao, Map<RegistradorEnum, String> registradores, JTextArea console) {
             if (!isNumberOfBitsValid(instrucao)) {
                 throw new IllegalArgumentException(String.format("Instrução: %s possui %d bit(s) e deveria possuir %d bits!",
                         instrucao, instrucao.length(), this.getNumberOfBits()));
@@ -94,9 +95,9 @@ public enum Mnemonico implements Acao {
             return false;
         }
     },
-    SUB_AX_REG("2B", 16) {
+    SUB_AX_REG("00101011", 16) {
         @Override
-        public Map<RegistradorEnum, String> acao(String instrucao, Map<RegistradorEnum, String> registradores) {
+        public Map<RegistradorEnum, String> acao(String instrucao, Map<RegistradorEnum, String> registradores, JTextArea console) {
             if (!isNumberOfBitsValid(instrucao)) {
                 throw new IllegalArgumentException(String.format("Instrução: %s possui %d bit(s) e deveria possuir %d bits!",
                         instrucao, instrucao.length(), this.getNumberOfBits()));
@@ -138,9 +139,9 @@ public enum Mnemonico implements Acao {
             return false;
         }
     },
-    SUB_AX_OPD("25", 24) {
+    SUB_AX_OPD("00100101", 24) {
         @Override
-        public Map<RegistradorEnum, String> acao(String instrucao, Map<RegistradorEnum, String> registradores) {
+        public Map<RegistradorEnum, String> acao(String instrucao, Map<RegistradorEnum, String> registradores, JTextArea console) {
             if (!isNumberOfBitsValid(instrucao)) {
                 throw new IllegalArgumentException(String.format("Instrução: %s possui %d bit(s) e deveria possuir %d bits!",
                         instrucao, instrucao.length(), this.getNumberOfBits()));
@@ -175,7 +176,7 @@ public enum Mnemonico implements Acao {
     },
     JUMP("11101011", 24) {
         @Override
-        public Map<RegistradorEnum, String> acao(String instrucao, Map<RegistradorEnum, String> registradores) {
+        public Map<RegistradorEnum, String> acao(String instrucao, Map<RegistradorEnum, String> registradores, JTextArea console) {
             var endereco = registradores.get(RBM);
             registradores.replace(IP, endereco);
             return registradores;
@@ -188,7 +189,7 @@ public enum Mnemonico implements Acao {
     },
     JZ("01110100", 24) {
         @Override
-        public Map<RegistradorEnum, String> acao(String instrucao, Map<RegistradorEnum, String> registradores) {
+        public Map<RegistradorEnum, String> acao(String instrucao, Map<RegistradorEnum, String> registradores, JTextArea console) {
             var valor = registradores.get(SR);
             if (valor != null && valor.charAt(7) == '1') { //Se ZF == 1
                 var endereco = registradores.get(RBM);
@@ -204,7 +205,7 @@ public enum Mnemonico implements Acao {
     },
     JNZ("01110101", 24) {
         @Override
-        public Map<RegistradorEnum, String> acao(String instrucao, Map<RegistradorEnum, String> registradores) {
+        public Map<RegistradorEnum, String> acao(String instrucao, Map<RegistradorEnum, String> registradores, JTextArea console) {
             var valor = registradores.get(SR);
             if (valor != null && valor.charAt(7) != '1') { //Se ZF != 1
                 var endereco = registradores.get(RBM);
@@ -220,7 +221,7 @@ public enum Mnemonico implements Acao {
     },
     JP("01111010", 24) {
         @Override
-        public Map<RegistradorEnum, String> acao(String instrucao, Map<RegistradorEnum, String> registradores) {
+        public Map<RegistradorEnum, String> acao(String instrucao, Map<RegistradorEnum, String> registradores, JTextArea console) {
             var valor = registradores.get(SR);
             if (valor != null && valor.charAt(6) == '0') { //Se SF = 0
                 var endereco = registradores.get(RBM);
@@ -236,7 +237,7 @@ public enum Mnemonico implements Acao {
     },
     READ("00010010", 24) {
         @Override
-        public Map<RegistradorEnum, String> acao(String instrucao, Map<RegistradorEnum, String> registradores) {
+        public Map<RegistradorEnum, String> acao(String instrucao, Map<RegistradorEnum, String> registradores, JTextArea console) {
             throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
 
         }
@@ -248,7 +249,7 @@ public enum Mnemonico implements Acao {
     },
     WRITE("00001000", 24) {
         @Override
-        public Map<RegistradorEnum, String> acao(String instrucao, Map<RegistradorEnum, String> registradores) {
+        public Map<RegistradorEnum, String> acao(String instrucao, Map<RegistradorEnum, String> registradores, JTextArea console) {
             throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
         }
 
@@ -259,7 +260,7 @@ public enum Mnemonico implements Acao {
     },
     AND_REG_REG("00100011", 16) {
         @Override
-        public Map<RegistradorEnum, String> acao(String instrucao, Map<RegistradorEnum, String> registradores) {
+        public Map<RegistradorEnum, String> acao(String instrucao, Map<RegistradorEnum, String> registradores, JTextArea console) {
             if (!isNumberOfBitsValid(instrucao)) {
                 throw new IllegalArgumentException(String.format("Instrução: %s possui %d bit(s) e deveria possuir %d bits!",
                         instrucao, instrucao.length(), this.getNumberOfBits()));
@@ -294,7 +295,7 @@ public enum Mnemonico implements Acao {
     },
     AND_REG_OP("00100101", 24) {
         @Override
-        public Map<RegistradorEnum, String> acao(String instrucao, Map<RegistradorEnum, String> registradores) {
+        public Map<RegistradorEnum, String> acao(String instrucao, Map<RegistradorEnum, String> registradores, JTextArea console) {
             if (!isNumberOfBitsValid(instrucao)) {
                 throw new IllegalArgumentException(String.format("Instrução: %s possui %d bit(s) e deveria possuir %d bits!",
                         instrucao, instrucao.length(), this.getNumberOfBits()));
@@ -326,7 +327,7 @@ public enum Mnemonico implements Acao {
     },
     NOT_REG("11111000", 16) {
         @Override
-        public Map<RegistradorEnum, String> acao(String instrucao, Map<RegistradorEnum, String> registradores) {
+        public Map<RegistradorEnum, String> acao(String instrucao, Map<RegistradorEnum, String> registradores, JTextArea console) {
             if (!isNumberOfBitsValid(instrucao)) {
                 throw new IllegalArgumentException(String.format("Instrução: %s possui %d bit(s) e deveria possuir %d bits!",
                         instrucao, instrucao.length(), this.getNumberOfBits()));
@@ -358,7 +359,7 @@ public enum Mnemonico implements Acao {
     },
     OR_REG_REG("00001011", 16) {
         @Override
-        public Map<RegistradorEnum, String> acao(String instrucao, Map<RegistradorEnum, String> registradores) {
+        public Map<RegistradorEnum, String> acao(String instrucao, Map<RegistradorEnum, String> registradores, JTextArea console) {
             if (!isNumberOfBitsValid(instrucao)) {
                 throw new IllegalArgumentException(String.format("Instrução: %s possui %d bit(s) e deveria possuir %d bits!",
                         instrucao, instrucao.length(), this.getNumberOfBits()));
@@ -393,7 +394,7 @@ public enum Mnemonico implements Acao {
     },
     OR_REG_OP("00001101", 24) {
         @Override
-        public Map<RegistradorEnum, String> acao(String instrucao, Map<RegistradorEnum, String> registradores) {
+        public Map<RegistradorEnum, String> acao(String instrucao, Map<RegistradorEnum, String> registradores, JTextArea console) {
             if (!isNumberOfBitsValid(instrucao)) {
                 throw new IllegalArgumentException(String.format("Instrução: %s possui %d bit(s) e deveria possuir %d bits!",
                         instrucao, instrucao.length(), this.getNumberOfBits()));
@@ -425,7 +426,7 @@ public enum Mnemonico implements Acao {
     },
     XOR_REG_REG("00110011", 16) {
         @Override
-        public Map<RegistradorEnum, String> acao(String instrucao, Map<RegistradorEnum, String> registradores) {
+        public Map<RegistradorEnum, String> acao(String instrucao, Map<RegistradorEnum, String> registradores, JTextArea console) {
             if (!isNumberOfBitsValid(instrucao)) {
                 throw new IllegalArgumentException(String.format("Instrução: %s possui %d bit(s) e deveria possuir %d bits!",
                         instrucao, instrucao.length(), this.getNumberOfBits()));
@@ -460,7 +461,7 @@ public enum Mnemonico implements Acao {
     },
     XOR_REG_OP("00110101", 24) {
         @Override
-        public Map<RegistradorEnum, String> acao(String instrucao, Map<RegistradorEnum, String> registradores) {
+        public Map<RegistradorEnum, String> acao(String instrucao, Map<RegistradorEnum, String> registradores, JTextArea console) {
             if (!isNumberOfBitsValid(instrucao)) {
                 throw new IllegalArgumentException(String.format("Instrução: %s possui %d bit(s) e deveria possuir %d bits!",
                         instrucao, instrucao.length(), this.getNumberOfBits()));
@@ -492,7 +493,7 @@ public enum Mnemonico implements Acao {
     },
     CMP_REG_REG("00111011", 16) {
         @Override
-        public Map<RegistradorEnum, String> acao(String instrucao, Map<RegistradorEnum, String> registradores) {
+        public Map<RegistradorEnum, String> acao(String instrucao, Map<RegistradorEnum, String> registradores, JTextArea console) {
             if (!isNumberOfBitsValid(instrucao)) {
                 throw new IllegalArgumentException(String.format("Instrução: %s possui %d bit(s) e deveria possuir %d bits!",
                         instrucao, instrucao.length(), this.getNumberOfBits()));
@@ -521,7 +522,7 @@ public enum Mnemonico implements Acao {
     },
     CMP_REG_OP("00111101", 24) {
         @Override
-        public Map<RegistradorEnum, String> acao(String instrucao, Map<RegistradorEnum, String> registradores) {
+        public Map<RegistradorEnum, String> acao(String instrucao, Map<RegistradorEnum, String> registradores, JTextArea console) {
             if (!isNumberOfBitsValid(instrucao)) {
                 throw new IllegalArgumentException(String.format("Instrução: %s possui %d bit(s) e deveria possuir %d bits!",
                         instrucao, instrucao.length(), this.getNumberOfBits()));
@@ -613,6 +614,19 @@ public enum Mnemonico implements Acao {
                 return CMP_REG_OP;
             }
             // -------------------------------------------------
+            // ARITMETICA
+            case "00000011" -> {
+                return ADD_AX_REG;
+            }
+            case "00000101" -> {
+                return ADD_AX_OPD;
+            }
+            case "00101011" -> {
+                return SUB_AX_REG;
+            }
+//          case "00100101" -> {
+//              return SUB_AX_OPD;
+//          }
             default ->
                 throw new IllegalArgumentException("Não existe mnmônico equivale a " + bytes);
         }
