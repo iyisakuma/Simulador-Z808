@@ -6,7 +6,6 @@ import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.stream.Collectors;
 import javax.swing.JTextArea;
 
 /**
@@ -14,92 +13,144 @@ import javax.swing.JTextArea;
  * @author yujisakuma
  */
 public class AZM {
-    
+
     private BufferedReader reader;
-    private String[][] tabelaSimbolo;
+    private Map<String, Integer> tabelaSimbolos = new HashMap<>();
+    /* 
+    *  linha |endereço | label | operação | operando 1 | operando 2
+     */
+    private StringBuilder codigoObjeto = new StringBuilder();
     private JTextArea console;
-    private int lc = 0 ;
-    
+    private int lineCounter = 0;
+    private int pointCounter = 0;
+
     public AZM(String uri, JTextArea console) throws IOException {
         var path = Paths.get(uri);
         reader = Files.newBufferedReader(path);
         this.console = console;
-        var linhas = reader.lines().collect(Collectors.toList()).size();
-        /* [0]        [1]     [2]        [3]          [4]
-        *  endereço | label | operação | operando 1 | operando 2
-         */
-        this.tabelaSimbolo =  new String[linhas][5];
     }
-    
-    public void init() {
-        try {
-            console.setText("-------Iniciando o processo de montagem...");
-            primeiroPasso();
-        } catch (IOException ex) {
-            StringBuilder log = new StringBuilder(console.getText());
-            log.append("\n" + ex.getMessage());
-            console.setText(log.toString());
-        }
+
+    public String init() throws IOException {
+        console.setText("-------Iniciando o processo de montagem...");
+        return primeiroPasso();
     }
-    
-    private String retiraComentario(String instrucao) {
-        return instrucao.split(";")[0];
+
+    private String[] limpa(String instrucao) {
+        var instrucaoQuaseLimpa = instrucao.split(";")[0];
+        return instrucaoQuaseLimpa.split("\\p{Zs}+");
     }
-    
-    private void primeiroPasso() throws IOException {
+
+    private String primeiroPasso() throws IOException {
         String instruction;
         while ((instruction = reader.readLine()) != null) {
-            instruction = retiraComentario(instruction);
-            var label = getLabel(instruction);
-            var opcode = getOperation(instruction);
-            var operand = getOperando(instruction);
-            switch (opcode) {
+            var instrucaoLimpa = limpa(instruction);
+            codigoObjeto.append(lineCounter).append(" \t");
+            codigoObjeto.append(pointCounter).append("\t");
+            switch (instrucaoLimpa[0]) {
                 case "END":
-                    segundoPasso();
-                    return;
+                    return segundoPasso();
+                case "ADD":
+                case "DIV":
+                case "SUB":
+                case "MUL":
+                case "CMP":
+                case "AND":
+                case "NOT":
+                case "OR":
+                case "XOR":
+                case "JMP":
+                case "JZ":
+                case "NJZ":
+                case "JP":
+                case "CALL":
+                case "POP":
+                case "POPF":
+                case "PUSH":
+                case "PUSHF":
+                case "STORE":
+                case "READ":
+                case "WRITE":
+
+                // Diretivas
+                case "ORD":
                 case "EQU":
-//                    if (!tabelaSimbolo.containsKey(label)) {
-//                        tabelaSimbolo.put(label, operand);
-//                    }
-                    break;
                 case "ORG":
+                    codigoObjeto.append(instrucaoLimpa[0]).append("\t");
+                    if (instrucaoLimpa.length == 1) {
+                        ++pointCounter;
+                    }
+                    if (instrucaoLimpa[1].contains(",")) {
+                        var operando = instrucaoLimpa[1].split(",");
+                        codigoObjeto.append(operando[0]).append(" ").append(operando[1]).append("\t");
+                        pointCounter += 3;
+                        //Se o segundo operando for label, será adicionado para tabela de simbolo
+                        addTabelaSimbolo(operando[1]);
+                    } else {
+                        codigoObjeto.append(instrucaoLimpa[1]).append("\t");
+                        pointCounter += 2;
+                    }
+                    codigoObjeto.append("\n");
                     break;
-                
+                default:
+                    codigoObjeto.append(instrucaoLimpa[0])
+                            .append("\t")
+                            .append(instrucaoLimpa[1]).append("\t");
+                    if (!tabelaSimbolos.containsKey(instrucaoLimpa[0])) {
+                        tabelaSimbolos.put(instrucaoLimpa[0], pointCounter);
+                    }
+                    if (instrucaoLimpa.length == 2) {
+                        ++pointCounter;
+                    } else if (instrucaoLimpa[2].contains(",")) {
+                        var operando = instrucaoLimpa[2].split(",");
+                        codigoObjeto.append(operando[0]).append("\t").append(operando[1]).append("\t");
+                        pointCounter += 3;
+                        //Se o segundo operando for label, será adicionado para tabela de simbolo
+                        addTabelaSimbolo(operando[1]);
+                    } else {
+                        codigoObjeto.append(instrucaoLimpa[2]);
+
+                        if (instrucaoLimpa[1].equals("EQU")) {
+                            tabelaSimbolos.put(instrucaoLimpa[0], Integer.valueOf(instrucaoLimpa[2]));
+                            ++pointCounter;
+                        } else {
+                            pointCounter += 2;
+                        }
+                    }
+                    codigoObjeto.append("\n");
+                    break;
             }
         }
+        return "";
     }
-    
-    public void segundoPasso() throws IOException {
+
+    public String segundoPasso() throws IOException {
         var lc = 0;
         String instruction;
         while ((instruction = reader.readLine()) != null) {
-            String opcode = getOperation(instruction);
-            String operando = getOperando(instruction);
-            switch (opcode) {
+            switch ("") {
                 case "EQU":
                     break;
                 case "END":
                     reader.close();
-                    return;
+                    return "";
                 case "ORG":
-                    lc = getValorOperando(instruction);
+                    break;
+            }
+        }
+        return "";
+    }
+
+    private void addTabelaSimbolo(String segundoOperando) {
+        if (isNotLabel(segundoOperando)) {
+            if (tabelaSimbolos.containsKey(segundoOperando)) {
+                tabelaSimbolos.put(segundoOperando, Integer.MIN_VALUE);
             }
         }
     }
-    
-    private String getOperation(String instruction) {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
-    }
-    
-    private String getOperando(String instruction) {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
-    }
-    
-    private int getValorOperando(String instruction) {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
-    }
-    
-    private String getLabel(String instruction) {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+
+    private boolean isNotLabel(String str) {
+        return str.replaceAll("AX|DX|SI", "").isBlank()
+                && !str.contains("$")
+                && !Character.isDigit(str.charAt(0));
     }
 }
