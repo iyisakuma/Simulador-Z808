@@ -15,7 +15,7 @@ public enum Mnemonico implements Acao {
      * Certificar que tenha 1 byte ou 2 bytes (depende da instrução). Além
      * disso, implementar o metódo ação para cada Mnemonico novo!
      */
-    ADD_AX_REG("03", 16) {
+    ADD_AX_REG("00000011", 16) {
         @Override
         public Map<RegistradorEnum, String> acao(String instrucao, Map<RegistradorEnum, String> registradores) {
             if (!isNumberOfBitsValid(instrucao)) {
@@ -59,7 +59,7 @@ public enum Mnemonico implements Acao {
             return false;
         }
     },
-    ADD_AX_OPD("05", 24) {
+    ADD_AX_OPD("00000101", 24) {
         @Override
         public Map<RegistradorEnum, String> acao(String instrucao, Map<RegistradorEnum, String> registradores) {
             if (!isNumberOfBitsValid(instrucao)) {
@@ -94,7 +94,7 @@ public enum Mnemonico implements Acao {
             return false;
         }
     },
-    SUB_AX_REG("2B", 16) {
+    SUB_AX_REG("00101011", 16) {
         @Override
         public Map<RegistradorEnum, String> acao(String instrucao, Map<RegistradorEnum, String> registradores) {
             if (!isNumberOfBitsValid(instrucao)) {
@@ -138,7 +138,7 @@ public enum Mnemonico implements Acao {
             return false;
         }
     },
-    SUB_AX_OPD("25", 24) {
+    SUB_AX_OPD("00100101", 24) {
         @Override
         public Map<RegistradorEnum, String> acao(String instrucao, Map<RegistradorEnum, String> registradores) {
             if (!isNumberOfBitsValid(instrucao)) {
@@ -613,6 +613,19 @@ public enum Mnemonico implements Acao {
                 return CMP_REG_OP;
             }
             // -------------------------------------------------
+            // ARITMETICA
+            case "00000011" -> {
+                return ADD_AX_REG;
+            }
+            case "00000101" -> {
+                return ADD_AX_OPD;
+            }
+            case "00101011" -> {
+                return SUB_AX_REG;
+            }
+//          case "00100101" -> {
+//              return SUB_AX_OPD;
+//          }
             default ->
                 throw new IllegalArgumentException("Não existe mnmônico equivale a " + bytes);
         }
