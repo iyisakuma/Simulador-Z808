@@ -468,7 +468,8 @@ public class Menu extends javax.swing.JFrame {
                 .forEach(registrador -> registradores.put(registrador, "0000000000000000"));
     }
 
-    private void initMemoria() {try {
+    private void initMemoria() {
+        try {
             BufferedReader reader = abreArquivoObjeto();
             var linha = reader.readLine();
             var numeroLinha = Integer.valueOf(linha.split("_")[0]);
