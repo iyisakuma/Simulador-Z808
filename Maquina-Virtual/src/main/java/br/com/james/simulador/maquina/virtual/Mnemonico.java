@@ -392,7 +392,6 @@ public enum Mnemonico implements Acao {
     }, PUSH_REG("01010000", 16) {
         @Override
         public Map<RegistradorEnum, String> acao(String instrucao, Map<RegistradorEnum, String> registradores, JTextArea console) {
-            verifyStackCapacity();
             verifyNumberOfBits(instrucao, this.getNumberOfBits());
             var opcodeRegister = instrucao.substring(8, 16);
             if (opcodeRegister.equalsIgnoreCase(DX.getEndereco())) pilha.pushEndereco(registradores.get(DX));
@@ -406,7 +405,6 @@ public enum Mnemonico implements Acao {
     }, PUSH_F("10011100", 8) {
         @Override
         public Map<RegistradorEnum, String> acao(String instrucao, Map<RegistradorEnum, String> registradores, JTextArea console) {
-            verifyStackCapacity();
             verifyNumberOfBits(instrucao, this.getNumberOfBits());
             pilha.pushEndereco(registradores.get(SR));
             registradores.replace(SP, pilha.peekEndereco());
@@ -414,14 +412,13 @@ public enum Mnemonico implements Acao {
         }
     };
     
-    public final PilhaDoSistema pilha;
     private final String valorBinario;
     private final int numberOfBits;
+    private static final PilhaDoSistema pilha = new PilhaDoSistema();
     
     Mnemonico(String valorBinario, int numberOfBits) {
         this.valorBinario = valorBinario;
         this.numberOfBits = numberOfBits;
-        this.pilha = new PilhaDoSistema();
     }
     
     /**
@@ -498,23 +495,36 @@ public enum Mnemonico implements Acao {
             // -------------------------------------------------
             // PILHA
             case "01011000" -> {
+                if (verifyEmptyStack()) throw new IllegalStateException("Pilha está vazia!");
                 return POP_REG;
             }
             case "01011001" -> {
+                if (verifyEmptyStack()) throw new IllegalStateException("Pilha está vazia!");
                 return POP_OPD;
             }
             case "10011101" -> {
+                if (verifyEmptyStack()) throw new IllegalStateException("Pilha está vazia!");
                 return POP_F;
             }
             case "01010000" -> {
+                if (verifyStackCapacity()) throw new StackOverflowError("A pilha atingiu capacidade máxima");
                 return PUSH_REG;
             }
             case "10011100" -> {
+                if (verifyStackCapacity()) throw new StackOverflowError("A pilha atingiu capacidade máxima");
                 return PUSH_F;
             }
             // -------------------------------------------------
             default -> throw new IllegalArgumentException("Não existe mnmônico equivale a " + bytes);
         }
+    }
+    
+    public static boolean verifyEmptyStack() {
+        return pilha.isEmpty();
+    }
+    
+    public static boolean verifyStackCapacity() {
+        return !pilha.isSizeUnderLimit();
     }
     
     public void updateRegistradores(Map<RegistradorEnum, String> registradores, StringBuilder sr, StringBuilder finalValue) {
@@ -549,8 +559,5 @@ public enum Mnemonico implements Acao {
     public int getNumberOfBits() {
         return numberOfBits;
     }
-    
-    public void verifyStackCapacity() {
-        if (!pilha.isSizeUnderLimit()) throw new StackOverflowError("A pilha atingiu capacidade máxima");
-    }
+
 }

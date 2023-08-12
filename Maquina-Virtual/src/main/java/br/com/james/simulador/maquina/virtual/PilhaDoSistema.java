@@ -6,10 +6,6 @@ public class PilhaDoSistema {
     
     private final Stack<String> stack = new Stack<>();
     
-    public PilhaDoSistema() {
-        this.stack.setSize(12);
-    }
-    
     public boolean isSizeUnderLimit() {
         return this.stack.capacity() <= 12;
     }
@@ -24,5 +20,9 @@ public class PilhaDoSistema {
     
     public String peekEndereco() {
         return this.stack.peek();
+    }
+    
+    public boolean isEmpty() {
+        return this.stack.isEmpty();
     }
 }
