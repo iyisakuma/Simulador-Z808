@@ -81,6 +81,7 @@ public class AZM {
                 case "ORD":
                 case "EQU":
                 case "ORG":
+                case "MOVE":
                     codigoObjeto.append(instrucaoLimpa[0]).append("\t");
                     if (instrucaoLimpa.length == 1) {
                         ++pointCounter;
@@ -130,7 +131,7 @@ public class AZM {
         throw new AssertionError();
     }
 
-    public String segundoPasso() throws IOException {
+    private String segundoPasso() throws IOException {
         String nomeArquivo = ".\\codigoObjeto.txt";
 
         FileWriter fileWriter = new FileWriter(nomeArquivo);
@@ -141,7 +142,7 @@ public class AZM {
                 var linhaBin = new StringBuilder();
                 //linha | endereço | label | operação | operando 1 | operando 2
                 linhaBin.append(instrucao[1]).append("_");
-                switch (instrucao[3]) {
+                switch (instrucao[2]) {
                     case "ADD":
                         linhaBin.append("00000011");
                         break;
@@ -160,7 +161,7 @@ public class AZM {
                             linhaBin.append("00111101");
                         }
                         break;
-                    case "and":
+                    case "AND":
                         if (instrucao[5].equals("AX") || instrucao[5].equals("DX")) {  // endereçamento via registrador AX
                             linhaBin.append("00100011");
                         } else {
@@ -231,7 +232,7 @@ public class AZM {
                         linhaBin.append("00001000");
                         break;
                 }
-                linhaBin.append(getOperandoDe(instrucao));
+                linhaBin.append(getOperandoDe(instrucao)).append("\n");
                 buffer.write(linhaBin.toString());
             } catch (IOException ex) {
                 Logger.getLogger(AZM.class.getName()).log(Level.SEVERE, null, ex);
@@ -256,24 +257,31 @@ public class AZM {
     }
 
     private String getOperandoDe(String[] instrucao) {
-        if(instrucao.length == 5){//Instrção com um operando apenas
-            return "";
-        }else{
+        String operando = instrucao[instrucao.length - 1];
+        if ("AX".equals(operando)) {
+            return "11000000";
+        }
+        if ("DX".equals(operando)) {
+            return "11000010";
+        }
+        var number = operando.replace("&", "");
+        if (isNumeric(number)) {
+            var binario = String.format("%16s", Integer.toBinaryString(Integer.parseInt(number))).replaceAll(" ", "0");
+            return operando.contains("&") ? binario.concat("0") : binario.concat("1");
+        } else {
             return "";
         }
-//        if (textScanned[i][5].equals("AX")) {  // endereçamento via registrador AX
-//            bufferedWriter.write("33C0");
-//        } else if (textScanned[i][5].equals("DX")) { // endereçamento via registrador DX
-//            bufferedWriter.write("33C2");
-//        } else if (tabelaSimbolos.containsKey(textScanned[i][5])) {  // é uma label
-//            bufferedWriter.write("34");
-//            bufferedWriter.write(formataPara16Bits("" + tabelaSimbolos.get(textScanned[i][5])));
-//        } else if (textScanned[i][5].contains("[")) { // endereçamento direto
-//            bufferedWriter.write("35");
-//            bufferedWriter.write(formataPara16Bits(textScanned[i][5].replace("[", "").replace("]", "")));
-//        } else {    // endereçamento imediato
-//            bufferedWriter.write("34");
-//            bufferedWriter.write(formataPara16Bits(textScanned[i][5]));
-//        }
+    }
+
+    private static boolean isNumeric(String strNum) {
+        if (strNum == null) {
+            return false;
+        }
+        try {
+            double d = Double.parseDouble(strNum);
+        } catch (NumberFormatException nfe) {
+            return false;
+        }
+        return true;
     }
 }
