@@ -1,5 +1,6 @@
 package br.com.james.simulador.maquina.virtual;
 
+import javax.swing.*;
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.FileWriter;
@@ -11,7 +12,6 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import javax.swing.JTextArea;
 
 /**
  *
@@ -53,7 +53,7 @@ public class AZM {
             codigoObjeto.append(pointCounter).append("\t");
             switch (instrucaoLimpa[0]) {
                 case "END":
-                    console.setText(codigoObjeto.toString());
+                    console.setText(codigoObjeto.append("END").toString());
                     return segundoPasso();
                 case "ADD":
                 case "DIV":
@@ -70,9 +70,7 @@ public class AZM {
                 case "JP":
                 case "CALL":
                 case "POP":
-                case "POPF":
                 case "PUSH":
-                case "PUSHF":
                 case "STORE":
                 case "READ":
                 case "WRITE":
@@ -123,6 +121,12 @@ public class AZM {
                             pointCounter += 2;
                         }
                     }
+                    codigoObjeto.append("\n");
+                    break;
+                case "PUSHF":
+                case "POPF":
+                    codigoObjeto.append(instrucaoLimpa[0]).append("\t");
+                    pointCounter += 2;
                     codigoObjeto.append("\n");
                     break;
             }
