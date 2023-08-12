@@ -1,10 +1,9 @@
 package br.com.james.simulador.ui;
 
-import br.com.james.simulador.maquina.virtual.AZM;
-import br.com.james.simulador.maquina.virtual.Executor;
-import br.com.james.simulador.maquina.virtual.RegistradorEnum;
-import br.com.james.simulador.maquina.virtual.TipoEnderecamento;
-import br.com.james.simulador.maquina.virtual.Util;
+import br.com.james.simulador.maquina.virtual.*;
+
+import javax.swing.*;
+import javax.swing.table.DefaultTableModel;
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.IOException;
@@ -13,8 +12,6 @@ import java.nio.file.Paths;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
-import javax.swing.JFileChooser;
-import javax.swing.table.DefaultTableModel;
 
 /**
  *
@@ -508,7 +505,9 @@ public class Menu extends javax.swing.JFrame {
 
     private void carregaRBM(String instrucao) {
         var tamanhoInstrucao = instrucao.length();
-        var operando = instrucao.substring(8, tamanhoInstrucao - 1);
+        var operando = tamanhoInstrucao == 8 ?
+                instrucao :
+                instrucao.substring(8, tamanhoInstrucao - 1);
         if (tamanhoInstrucao > 7 && tamanhoInstrucao % 2 == 1) {
             var tipoEnderecamento = TipoEnderecamento.getByBit(instrucao.charAt(tamanhoInstrucao - 1));
             switch (tipoEnderecamento) {
