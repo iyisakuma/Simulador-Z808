@@ -1,6 +1,5 @@
 package br.com.james.simulador.maquina.virtual;
 
-import javax.swing.*;
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.FileWriter;
@@ -12,6 +11,7 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.swing.JTextArea;
 
 /**
  *
@@ -28,10 +28,12 @@ public class AZM {
     private JTextArea console;
     private int lineCounter = 0;
     private int pointCounter = 0;
+    private String nomeArquivo;
 
     public AZM(String uri, JTextArea console) throws IOException {
         var path = Paths.get(uri);
         reader = Files.newBufferedReader(path);
+        nomeArquivo = uri.split("/")[uri.split("/").length -1].replace(".txt", "");
         this.console = console;
     }
 
@@ -53,7 +55,8 @@ public class AZM {
             codigoObjeto.append(pointCounter).append("\t");
             switch (instrucaoLimpa[0]) {
                 case "END":
-                    console.setText(codigoObjeto.append("END").toString());
+                    codigoObjeto.append("END");
+                    console.setText(codigoObjeto.toString());
                     return segundoPasso();
                 case "ADD":
                 case "DIV":
@@ -70,7 +73,9 @@ public class AZM {
                 case "JP":
                 case "CALL":
                 case "POP":
+                case "POPF":
                 case "PUSH":
+                case "PUSHF":
                 case "STORE":
                 case "READ":
                 case "WRITE":
@@ -86,7 +91,7 @@ public class AZM {
                     }
                     if (instrucaoLimpa[1].contains(",")) {
                         var operando = instrucaoLimpa[1].split(",");
-                        codigoObjeto.append(operando[0]).append(" ").append(operando[1]).append("\t");
+                        codigoObjeto.append(operando[0]).append("\t").append(operando[1]).append("\t");
                         pointCounter += 3;
                         //Se o segundo operando for label, será adicionado para tabela de simbolo
                         addTabelaSimbolo(operando[1]);
@@ -123,12 +128,6 @@ public class AZM {
                     }
                     codigoObjeto.append("\n");
                     break;
-                case "PUSHF":
-                case "POPF":
-                    codigoObjeto.append(instrucaoLimpa[0]).append("\t");
-                    pointCounter += 2;
-                    codigoObjeto.append("\n");
-                    break;
             }
             ++lineCounter;
         }
@@ -136,7 +135,7 @@ public class AZM {
     }
 
     private String segundoPasso() throws IOException {
-        String nomeArquivo = ".\\codigoObjeto.txt";
+        String nomeArquivo = "..\\src\\main\\resources\\Executavel\\" + this.nomeArquivo + "Executavel.txt";
 
         FileWriter fileWriter = new FileWriter(nomeArquivo);
         var buffer = new BufferedWriter(fileWriter);
@@ -149,14 +148,23 @@ public class AZM {
                 switch (instrucao[2]) {
                     case "ADD":
                         linhaBin.append("00000011");
+                        linhaBin.append(getOperandoDe(instrucao)).append("\n");
+                        buffer.write(linhaBin.toString());
                         break;
                     case "SUB":
                         linhaBin.append("00101011");
+                        linhaBin.append(getOperandoDe(instrucao)).append("\n");
+                        buffer.write(linhaBin.toString());
+                        break;
                     case "DIV":
                         linhaBin.append("11110111");
+                        linhaBin.append(getOperandoDe(instrucao)).append("\n");
+                        buffer.write(linhaBin.toString());
                         break;
                     case "MUL":
                         linhaBin.append("11111001");
+                        linhaBin.append(getOperandoDe(instrucao)).append("\n");
+                        buffer.write(linhaBin.toString());
                         break;
                     case "CMP":
                         if (instrucao[5].equals("DX")) { // endereçamento via registrador DX
@@ -164,6 +172,8 @@ public class AZM {
                         } else {
                             linhaBin.append("00111101");
                         }
+                        linhaBin.append(getOperandoDe(instrucao)).append("\n");
+                        buffer.write(linhaBin.toString());
                         break;
                     case "AND":
                         if (instrucao[5].equals("AX") || instrucao[5].equals("DX")) {  // endereçamento via registrador AX
@@ -171,6 +181,8 @@ public class AZM {
                         } else {
                             linhaBin.append("00100101");
                         }
+                        linhaBin.append(getOperandoDe(instrucao)).append("\n");
+                        buffer.write(linhaBin.toString());
                         break;
                     case "OR":
                         if (instrucao[5].equals("AX") || instrucao[5].equals("DX")) {  // endereçamento via registrador AX
@@ -178,37 +190,62 @@ public class AZM {
                         } else {
                             linhaBin.append("00001101");
                         }
+                        linhaBin.append(getOperandoDe(instrucao)).append("\n");
+                        buffer.write(linhaBin.toString());
+                        break;
                     case "XOR":
                         if (instrucao[5].equals("AX") || instrucao[5].equals("DX")) {  // endereçamento via registrador AX
                             linhaBin.append("00110011");
                         } else {
                             linhaBin.append("00110101");
                         }
+                        linhaBin.append(getOperandoDe(instrucao)).append("\n");
+                        buffer.write(linhaBin.toString());
                         break;
                     case "NOT":
                         linhaBin.append("11111000");
+                        linhaBin.append(getOperandoDe(instrucao)).append("\n");
+                        buffer.write(linhaBin.toString());
                         break;
                     case "JMP":
                         linhaBin.append("11101011");
+                        linhaBin.append(getOperandoDe(instrucao)).append("\n");
+                        buffer.write(linhaBin.toString());
                         break;
                     case "JZ":
                         linhaBin.append("01110100");
+                        linhaBin.append(getOperandoDe(instrucao)).append("\n");
+                        buffer.write(linhaBin.toString());
                         break;
                     case "JNZ":
                         linhaBin.append("01110101");
+                        linhaBin.append(getOperandoDe(instrucao)).append("\n");
+                        buffer.write(linhaBin.toString());
                         break;
                     case "JP":
                         linhaBin.append("01111010");
+                        linhaBin.append(getOperandoDe(instrucao)).append("\n");
+                        buffer.write(linhaBin.toString());
                         break;
-                    case "call":
+                    case "CALL":
                         linhaBin.append("11101000");
+                        linhaBin.append(getOperandoDe(instrucao)).append("\n");
+                        buffer.write(linhaBin.toString());
                         break;
                     case "RET":
                         linhaBin.append("11101111");
+                        linhaBin.append(getOperandoDe(instrucao)).append("\n");
+                        buffer.write(linhaBin.toString());
                         break;
                     case "END":
+                        linhaBin.append("11101110");
+                        linhaBin.append(getOperandoDe(instrucao)).append("\n");
+                        buffer.write(linhaBin.toString());
+                        break;
                     case "HLT":
                         linhaBin.append("11101110");
+                        linhaBin.append(getOperandoDe(instrucao)).append("\n");
+                        buffer.write(linhaBin.toString());
                         break;
                     case "POP":
                         if (instrucao[5].equals("AX") || instrucao[5].equals("DX")) {
@@ -216,28 +253,41 @@ public class AZM {
                         } else {
                             linhaBin.append("01011001");
                         }
+                        linhaBin.append(getOperandoDe(instrucao)).append("\n");
+                        buffer.write(linhaBin.toString());
                         break;
                     case "POPF":
                         linhaBin.append("10011101");
+                        linhaBin.append(getOperandoDe(instrucao)).append("\n");
+                        buffer.write(linhaBin.toString());
                         break;
                     case "PUSH":
                         linhaBin.append("01010000");
+                        linhaBin.append(getOperandoDe(instrucao)).append("\n");
+                        buffer.write(linhaBin.toString());
                         break;
                     case "PUSHF":
                         linhaBin.append("10011100");
+                        linhaBin.append(getOperandoDe(instrucao)).append("\n");
+                        buffer.write(linhaBin.toString());
                         break;
                     case "STORE":
                         linhaBin.append("00000111");
+                        linhaBin.append(getOperandoDe(instrucao)).append("\n");
+                        buffer.write(linhaBin.toString());
                         break;
                     case "READ":
                         linhaBin.append("00010010");
+                        linhaBin.append(getOperandoDe(instrucao)).append("\n");
+                        buffer.write(linhaBin.toString());
                         break;
                     case "WRITE":
                         linhaBin.append("00001000");
+                        linhaBin.append(getOperandoDe(instrucao)).append("\n");
+                        buffer.write(linhaBin.toString());
                         break;
                 }
-                linhaBin.append(getOperandoDe(instrucao)).append("\n");
-                buffer.write(linhaBin.toString());
+
             } catch (IOException ex) {
                 Logger.getLogger(AZM.class.getName()).log(Level.SEVERE, null, ex);
             }
@@ -245,6 +295,8 @@ public class AZM {
         buffer.close();
         return nomeArquivo;
     }
+    
+    
 
     private void addTabelaSimbolo(String segundoOperando) {
         if (isNotLabel(segundoOperando)) {
@@ -262,16 +314,22 @@ public class AZM {
 
     private String getOperandoDe(String[] instrucao) {
         String operando = instrucao[instrucao.length - 1];
+        var isDireto = operando.contains("&");
         if ("AX".equals(operando)) {
             return "11000000";
         }
         if ("DX".equals(operando)) {
             return "11000010";
         }
+        if (tabelaSimbolos.containsKey(operando)) {
+            var value = tabelaSimbolos.get(operando.replace("&", ""));
+            var binario = String.format("%16s", Integer.toBinaryString(Integer.parseInt(String.valueOf(value)))).replaceAll(" ", "0");
+            return isDireto ? binario.concat("0") : binario.concat("1");
+        }
         var number = operando.replace("&", "");
         if (isNumeric(number)) {
             var binario = String.format("%16s", Integer.toBinaryString(Integer.parseInt(number))).replaceAll(" ", "0");
-            return operando.contains("&") ? binario.concat("0") : binario.concat("1");
+            return isDireto ? binario.concat("0") : binario.concat("1");
         } else {
             return "";
         }

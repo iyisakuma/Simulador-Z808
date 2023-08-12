@@ -471,14 +471,17 @@ public class Menu extends javax.swing.JFrame {
     private void initMemoria() {
         try {
             BufferedReader reader = abreArquivoObjeto();
-            var linha = reader.readLine();
-            var numeroLinha = Integer.valueOf(linha.split("_")[0]);
-            var instrucao = linha.split("_")[1];
-            if (instrucao.contains("#")) {
-                dados.put(numeroLinha, instrucao.substring(1));
-            } else {
-                Menu.instrucoes.put(numeroLinha, instrucao);
+            String linha;
+            while ((linha = reader.readLine()) != null) {
+                var numeroLinha = Integer.valueOf(linha.split("_")[0]);
+                var instrucao = linha.split("_")[1];
+                if (instrucao.contains("#")) {
+                    dados.put(numeroLinha, instrucao.substring(1));
+                } else {
+                    Menu.instrucoes.put(numeroLinha, instrucao);
+                }
             }
+
         } catch (Exception ex) {
             txtConsole.setText("Nao foi possivel abrir o arquivo objeto.");
         }
