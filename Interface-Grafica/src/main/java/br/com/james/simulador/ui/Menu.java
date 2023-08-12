@@ -517,15 +517,12 @@ public class Menu extends javax.swing.JFrame {
             var tipoEnderecamento = TipoEnderecamento.getByBit(instrucao.charAt(tamanhoInstrucao - 1));
             switch (tipoEnderecamento) {
                 case IMEDIATO:
-                    registradores.replace(RegistradorEnum.RBM, operando);
+                    registradores.replace(RegistradorEnum.RBM, String.format("%16s", operando).replaceAll(" ", "0"));
                     return;
                 case DIRETO:
                     var endereco = Util.binarioParaDecimal(operando);
-                    if (endereco >= dados.size()) {
-                        throw new IndexOutOfBoundsException("Endereço de memória inexistente");
-                    }
-                    var valor = dados.get(endereco);
-                    registradores.replace(RegistradorEnum.RBM, valor);
+                    var valor = dados.getOrDefault(endereco, "0");
+                    registradores.replace(RegistradorEnum.RBM, String.format("%16s", valor).replaceAll(" ", "0"));
                     return;
             }
         }
