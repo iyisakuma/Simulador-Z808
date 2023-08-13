@@ -10,6 +10,7 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.Arrays;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -42,11 +43,11 @@ public class Menu extends javax.swing.JFrame {
         btClear = new javax.swing.JButton();
         panelTabela = new javax.swing.JPanel();
         panelCodigo = new javax.swing.JPanel();
-        jScrollPane2 = new javax.swing.JScrollPane();
-        txtCodigo = new javax.swing.JTextArea();
-        labelConsole = new javax.swing.JLabel();
+        jTabbedPane2 = new javax.swing.JTabbedPane();
         jScrollPane3 = new javax.swing.JScrollPane();
         txtConsole = new javax.swing.JTextArea();
+        jScrollPane5 = new javax.swing.JScrollPane();
+        txtCodigoArea = new javax.swing.JTextArea();
         btUploadFonte = new javax.swing.JButton();
         btBuild = new javax.swing.JButton();
         txtArquivoFonte = new javax.swing.JTextField();
@@ -60,6 +61,8 @@ public class Menu extends javax.swing.JFrame {
         tbRegistradores = new javax.swing.JTable();
         jScrollPane4 = new javax.swing.JScrollPane();
         jTable1 = new javax.swing.JTable();
+        jScrollPane2 = new javax.swing.JScrollPane();
+        txtCodigo = new javax.swing.JTextArea();
 
         javax.swing.GroupLayout DialogErroLayout = new javax.swing.GroupLayout(DialogErro.getContentPane());
         DialogErro.getContentPane().setLayout(DialogErroLayout);
@@ -103,45 +106,32 @@ public class Menu extends javax.swing.JFrame {
             .addGap(0, 0, Short.MAX_VALUE)
         );
 
-        txtCodigo.setEditable(false);
-        txtCodigo.setColumns(20);
-        txtCodigo.setLineWrap(true);
-        txtCodigo.setRows(5);
-        txtCodigo.setText("-> BEM-VIND@ AO SIMULADOR Z808 ;)\nIntegrantes:\n* Claudinei Francisco  Rosa \n* Hyhickle Umetsubo Gonçalves\n* Igor Yui Ishihara Sakuma\n* Maurício Caralho Mucci\n\nTodos os direitos reservador para o grupo James\n\nhttps://www.youtube.com/shorts/9WXjN32MFhk");
-        txtCodigo.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
-        jScrollPane2.setViewportView(txtCodigo);
-
-        labelConsole.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
-        labelConsole.setText("Console");
-
         txtConsole.setEditable(false);
         txtConsole.setColumns(20);
         txtConsole.setRows(5);
         txtConsole.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
         jScrollPane3.setViewportView(txtConsole);
 
+        jTabbedPane2.addTab("Console", jScrollPane3);
+
+        txtCodigoArea.setEditable(false);
+        txtCodigoArea.setColumns(20);
+        txtCodigoArea.setRows(5);
+        jScrollPane5.setViewportView(txtCodigoArea);
+
+        jTabbedPane2.addTab("Código", jScrollPane5);
+
         javax.swing.GroupLayout panelCodigoLayout = new javax.swing.GroupLayout(panelCodigo);
         panelCodigo.setLayout(panelCodigoLayout);
         panelCodigoLayout.setHorizontalGroup(
             panelCodigoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jScrollPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 702, Short.MAX_VALUE)
-            .addGroup(panelCodigoLayout.createSequentialGroup()
-                .addComponent(labelConsole, javax.swing.GroupLayout.PREFERRED_SIZE, 173, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(0, 0, Short.MAX_VALUE))
-            .addGroup(panelCodigoLayout.createSequentialGroup()
-                .addComponent(jScrollPane3)
-                .addContainerGap())
+            .addComponent(jTabbedPane2, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, 702, Short.MAX_VALUE)
         );
         panelCodigoLayout.setVerticalGroup(
             panelCodigoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(panelCodigoLayout.createSequentialGroup()
-                .addGap(34, 34, 34)
-                .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 195, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(18, 18, 18)
-                .addComponent(labelConsole)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, 170, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, panelCodigoLayout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(jTabbedPane2))
         );
 
         btUploadFonte.setIcon(new javax.swing.ImageIcon(getClass().getResource("/botaoUploadIMG .png"))); // NOI18N
@@ -242,6 +232,14 @@ public class Menu extends javax.swing.JFrame {
 
         jTabbedPane1.addTab("Tabela de Simbolos", jScrollPane4);
 
+        txtCodigo.setEditable(false);
+        txtCodigo.setColumns(20);
+        txtCodigo.setLineWrap(true);
+        txtCodigo.setRows(5);
+        txtCodigo.setText("-> BEM-VIND@ AO SIMULADOR Z808 ;)\nIntegrantes:\n* Claudinei Francisco  Rosa \n* Hyhickle Umetsubo Gonçalves\n* Igor Yui Ishihara Sakuma\n* Maurício Caralho Mucci\n\nTodos os direitos reservador para o grupo James\n\nhttps://www.youtube.com/shorts/9WXjN32MFhk");
+        txtCodigo.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
+        jScrollPane2.setViewportView(txtCodigo);
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
@@ -277,6 +275,7 @@ public class Menu extends javax.swing.JFrame {
                         .addComponent(rdArquivoObjeto)
                         .addGap(0, 0, Short.MAX_VALUE)))
                 .addContainerGap())
+            .addComponent(jScrollPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 1089, Short.MAX_VALUE)
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -301,10 +300,12 @@ public class Menu extends javax.swing.JFrame {
                         .addComponent(lblArquivoObjeto)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(txtArquivoObjeto, javax.swing.GroupLayout.PREFERRED_SIZE, 45, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(0, 0, Short.MAX_VALUE))
-                    .addComponent(panelCodigo, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(panelTabela, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 221, Short.MAX_VALUE)
+                        .addComponent(panelTabela, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(layout.createSequentialGroup()
+                        .addComponent(panelCodigo, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 195, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addContainerGap())
         );
 
@@ -315,7 +316,6 @@ public class Menu extends javax.swing.JFrame {
     private void btClearActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btClearActionPerformed
         // TODO add your handling code here:
         txtCodigo.setText(null);
-        txtCodigo.setText("Faça upload de um arquivo com a extensão .txt que contenha as instruções de máquina.");
         txtArquivoFonte.setText(null);
         txtArquivoObjeto.setText(null);
     }//GEN-LAST:event_btClearActionPerformed
@@ -357,7 +357,8 @@ public class Menu extends javax.swing.JFrame {
             var res = fileUpload.showSaveDialog(null);
             if (res == JFileChooser.APPROVE_OPTION) {
                 File filePath = new File(fileUpload.getSelectedFile().getAbsolutePath());
-                txtConsole.setText("-------------------------- Foi realizado upload do arquivo: " + filePath.getName() + " --------------------------");
+                String text = txtConsole.getText();
+                txtConsole.setText(text + "\n" + String.format("[%s] Foi realizado upload do arquivo: ", new Date().toString()) + filePath.getName());
                 if (rdArquivoFonte.isSelected()) {
                     txtArquivoFonte.setText(filePath.toString());
                 } else {
@@ -374,11 +375,14 @@ public class Menu extends javax.swing.JFrame {
     private void btBuildActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btBuildActionPerformed
         try {
             valida();
-            String nomeArquivoObjeto = new AZM(txtArquivoFonte.getText(), txtConsole).init();
-            txtConsole.setText("Processo de montagem finalizado!\n");
+            String nomeArquivoObjeto = new AZM(txtArquivoFonte.getText(), txtConsole, txtCodigoArea).init();
+            var date = new Date();
+            String text = txtConsole.getText();
+            txtConsole.setText(text + "\n" + String.format("[%s]Processo de montagem finalizado!", date.toString()));
             txtArquivoObjeto.setText(nomeArquivoObjeto);
         } catch (IOException | IllegalArgumentException ex) {
-            txtConsole.setText(ex.getMessage());
+            String text = txtConsole.getText();
+            txtConsole.setText(text + "\n" + ex.getStackTrace());
         }
     }//GEN-LAST:event_btBuildActionPerformed
 
@@ -442,9 +446,10 @@ public class Menu extends javax.swing.JFrame {
     private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JScrollPane jScrollPane3;
     private javax.swing.JScrollPane jScrollPane4;
+    private javax.swing.JScrollPane jScrollPane5;
     private javax.swing.JTabbedPane jTabbedPane1;
+    private javax.swing.JTabbedPane jTabbedPane2;
     private javax.swing.JTable jTable1;
-    private javax.swing.JLabel labelConsole;
     private javax.swing.JLabel lblArquivoFonte;
     private javax.swing.JLabel lblArquivoObjeto;
     private javax.swing.JPanel panelCodigo;
@@ -455,6 +460,7 @@ public class Menu extends javax.swing.JFrame {
     private javax.swing.JTextField txtArquivoFonte;
     private javax.swing.JTextField txtArquivoObjeto;
     private javax.swing.JTextArea txtCodigo;
+    private javax.swing.JTextArea txtCodigoArea;
     private javax.swing.JTextArea txtConsole;
     // End of variables declaration//GEN-END:variables
 
@@ -496,11 +502,13 @@ public class Menu extends javax.swing.JFrame {
     }
 
     private void finalizaExecucao() {
-        txtConsole.setText("---------------------------Execução Finalizada---------------------------");
+        String text = txtConsole.getText();
+        txtConsole.setText(text + "\n" + String.format("[%s]Execução Finalizada", new Date().toString()));
     }
 
     private void mostraErro(Exception ex) {
-        txtConsole.setText(ex.getMessage());
+        String text = txtConsole.getText();
+        txtConsole.setText(text + "\n" + String.format("[%s]ERRO:%s", new Date().toString(), ex.getMessage()));
     }
 
     private boolean ehFimExecucao(int codigoAtual) {
@@ -516,15 +524,12 @@ public class Menu extends javax.swing.JFrame {
             var tipoEnderecamento = TipoEnderecamento.getByBit(instrucao.charAt(tamanhoInstrucao - 1));
             switch (tipoEnderecamento) {
                 case IMEDIATO:
-                    registradores.replace(RegistradorEnum.RBM, operando);
+                    registradores.replace(RegistradorEnum.RBM, String.format("%16s", operando).replaceAll(" ", "0"));
                     return;
                 case DIRETO:
                     var endereco = Util.binarioParaDecimal(operando);
-                    if (endereco >= dados.size()) {
-                        throw new IndexOutOfBoundsException("Endereço de memória inexistente");
-                    }
-                    var valor = dados.get(endereco);
-                    registradores.replace(RegistradorEnum.RBM, valor);
+                    var valor = dados.getOrDefault(endereco, "0");
+                    registradores.replace(RegistradorEnum.RBM, String.format("%16s", valor).replaceAll(" ", "0"));
                     return;
             }
         }

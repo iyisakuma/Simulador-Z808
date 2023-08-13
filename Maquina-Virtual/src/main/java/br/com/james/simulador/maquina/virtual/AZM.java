@@ -7,6 +7,7 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.Arrays;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.logging.Level;
@@ -26,19 +27,23 @@ public class AZM {
      */
     private StringBuilder codigoObjeto = new StringBuilder();
     private JTextArea console;
+    private JTextArea codigo;
     private int lineCounter = 0;
     private int pointCounter = 0;
     private String nomeArquivo;
 
-    public AZM(String uri, JTextArea console) throws IOException {
+    public AZM(String uri, JTextArea console, JTextArea codigo) throws IOException {
         var path = Paths.get(uri);
         reader = Files.newBufferedReader(path);
-        nomeArquivo = uri.split("/")[uri.split("/").length -1].replace(".txt", "");
+        nomeArquivo = uri.split("/")[uri.split("/").length - 1].replace(".txt", "");
         this.console = console;
+        this.codigo = codigo;
     }
 
     public String init() throws IOException {
-        console.setText("-------Iniciando o processo de montagem...");
+        String text = console.getText();
+        var date = new Date();
+        console.setText(text + "\n" + String.format("[%s]Iniciando o processo de montagem", date.toString()));
         return primeiroPasso();
     }
 
@@ -56,7 +61,7 @@ public class AZM {
             switch (instrucaoLimpa[0]) {
                 case "END":
                     codigoObjeto.append("END");
-                    console.setText(codigoObjeto.toString());
+                    codigo.setText(codigoObjeto.toString());
                     return segundoPasso();
                 case "ADD":
                 case "DIV":
@@ -295,8 +300,6 @@ public class AZM {
         buffer.close();
         return nomeArquivo;
     }
-    
-    
 
     private void addTabelaSimbolo(String segundoOperando) {
         if (isNotLabel(segundoOperando)) {
