@@ -1,8 +1,8 @@
 package br.com.james.simulador.maquina.virtual;
 
+import javax.swing.*;
 import java.util.Date;
 import java.util.Map;
-import javax.swing.JTextArea;
 
 /**
  *
@@ -18,7 +18,7 @@ public class Executor {
 
     public void run(String instrucao, Map<RegistradorEnum, String> registradores) {
         String text = console.getText();
-        console.setText(text + "\n" + String.format("[%s]Execuntando o programa", new Date().toString()));
+        console.setText(text + "\n" + String.format("[%s]Execuntando o programa", new Date()));
         atualizaEndereco(registradores);
         getMnemonico(instrucao).acao(instrucao, registradores, console);
     }

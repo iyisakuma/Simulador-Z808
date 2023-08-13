@@ -1,7 +1,6 @@
 package br.com.james.simulador.maquina.virtual;
 
 /**
- *
  * @author yujisakuma
  */
 public enum RegistradorEnum {
@@ -14,7 +13,8 @@ public enum RegistradorEnum {
     SP(""),
     SI(""),
     IP(""),
-    SR("");
+    SR(""),
+    AUX("");
     
     private final String endereco;
     

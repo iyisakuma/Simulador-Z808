@@ -1,12 +1,9 @@
 package br.com.james.simulador.ui;
 
-import br.com.james.simulador.maquina.virtual.AZM;
-import br.com.james.simulador.maquina.virtual.Executor;
-import br.com.james.simulador.maquina.virtual.RegistradorEnum;
-import static br.com.james.simulador.maquina.virtual.RegistradorEnum.RBM;
-import static br.com.james.simulador.maquina.virtual.RegistradorEnum.REM;
-import br.com.james.simulador.maquina.virtual.TipoEnderecamento;
-import br.com.james.simulador.maquina.virtual.Util;
+import br.com.james.simulador.maquina.virtual.*;
+
+import javax.swing.*;
+import javax.swing.table.DefaultTableModel;
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.IOException;
@@ -16,8 +13,9 @@ import java.util.Arrays;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
-import javax.swing.JFileChooser;
-import javax.swing.table.DefaultTableModel;
+
+import static br.com.james.simulador.maquina.virtual.RegistradorEnum.RBM;
+import static br.com.james.simulador.maquina.virtual.RegistradorEnum.REM;
 
 /**
  *
@@ -350,7 +348,8 @@ public class Menu extends javax.swing.JFrame {
 
     private void btClearActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btClearActionPerformed
         // TODO add your handling code here:
-        txtCodigo.setText(null);
+        txtConsole.setText(null);
+        txtCodigoArea.setText(null);
         txtArquivoFonte.setText(null);
         txtArquivoObjeto.setText(null);
     }//GEN-LAST:event_btClearActionPerformed
