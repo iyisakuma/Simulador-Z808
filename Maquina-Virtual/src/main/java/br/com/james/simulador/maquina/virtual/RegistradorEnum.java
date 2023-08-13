@@ -14,7 +14,7 @@ public enum RegistradorEnum {
     SI(""),
     IP(""),
     SR(""),
-    END("");
+    AUX("");
     
     private final String endereco;
     

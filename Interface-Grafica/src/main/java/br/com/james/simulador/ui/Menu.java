@@ -315,7 +315,8 @@ public class Menu extends javax.swing.JFrame {
 
     private void btClearActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btClearActionPerformed
         // TODO add your handling code here:
-        txtCodigo.setText(null);
+        txtConsole.setText(null);
+        txtCodigoArea.setText(null);
         txtArquivoFonte.setText(null);
         txtArquivoObjeto.setText(null);
     }//GEN-LAST:event_btClearActionPerformed
@@ -512,7 +513,7 @@ public class Menu extends javax.swing.JFrame {
     }
 
     private boolean ehFimExecucao(int codigoAtual) {
-        return codigoAtual >= 0 && codigoAtual < instrucoes.size();
+        return codigoAtual >= 0 && instrucoes.containsKey(codigoAtual);
     }
 
     private void carregaRBM(String instrucao) {

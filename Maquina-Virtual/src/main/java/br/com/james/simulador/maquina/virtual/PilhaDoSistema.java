@@ -10,15 +10,17 @@ public class PilhaDoSistema {
         return this.stack.capacity() <= 12;
     }
     
-    public String pushEndereco(String endereco) {
-        return this.stack.push(endereco);
+    public void push(String str) {
+        if (str.length() != 16)
+            throw new IllegalArgumentException("Número incorreto de bits!");
+        this.stack.push(str);
     }
     
-    public String popEndereco() {
+    public String pop() {
         return this.stack.pop();
     }
     
-    public String peekEndereco() {
+    public String peek() {
         return this.stack.peek();
     }
     

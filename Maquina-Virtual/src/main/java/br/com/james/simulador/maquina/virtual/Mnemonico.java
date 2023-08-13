@@ -23,31 +23,22 @@ public enum Mnemonico implements Acao {
             //Transforma o Binario contido em AX em Número Decimal
             int numberAX = Integer.parseInt(ax, 2);
             int soma;
-            var operand = instrucao.substring(8, 16);
-            if (operand.equalsIgnoreCase(DX.getEndereco())) {
+            var opcodeRegister = instrucao.substring(8, 16);
+            if (opcodeRegister.equalsIgnoreCase(DX.getEndereco())) {
                 var dx = registradores.get(DX);
                 //Transforma o Binario contido em DX em Número Decimal
                 int numberDX = Integer.parseInt(dx, 2);
                 soma = numberAX + numberDX;
-            } else if (operand.equalsIgnoreCase(AX.getEndereco())) {
+            } else if (opcodeRegister.equalsIgnoreCase(AX.getEndereco())) {
                 soma = numberAX + numberAX;
             } else {
-                throw new IllegalArgumentException(String.format("Operando: %s não existe!", operand));
+                throw new IllegalArgumentException(String.format(
+                        "Opcode: %s não representa o registrador AX(%s) ou DX(%s)",
+                        opcodeRegister, AX.getEndereco(), DX.getEndereco()));
             }
             //Transforma o Número Decimal em Binario novamente
-            String binary = Integer.toBinaryString(soma);
-            var finalResult = String.format("%16s", binary).replace("", "0");
-            registradores.replace(AX, finalResult);
-            
-            var sr = registradores.get(SR);
-            char[] toCharArray = sr.toCharArray();
-            toCharArray[3] = '0';
-            toCharArray[6] = '0';
-            toCharArray[7] = '0';
-            toCharArray[9] = '0';
-            toCharArray[15] = '0';
-            sr = String.copyValueOf(toCharArray);
-            registradores.replace(SR, sr);
+            var resultado = new StringBuilder(Integer.toBinaryString(soma));
+            updateRegistradores(registradores, instrucao, resultado, TipoDeOperacao.ARITMETICA);
             return registradores;
         }
     }, ADD_AX_OPD("00000101", 24) {
@@ -61,19 +52,8 @@ public enum Mnemonico implements Acao {
             int numberOPD = Integer.parseInt(opd, 2);
             int soma = numberAX + numberOPD;
             //Transforma o Número Decimal em Binario novamente
-            String binary = Integer.toBinaryString(soma);
-            var finalResult = String.format("%16s", binary).replace("", "0");
-            registradores.replace(AX, finalResult);
-            
-            var sr = registradores.get(SR);
-            char[] toCharArray = sr.toCharArray();
-            toCharArray[3] = '0';
-            toCharArray[6] = '0';
-            toCharArray[7] = '0';
-            toCharArray[9] = '0';
-            toCharArray[15] = '0';
-            sr = String.copyValueOf(toCharArray);
-            registradores.replace(SR, sr);
+            var resultado = new StringBuilder(Integer.toBinaryString(soma));
+            updateRegistradores(registradores, instrucao, resultado, TipoDeOperacao.ARITMETICA);
             return registradores;
         }
     }, SUB_AX_REG("00101011", 16) {
@@ -84,31 +64,22 @@ public enum Mnemonico implements Acao {
             //Transforma o Binario contido em AX em Número Decimal
             int numberAX = Integer.parseInt(ax, 2);
             int subtracao;
-            var operand = instrucao.substring(8, 16);
-            if (operand.equalsIgnoreCase(DX.getEndereco())) {
+            var opcodeRegister = instrucao.substring(8, 16);
+            if (opcodeRegister.equalsIgnoreCase(DX.getEndereco())) {
                 var dx = registradores.get(DX);
                 //Transforma o Binario contido em DX em Número Decimal
                 int numberDX = Integer.parseInt(dx, 2);
                 subtracao = numberAX - numberDX;
-            } else if (operand.equalsIgnoreCase(AX.getEndereco())) {
+            } else if (opcodeRegister.equalsIgnoreCase(AX.getEndereco())) {
                 subtracao = 0;
             } else {
-                throw new IllegalArgumentException(String.format("Operando: %s não existe!", operand));
+                throw new IllegalArgumentException(String.format(
+                        "Opcode: %s não representa o registrador AX(%s) ou DX(%s)",
+                        opcodeRegister, AX.getEndereco(), DX.getEndereco()));
             }
             //Transforma o Número Decimal em Binario novamente
-            String binary = Integer.toBinaryString(subtracao);
-            var finalResult = String.format("%16s", binary).replace("", "0");
-            registradores.replace(AX, finalResult);
-            
-            var sr = registradores.get(SR);
-            char[] toCharArray = sr.toCharArray();
-            toCharArray[3] = '0';
-            toCharArray[6] = '0';
-            toCharArray[7] = '0';
-            toCharArray[9] = '0';
-            toCharArray[15] = '0';
-            sr = String.copyValueOf(toCharArray);
-            registradores.replace(SR, sr);
+            var resultado = new StringBuilder(Integer.toBinaryString(subtracao));
+            updateRegistradores(registradores, instrucao, resultado, TipoDeOperacao.ARITMETICA);
             return registradores;
         }
     }, SUB_AX_OPD("00100101", 24) {
@@ -122,19 +93,8 @@ public enum Mnemonico implements Acao {
             int numberOPD = Integer.parseInt(opd, 2);
             int subtracao = numberAX - numberOPD;
             //Transforma o Número Decimal em Binario novamente
-            String binary = Integer.toBinaryString(subtracao);
-            var finalResult = String.format("%16s", binary).replace("", "0");
-            registradores.replace(AX, finalResult);
-            
-            var sr = registradores.get(SR);
-            char[] toCharArray = sr.toCharArray();
-            toCharArray[3] = '0';
-            toCharArray[6] = '0';
-            toCharArray[7] = '0';
-            toCharArray[9] = '0';
-            toCharArray[15] = '0';
-            sr = String.copyValueOf(toCharArray);
-            registradores.replace(SR, sr);
+            var resultado = new StringBuilder(Integer.toBinaryString(subtracao));
+            updateRegistradores(registradores, instrucao, resultado, TipoDeOperacao.ARITMETICA);
             return registradores;
         }
     }, JUMP("11101011", 24) {
@@ -204,7 +164,7 @@ public enum Mnemonico implements Acao {
                         "Opcode: %s não representa o registrador AX(%s) ou DX(%s)",
                         opcodeRegister, AX.getEndereco(), DX.getEndereco()));
             }
-            updateRegistradores(registradores, instrucao, resultado, true);
+            updateRegistradores(registradores, instrucao, resultado, TipoDeOperacao.LOGICA);
             return registradores;
         }
     }, AND_REG_OP("00100101", 24) {
@@ -220,7 +180,7 @@ public enum Mnemonico implements Acao {
             for (int i = 0; i < ax.toCharArray().length; i++) {
                 resultado.append(ax.charAt(i) == '0' || opcodeOp.charAt(i) == '0' ? '0' : '1');
             }
-            updateRegistradores(registradores, instrucao, resultado, true);
+            updateRegistradores(registradores, instrucao, resultado, TipoDeOperacao.LOGICA);
             return registradores;
         }
     }, NOT_REG("11111000", 16) {
@@ -239,7 +199,7 @@ public enum Mnemonico implements Acao {
                         "Opcode: %s não representa o registrador AX(%s)",
                         opcodeRegister, AX.getEndereco()));
             }
-            updateRegistradores(registradores, instrucao, resultado, true);
+            updateRegistradores(registradores, instrucao, resultado, TipoDeOperacao.LOGICA);
             return registradores;
         }
     }, OR_REG_REG("00001011", 16) {
@@ -261,7 +221,7 @@ public enum Mnemonico implements Acao {
                         "Opcode: %s não representa o registrador AX(%s) ou DX(%s)",
                         opcodeRegister, AX.getEndereco(), DX.getEndereco()));
             }
-            updateRegistradores(registradores, instrucao, resultado, true);
+            updateRegistradores(registradores, instrucao, resultado, TipoDeOperacao.LOGICA);
             return registradores;
         }
     }, OR_REG_OP("00001101", 24) {
@@ -277,7 +237,7 @@ public enum Mnemonico implements Acao {
             for (int i = 0; i < ax.toCharArray().length; i++) {
                 resultado.append(ax.charAt(i) == '1' || opcodeOp.charAt(i) == '1' ? '1' : '0');
             }
-            updateRegistradores(registradores, instrucao, resultado, true);
+            updateRegistradores(registradores, instrucao, resultado, TipoDeOperacao.LOGICA);
             return registradores;
         }
     }, XOR_REG_REG("00110011", 16) {
@@ -299,7 +259,7 @@ public enum Mnemonico implements Acao {
                         "Opcode: %s não representa o registrador AX(%s) ou DX(%s)",
                         opcodeRegister, AX.getEndereco(), DX.getEndereco()));
             }
-            updateRegistradores(registradores, instrucao, resultado, true);
+            updateRegistradores(registradores, instrucao, resultado, TipoDeOperacao.LOGICA);
             return registradores;
         }
     }, XOR_REG_OP("00110101", 24) {
@@ -315,7 +275,7 @@ public enum Mnemonico implements Acao {
             for (int i = 0; i < ax.toCharArray().length; i++) {
                 resultado.append(ax.charAt(i) == opcodeOp.charAt(i) ? '0' : '1');
             }
-            updateRegistradores(registradores, instrucao, resultado, true);
+            updateRegistradores(registradores, instrucao, resultado, TipoDeOperacao.LOGICA);
             return registradores;
         }
     }, CMP_REG_REG("00111011", 16) {
@@ -324,18 +284,19 @@ public enum Mnemonico implements Acao {
             verifyNumberOfBits(instrucao, this.getNumberOfBits());
             var ax = registradores.get(AX);
             var opcodeRegister = instrucao.substring(8, 16);
-            char resultado;
+            char zf;
             if (opcodeRegister.equalsIgnoreCase(DX.getEndereco())) {
                 var dx = registradores.get(DX);
-                resultado = ax.equalsIgnoreCase(dx) ? '1' : '0';
+                zf = ax.equalsIgnoreCase(dx) ? '1' : '0';
             } else {
                 throw new IllegalArgumentException(String.format(
                         "Opcode: %s não representa o registrador DX(%s)",
                         opcodeRegister, DX.getEndereco()));
             }
             var sr = new StringBuilder(registradores.get(SR)).reverse();
-            sr.setCharAt(8, resultado);
+            sr.setCharAt(8, zf);
             registradores.replace(SR, sr.reverse().toString());
+            updateRegistradores(registradores, instrucao, new StringBuilder(registradores.get(AX)), TipoDeOperacao.COMPARACAO);
             return registradores;
         }
     }, CMP_REG_OP("00111101", 24) {
@@ -347,10 +308,11 @@ public enum Mnemonico implements Acao {
             opcodeOp = String
                     .format("%16s", opcodeOp)
                     .replaceAll(" ", opcodeOp.toCharArray()[0] == '0' ? "0" : "1");
-            var resultado = ax.equalsIgnoreCase(opcodeOp) ? '1' : '0';
+            var zf = ax.equalsIgnoreCase(opcodeOp) ? '1' : '0';
             var sr = new StringBuilder(registradores.get(SR)).reverse();
-            sr.setCharAt(8, resultado);
+            sr.setCharAt(8, zf);
             registradores.replace(SR, sr.reverse().toString());
+            updateRegistradores(registradores, instrucao, new StringBuilder(registradores.get(AX)), TipoDeOperacao.COMPARACAO);
             return registradores;
         }
     }, POP_REG("01011000", 16) {
@@ -359,31 +321,34 @@ public enum Mnemonico implements Acao {
             verifyNumberOfBits(instrucao, this.getNumberOfBits());
             var opcodeRegister = instrucao.substring(8, 16);
             if (opcodeRegister.equalsIgnoreCase(DX.getEndereco())) {
-                registradores.replace(DX, pilha.popEndereco());
+                registradores.replace(DX, pilha.pop());
             } else if (opcodeRegister.equalsIgnoreCase(AX.getEndereco())) {
-                registradores.replace(AX, pilha.popEndereco());
+                registradores.replace(AX, pilha.pop());
             } else {
                 throw new IllegalArgumentException(String.format(
                         "Opcode: %s não representa o registrador AX(%s) ou DX(%s)",
                         opcodeRegister, AX.getEndereco(), DX.getEndereco()));
             }
-            registradores.replace(SP, pilha.peekEndereco());
+            registradores.replace(SP, pilha.peek());
+            updateRegistradores(registradores, instrucao, new StringBuilder(registradores.get(AX)), TipoDeOperacao.PILHA);
             return registradores;
         }
     }, POP_OPD("01011001", 24) {
         @Override
         public Map<RegistradorEnum, String> acao(String instrucao, Map<RegistradorEnum, String> registradores, JTextArea console) {
             verifyNumberOfBits(instrucao, this.getNumberOfBits());
-            registradores.replace(END, pilha.popEndereco());
-            registradores.replace(SP, pilha.peekEndereco());
+            registradores.replace(AUX, pilha.pop());
+            registradores.replace(SP, pilha.peek());
+            updateRegistradores(registradores, instrucao, new StringBuilder(registradores.get(AX)), TipoDeOperacao.PILHA);
             return registradores;
         }
     }, POP_F("10011101", 8) {
         @Override
         public Map<RegistradorEnum, String> acao(String instrucao, Map<RegistradorEnum, String> registradores, JTextArea console) {
             verifyNumberOfBits(instrucao, this.getNumberOfBits());
-            registradores.replace(SR, pilha.popEndereco());
-            registradores.replace(SP, pilha.peekEndereco());
+            registradores.replace(SR, pilha.pop());
+            registradores.replace(SP, pilha.peek());
+            updateRegistradores(registradores, instrucao, new StringBuilder(registradores.get(AX)), TipoDeOperacao.PILHA);
             return registradores;
         }
     }, PUSH_REG("01010000", 16) {
@@ -392,23 +357,25 @@ public enum Mnemonico implements Acao {
             verifyNumberOfBits(instrucao, this.getNumberOfBits());
             var opcodeRegister = instrucao.substring(8, 16);
             if (opcodeRegister.equalsIgnoreCase(DX.getEndereco())) {
-                pilha.pushEndereco(registradores.get(DX));
+                pilha.push(registradores.get(DX));
             } else if (opcodeRegister.equalsIgnoreCase(AX.getEndereco())) {
-                pilha.pushEndereco(registradores.get(AX));
+                pilha.push(registradores.get(AX));
             } else {
                 throw new IllegalArgumentException(String.format("""
                             Opcode: %s não representa o registrador AX(%s) ou DX(%s)
                             """, opcodeRegister, AX.getEndereco(), DX.getEndereco()));
             }
-            registradores.replace(SP, pilha.peekEndereco());
+            registradores.replace(SP, pilha.peek());
+            updateRegistradores(registradores, instrucao, new StringBuilder(registradores.get(AX)), TipoDeOperacao.PILHA);
             return registradores;
         }
     }, PUSH_F("10011100", 8) {
         @Override
         public Map<RegistradorEnum, String> acao(String instrucao, Map<RegistradorEnum, String> registradores, JTextArea console) {
             verifyNumberOfBits(instrucao, this.getNumberOfBits());
-            pilha.pushEndereco(registradores.get(SR));
-            registradores.replace(SP, pilha.peekEndereco());
+            pilha.push(registradores.get(SR));
+            registradores.replace(SP, pilha.peek());
+            updateRegistradores(registradores, instrucao, new StringBuilder(registradores.get(AX)), TipoDeOperacao.PILHA);
             return registradores;
         }
     };
@@ -540,36 +507,28 @@ public enum Mnemonico implements Acao {
         
     }
     
-    public void updateRegistradores(Map<RegistradorEnum, String> registradores, String instrucao, StringBuilder resultado, boolean isLogic) {
+    public void updateRegistradores(Map<RegistradorEnum, String> registradores, String instrucao, StringBuilder resultado, TipoDeOperacao tipoDeOperacao) {
         registradores.replace(AX, resultado.toString());
         registradores.replace(IP, fillRegisterIP(registradores.get(IP), instrucao));
-        registradores.replace(SR, fillRegisterSR(new StringBuilder(registradores.get(SR)).reverse(), resultado, isLogic));
+        registradores.replace(SR, fillRegisterSR(new StringBuilder(registradores.get(SR)).reverse(), resultado, tipoDeOperacao));
     }
     
     private String fillRegisterIP(String ip, String instrucao) {
         switch (instrucao.length()) {
-            case 8 -> {
+            case 16 -> {
                 var ipDecimal = Integer.parseInt(ip, 2);
                 ipDecimal += 1;
                 ip = String
                         .format("%16s", Integer.toBinaryString(ipDecimal))
-                        .replaceAll(" ", ip.toCharArray()[0] == 0 ? "0" : "1");
-                return ip;
-            }
-            case 16 -> {
-                var ipDecimal = Integer.parseInt(ip, 2);
-                ipDecimal += 2;
-                ip = String
-                        .format("%16s", Integer.toBinaryString(ipDecimal))
-                        .replaceAll(" ", ip.toCharArray()[0] == 0 ? "0" : "1");
+                        .replaceAll(" ", "0");
                 return ip;
             }
             case 24 -> {
                 var ipDecimal = Integer.parseInt(ip, 2);
-                ipDecimal += 3;
+                ipDecimal += 2;
                 ip = String
                         .format("%16s", Integer.toBinaryString(ipDecimal))
-                        .replaceAll(" ", ip.toCharArray()[0] == 0 ? "0" : "1");
+                        .replaceAll(" ", "0");
                 return ip;
             }
             default -> {
@@ -578,18 +537,31 @@ public enum Mnemonico implements Acao {
         }
     }
     
-    //TODO: quando a operação não for lógica indicar o que deve ser feito para o CF e OF
-    public String fillRegisterSR(StringBuilder sr, StringBuilder resultado, boolean isLogic) {
-        if (isLogic){
-            sr.setCharAt(0,'0'); // CF (carry) = 0
-            sr.setCharAt(12,'0'); // OF (overflow) = 0
-        } else {
-            sr.setCharAt(0,'1');
-            sr.setCharAt(12,'1');
+    public String fillRegisterSR(StringBuilder sr, StringBuilder resultado, TipoDeOperacao tipoDeOperacao) {
+        switch (tipoDeOperacao) {
+            case ARITMETICA:
+                var resultadoDecimal = Integer.parseInt(resultado.toString(), 2);
+                sr.setCharAt(0, resultadoDecimal > 32767 || resultadoDecimal < -32768 ? '1' : '0'); // CF (carry)
+                sr.setCharAt(6, isEven(resultado.toString()) ? '1' : '0'); // PF (parity) = isEven()
+                sr.setCharAt(8, isZero(resultado.toString()) ? '1' : '0'); // ZF (zero) = isZero()
+                sr.setCharAt(9, resultado.charAt(0)); // SF (sign) = most significant bit
+                sr.setCharAt(12, resultadoDecimal > 32767 || resultadoDecimal < -32768 ? '1' : '0'); // OF (overflow)
+                break;
+            case LOGICA:
+                sr.setCharAt(0, '0'); // CF (carry) = 0
+                sr.setCharAt(6, isEven(resultado.toString()) ? '1' : '0'); // PF (parity) = isEven()
+                sr.setCharAt(8, isZero(resultado.toString()) ? '1' : '0'); // ZF (zero) = isZero()
+                sr.setCharAt(9, resultado.charAt(0)); // SF (sign) = most significant bit
+                sr.setCharAt(12, '0'); // OF (overflow) = 0
+                break;
+            case COMPARACAO:
+                sr = resultado;
+                break;
+            case PILHA:
+                break;
+            default:
+                throw new IllegalStateException("Unexpected value: " + tipoDeOperacao);
         }
-        sr.setCharAt(6, isEven(resultado.toString()) ? '1' : '0'); // PF (parity) = isEven()
-        sr.setCharAt(8, isZero(resultado.toString()) ? '1' : '0'); // ZF (zero) = isZero()
-        sr.setCharAt(9, resultado.charAt(0)); // SF (sign) = most significant bit
         return sr.reverse().toString();
     }
     
