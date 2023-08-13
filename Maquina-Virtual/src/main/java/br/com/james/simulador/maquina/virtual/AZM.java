@@ -139,7 +139,7 @@ public class AZM {
             }
             ++lineCounter;
         }
-        throw new AssertionError();
+        throw new AssertionError("O programa não possui END");
     }
     
     private String segundoPasso() throws IOException {
@@ -290,6 +290,7 @@ public class AZM {
                         buffer.write(linhaBin.toString());
                         break;
                     case "WRITE":
+                        String valor;
                         linhaBin.append("00001000");
                         linhaBin.append(getOperandoDe(instrucao)).append("\n");
                         buffer.write(linhaBin.toString());
