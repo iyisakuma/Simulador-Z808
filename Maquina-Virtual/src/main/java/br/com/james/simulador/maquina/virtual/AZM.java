@@ -76,8 +76,6 @@ public class AZM {
                 case "POP":
                 case "PUSH":
                 case "STORE":
-                case "READ":
-                case "WRITE":
 
                 // Diretivas
                 case "ORD":
@@ -122,6 +120,11 @@ public class AZM {
                 case "PUSHF":
                     ++pointCounter;
                     codigoObjeto.append(instrucaoLimpa[0]).append("\n");
+                    break;
+                case "READ":
+                case "WRITE":
+                    pointCounter += 3;
+                    codigoObjeto.append(instrucaoLimpa[0]).append("\t").append(instrucaoLimpa[1]).append("\n");
                     break;
                 default:
                     codigoObjeto.append(instrucaoLimpa[0])
