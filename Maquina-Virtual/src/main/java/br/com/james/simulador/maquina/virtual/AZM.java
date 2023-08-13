@@ -112,7 +112,8 @@ public class AZM {
                         //Se o segundo operando for label, será adicionado para tabela de simbolo
                         addTabelaSimbolo(operando[1]);
                     } else {
-                        codigoObjeto.append(instrucaoLimpa[1]).append("\t");
+                        var operando = instrucaoLimpa[1].split(",");
+                        codigoObjeto.append(operando[0]).append("\t").append(operando[1]).append("\t");
                         pointCounter += 2;
                     }
                     codigoObjeto.append("\n");
