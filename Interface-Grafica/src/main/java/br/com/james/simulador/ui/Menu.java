@@ -1,5 +1,12 @@
 package br.com.james.simulador.ui;
 
+import br.com.james.simulador.maquina.virtual.AZM;
+import br.com.james.simulador.maquina.virtual.Executor;
+import br.com.james.simulador.maquina.virtual.RegistradorEnum;
+import static br.com.james.simulador.maquina.virtual.RegistradorEnum.RBM;
+import static br.com.james.simulador.maquina.virtual.RegistradorEnum.REM;
+import br.com.james.simulador.maquina.virtual.TipoEnderecamento;
+import br.com.james.simulador.maquina.virtual.Util;
 import br.com.james.simulador.maquina.virtual.*;
 
 import javax.swing.*;
@@ -63,6 +70,9 @@ public class Menu extends javax.swing.JFrame {
         jTable1 = new javax.swing.JTable();
         jScrollPane2 = new javax.swing.JScrollPane();
         txtCodigo = new javax.swing.JTextArea();
+        lvlInput = new javax.swing.JLabel();
+        btInput = new javax.swing.JButton();
+        txtInput = new javax.swing.JFormattedTextField();
 
         javax.swing.GroupLayout DialogErroLayout = new javax.swing.GroupLayout(DialogErro.getContentPane());
         DialogErro.getContentPane().setLayout(DialogErroLayout);
@@ -125,11 +135,13 @@ public class Menu extends javax.swing.JFrame {
         panelCodigo.setLayout(panelCodigoLayout);
         panelCodigoLayout.setHorizontalGroup(
             panelCodigoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jTabbedPane2, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, 702, Short.MAX_VALUE)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, panelCodigoLayout.createSequentialGroup()
+                .addGap(0, 0, Short.MAX_VALUE)
+                .addComponent(jTabbedPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 720, javax.swing.GroupLayout.PREFERRED_SIZE))
         );
         panelCodigoLayout.setVerticalGroup(
             panelCodigoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, panelCodigoLayout.createSequentialGroup()
+            .addGroup(panelCodigoLayout.createSequentialGroup()
                 .addContainerGap()
                 .addComponent(jTabbedPane2))
         );
@@ -240,6 +252,18 @@ public class Menu extends javax.swing.JFrame {
         txtCodigo.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
         jScrollPane2.setViewportView(txtCodigo);
 
+        lvlInput.setText("Input");
+
+        btInput.setIcon(new javax.swing.ImageIcon(getClass().getResource("/caixa-de-selecao.png"))); // NOI18N
+        btInput.setText("ok");
+        btInput.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btInputActionPerformed(evt);
+            }
+        });
+
+        txtInput.setFormatterFactory(new javax.swing.text.DefaultFormatterFactory(new javax.swing.text.NumberFormatter(new java.text.DecimalFormat("#0"))));
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
@@ -247,8 +271,17 @@ public class Menu extends javax.swing.JFrame {
             .addGroup(layout.createSequentialGroup()
                 .addGap(14, 14, 14)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jScrollPane2)
                     .addGroup(layout.createSequentialGroup()
-                        .addComponent(panelCodigo, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                            .addComponent(panelCodigo, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addGroup(layout.createSequentialGroup()
+                                .addComponent(lvlInput, javax.swing.GroupLayout.PREFERRED_SIZE, 248, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                            .addGroup(layout.createSequentialGroup()
+                                .addComponent(txtInput, javax.swing.GroupLayout.PREFERRED_SIZE, 618, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                .addComponent(btInput, javax.swing.GroupLayout.PREFERRED_SIZE, 90, javax.swing.GroupLayout.PREFERRED_SIZE)))
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addGroup(layout.createSequentialGroup()
                                 .addGap(94, 94, 94)
@@ -259,7 +292,7 @@ public class Menu extends javax.swing.JFrame {
                                     .addComponent(jTabbedPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE)
                                     .addComponent(lblArquivoFonte, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                                     .addComponent(txtArquivoFonte)
-                                    .addComponent(lblArquivoObjeto, javax.swing.GroupLayout.DEFAULT_SIZE, 361, Short.MAX_VALUE)
+                                    .addComponent(lblArquivoObjeto, javax.swing.GroupLayout.DEFAULT_SIZE, 349, Short.MAX_VALUE)
                                     .addComponent(txtArquivoObjeto)))))
                     .addGroup(layout.createSequentialGroup()
                         .addComponent(btRun)
@@ -275,7 +308,6 @@ public class Menu extends javax.swing.JFrame {
                         .addComponent(rdArquivoObjeto)
                         .addGap(0, 0, Short.MAX_VALUE)))
                 .addContainerGap())
-            .addComponent(jScrollPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 1089, Short.MAX_VALUE)
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -297,15 +329,20 @@ public class Menu extends javax.swing.JFrame {
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(txtArquivoFonte, javax.swing.GroupLayout.PREFERRED_SIZE, 45, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(lblArquivoObjeto)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(txtArquivoObjeto, javax.swing.GroupLayout.PREFERRED_SIZE, 45, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 221, Short.MAX_VALUE)
-                        .addComponent(panelTabela, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addComponent(lblArquivoObjeto))
                     .addGroup(layout.createSequentialGroup()
                         .addComponent(panelCodigo, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 195, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addComponent(lvlInput, javax.swing.GroupLayout.PREFERRED_SIZE, 22, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                    .addComponent(txtArquivoObjeto, javax.swing.GroupLayout.DEFAULT_SIZE, 45, Short.MAX_VALUE)
+                    .addComponent(txtInput)
+                    .addComponent(btInput, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(panelTabela, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jScrollPane2, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 195, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addContainerGap())
         );
 
@@ -315,8 +352,7 @@ public class Menu extends javax.swing.JFrame {
 
     private void btClearActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btClearActionPerformed
         // TODO add your handling code here:
-        txtConsole.setText(null);
-        txtCodigoArea.setText(null);
+        txtCodigo.setText(null);
         txtArquivoFonte.setText(null);
         txtArquivoObjeto.setText(null);
     }//GEN-LAST:event_btClearActionPerformed
@@ -325,22 +361,11 @@ public class Menu extends javax.swing.JFrame {
         if (!txtArquivoObjeto.getText().isBlank()) {
             initRegistradores();
             initMemoria();
+            
+            var codigoAtual = Util.binarioParaDecimal(registradores.get(RegistradorEnum.IP));
+            proximaInstrucaoEhRead(codigoAtual);
             try {
-                var codigoAtual = Util.binarioParaDecimal(registradores.get(RegistradorEnum.IP));
-                while (ehFimExecucao(codigoAtual)) {
-                    var instrucao = Menu.instrucoes.get(codigoAtual);
-                    carregaRBM(instrucao);
-                    //Fim de execução
-                    if (instrucao.equals("11101110")) {
-                        break;
-                    }
-                    var executor = new Executor(txtConsole);
-                    executor.run(instrucao, registradores);
-                    atualizaTabela(registradores);
-                    codigoAtual = Util.binarioParaDecimal(registradores.get(RegistradorEnum.IP));
-                }
-                atualizaTabela(registradores);
-                finalizaExecucao();
+                processa();
             } catch (Exception ex) {
                 ex.printStackTrace();
                 mostraErro(ex);
@@ -352,7 +377,7 @@ public class Menu extends javax.swing.JFrame {
         if (evt.getSource() == btUploadFonte) {
             var fileUpload = new JFileChooser();
             fileUpload.setCurrentDirectory(new File("."));
-
+            
             txtArquivoFonte.setText(null);
             txtArquivoObjeto.setText(null);
             var res = fileUpload.showSaveDialog(null);
@@ -386,7 +411,7 @@ public class Menu extends javax.swing.JFrame {
             txtConsole.setText(text + "\n" + ex.getStackTrace());
         }
     }//GEN-LAST:event_btBuildActionPerformed
-
+    
     private void valida() throws IllegalArgumentException {
         var arquivoFonte = txtArquivoFonte.getText();
         if (arquivoFonte.isEmpty()) {
@@ -400,6 +425,19 @@ public class Menu extends javax.swing.JFrame {
     private void rdArquivoFonteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_rdArquivoFonteActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_rdArquivoFonteActionPerformed
+
+    private void btInputActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btInputActionPerformed
+        // TODO add your handling code here
+        if (isRead && txtInput.getText() != null) {
+            String text = txtInput.getText();
+            isRead = false;
+            btInput.setEnabled(false);
+            txtInput.setText(null);
+            txtInput.setEditable(false);
+            registradores.replace(REM, String.format("%16s", Integer.toBinaryString(Integer.valueOf(text))).replaceAll(" ", "0"));
+            processa();
+        }
+    }//GEN-LAST:event_btInputActionPerformed
 
     /**
      * @param args the command line arguments
@@ -439,6 +477,7 @@ public class Menu extends javax.swing.JFrame {
     private javax.swing.JDialog DialogErro;
     private javax.swing.JButton btBuild;
     private javax.swing.JButton btClear;
+    private javax.swing.JButton btInput;
     private javax.swing.JButton btRun;
     private javax.swing.JButton btUploadFonte;
     private javax.swing.ButtonGroup buttonGroup1;
@@ -453,6 +492,7 @@ public class Menu extends javax.swing.JFrame {
     private javax.swing.JTable jTable1;
     private javax.swing.JLabel lblArquivoFonte;
     private javax.swing.JLabel lblArquivoObjeto;
+    private javax.swing.JLabel lvlInput;
     private javax.swing.JPanel panelCodigo;
     private javax.swing.JPanel panelTabela;
     private javax.swing.JRadioButton rdArquivoFonte;
@@ -463,18 +503,20 @@ public class Menu extends javax.swing.JFrame {
     private javax.swing.JTextArea txtCodigo;
     private javax.swing.JTextArea txtCodigoArea;
     private javax.swing.JTextArea txtConsole;
+    private javax.swing.JFormattedTextField txtInput;
     // End of variables declaration//GEN-END:variables
 
     private static final Map<RegistradorEnum, String> registradores = new HashMap();
     private static final Map<Integer, String> instrucoes = new HashMap();
     private static final Map<Integer, String> dados = new HashMap();
-
+    private boolean isRead = false;
+    
     private void initRegistradores() {
         Arrays.asList(RegistradorEnum.values())
                 .stream()
                 .forEach(registrador -> registradores.put(registrador, "0000000000000000"));
     }
-
+    
     private void initMemoria() {
         try {
             BufferedReader reader = abreArquivoObjeto();
@@ -488,12 +530,12 @@ public class Menu extends javax.swing.JFrame {
                     Menu.instrucoes.put(numeroLinha, instrucao);
                 }
             }
-
+            
         } catch (Exception ex) {
             txtConsole.setText("Nao foi possivel abrir o arquivo objeto.");
         }
     }
-
+    
     private void atualizaTabela(Map<RegistradorEnum, String> registradores) {
         var dtm = (DefaultTableModel) tbRegistradores.getModel();
         dtm.setRowCount(0);
@@ -501,26 +543,24 @@ public class Menu extends javax.swing.JFrame {
                 .stream()
                 .forEach(registrador -> dtm.addRow(new Object[]{registrador, registradores.get(registrador) + "b"}));
     }
-
+    
     private void finalizaExecucao() {
         String text = txtConsole.getText();
         txtConsole.setText(text + "\n" + String.format("[%s]Execução Finalizada", new Date().toString()));
     }
-
+    
     private void mostraErro(Exception ex) {
         String text = txtConsole.getText();
         txtConsole.setText(text + "\n" + String.format("[%s]ERRO:%s", new Date().toString(), ex.getMessage()));
     }
-
+    
     private boolean ehFimExecucao(int codigoAtual) {
-        return codigoAtual >= 0 && instrucoes.containsKey(codigoAtual);
+        return codigoAtual >= 0 && codigoAtual < instrucoes.size();
     }
-
+    
     private void carregaRBM(String instrucao) {
         var tamanhoInstrucao = instrucao.length();
-        var operando = tamanhoInstrucao == 8 ?
-                instrucao :
-                instrucao.substring(8, tamanhoInstrucao - 1);
+        var operando = instrucao.substring(8, tamanhoInstrucao - 1);
         if (tamanhoInstrucao > 7 && tamanhoInstrucao % 2 == 1) {
             var tipoEnderecamento = TipoEnderecamento.getByBit(instrucao.charAt(tamanhoInstrucao - 1));
             switch (tipoEnderecamento) {
@@ -535,9 +575,50 @@ public class Menu extends javax.swing.JFrame {
             }
         }
     }
-
+    
     private BufferedReader abreArquivoObjeto() throws IOException {
         var path = Paths.get(txtArquivoObjeto.getText());
         return Files.newBufferedReader(path);
     }
+    
+    private void atualizaMemoria(Map<RegistradorEnum, String> registradores) {
+        if (registradores.get(RBM).contains("_")) {
+            int endereco = Integer.valueOf(registradores.get(RBM).split("_")[0]);
+            String value = registradores.get(RBM).split("_")[1];
+            dados.put(endereco, value);
+        }
+    }
+    
+    private void proximaInstrucaoEhRead(int codigoAtual) {
+        String instrucao = Menu.instrucoes.get(codigoAtual);
+        String substring = instrucao.substring(0, 8);
+        this.isRead = "00010010".equals(substring);
+    }
+    
+    private void processa() {
+        var codigoAtual = Util.binarioParaDecimal(registradores.get(RegistradorEnum.IP));
+        while (ehFimExecucao(codigoAtual)) {
+            if (!isRead) {
+                var instrucao = Menu.instrucoes.get(codigoAtual);
+                carregaRBM(instrucao);
+                //Fim de execução
+                if (instrucao.equals("11101110")) {
+                    break;
+                }
+                var executor = new Executor(txtConsole);
+                executor.run(instrucao, registradores);
+                atualizaTabela(registradores);
+                atualizaMemoria(registradores);
+                codigoAtual = Util.binarioParaDecimal(registradores.get(RegistradorEnum.IP));
+                proximaInstrucaoEhRead(codigoAtual);
+            } else {
+                btInput.setEnabled(true);
+                txtInput.setEditable(true);
+                return;
+            }
+        }
+        atualizaTabela(registradores);
+        finalizaExecucao();
+    }
+    
 }

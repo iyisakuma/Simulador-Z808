@@ -137,13 +137,17 @@ public enum Mnemonico implements Acao {
     }, READ("00010010", 24) {
         @Override
         public Map<RegistradorEnum, String> acao(String instrucao, Map<RegistradorEnum, String> registradores, JTextArea console) {
-            throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
-            
+            var endereco = Integer.valueOf(registradores.get(RBM));
+            registradores.replace(RBM, endereco + "_" + registradores.get(REM));
+            return registradores;
         }
     }, WRITE("00001000", 24) {
         @Override
         public Map<RegistradorEnum, String> acao(String instrucao, Map<RegistradorEnum, String> registradores, JTextArea console) {
-            throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+            String valor = registradores.get(RBM);
+            String text = console.getText();
+            console.setText(text + "\n" + Integer.toBinaryString(Integer.parseInt(valor)));
+            return registradores;
         }
     }, AND_REG_REG("00100011", 16) {
         @Override
