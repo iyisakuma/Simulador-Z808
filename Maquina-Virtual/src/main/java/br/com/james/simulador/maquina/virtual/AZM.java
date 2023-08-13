@@ -19,7 +19,7 @@ import javax.swing.JTextArea;
  * @author yujisakuma
  */
 public class AZM {
-
+    
     private BufferedReader reader;
     private Map<String, Integer> tabelaSimbolos = new HashMap<>();
     /* 
@@ -31,7 +31,7 @@ public class AZM {
     private int lineCounter = 0;
     private int pointCounter = 0;
     private String nomeArquivo;
-
+    
     public AZM(String uri, JTextArea console, JTextArea codigo) throws IOException {
         var path = Paths.get(uri);
         reader = Files.newBufferedReader(path);
@@ -39,19 +39,19 @@ public class AZM {
         this.console = console;
         this.codigo = codigo;
     }
-
+    
     public String init() throws IOException {
         String text = console.getText();
         var date = new Date();
         console.setText(text + "\n" + String.format("[%s]Iniciando o processo de montagem", date.toString()));
         return primeiroPasso();
     }
-
+    
     private String[] limpa(String instrucao) {
         var instrucaoQuaseLimpa = instrucao.split(";")[0];
         return instrucaoQuaseLimpa.split("\\p{Zs}+");
     }
-
+    
     private String primeiroPasso() throws IOException {
         String instruction;
         while ((instruction = reader.readLine()) != null) {
@@ -78,8 +78,6 @@ public class AZM {
                 case "JP":
                 case "CALL":
                 case "POP":
-                case "POPF":
-                case "PUSH":
                 case "PUSHF":
                 case "STORE":
                 case "READ":
@@ -106,6 +104,11 @@ public class AZM {
                     }
                     codigoObjeto.append("\n");
                     break;
+                case "POPF":
+                case "PUSH":
+                    ++pointCounter;
+                    codigoObjeto.append(instrucaoLimpa[0]).append("\n");
+                    break;
                 default:
                     codigoObjeto.append(instrucaoLimpa[0])
                             .append("\t")
@@ -123,7 +126,7 @@ public class AZM {
                         addTabelaSimbolo(operando[1]);
                     } else {
                         codigoObjeto.append(instrucaoLimpa[2]);
-
+                        
                         if (instrucaoLimpa[1].equals("EQU")) {
                             tabelaSimbolos.put(instrucaoLimpa[0], Integer.valueOf(instrucaoLimpa[2]));
                             ++pointCounter;
@@ -138,10 +141,10 @@ public class AZM {
         }
         throw new AssertionError();
     }
-
+    
     private String segundoPasso() throws IOException {
         String nomeArquivo = "..\\src\\main\\resources\\Executavel\\" + this.nomeArquivo + "Executavel.txt";
-
+        
         FileWriter fileWriter = new FileWriter(nomeArquivo);
         var buffer = new BufferedWriter(fileWriter);
         Arrays.asList(codigoObjeto.toString().split("\n")).forEach(row -> {
@@ -292,7 +295,7 @@ public class AZM {
                         buffer.write(linhaBin.toString());
                         break;
                 }
-
+                
             } catch (IOException ex) {
                 Logger.getLogger(AZM.class.getName()).log(Level.SEVERE, null, ex);
             }
@@ -300,7 +303,7 @@ public class AZM {
         buffer.close();
         return nomeArquivo;
     }
-
+    
     private void addTabelaSimbolo(String segundoOperando) {
         if (isNotLabel(segundoOperando)) {
             if (tabelaSimbolos.containsKey(segundoOperando)) {
@@ -308,13 +311,13 @@ public class AZM {
             }
         }
     }
-
+    
     private boolean isNotLabel(String str) {
         return str.replaceAll("AX|DX|SI", "").isBlank()
                 && !str.contains("$")
                 && !Character.isDigit(str.charAt(0));
     }
-
+    
     private String getOperandoDe(String[] instrucao) {
         String operando = instrucao[instrucao.length - 1];
         var isDireto = operando.contains("&");
@@ -337,7 +340,7 @@ public class AZM {
             return "";
         }
     }
-
+    
     private static boolean isNumeric(String strNum) {
         if (strNum == null) {
             return false;
