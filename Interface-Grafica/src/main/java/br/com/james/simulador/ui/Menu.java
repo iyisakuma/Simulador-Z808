@@ -552,7 +552,7 @@ public class Menu extends javax.swing.JFrame {
     }
     
     private boolean ehFimExecucao(int codigoAtual) {
-        return codigoAtual >= 0 && codigoAtual < instrucoes.size();
+        return codigoAtual >= 0 && instrucoes.containsKey(codigoAtual);
     }
     
     private void carregaRBM(String instrucao) {

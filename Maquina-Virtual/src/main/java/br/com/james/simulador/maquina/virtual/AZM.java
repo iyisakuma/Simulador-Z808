@@ -63,10 +63,6 @@ public class AZM {
                     codigoObjeto.append("END");
                     codigo.setText(codigoObjeto.toString());
                     return segundoPasso();
-                case "ADD":
-                case "DIV":
-                case "SUB":
-                case "MUL":
                 case "CMP":
                 case "AND":
                 case "NOT":
@@ -93,6 +89,23 @@ public class AZM {
                         ++pointCounter;
                     }
                     if (instrucaoLimpa[1].contains(",")) {
+                        var operando = instrucaoLimpa[1].split(",");
+                        codigoObjeto.append(operando[0]).append("\t").append(operando[1]).append("\t");
+                        pointCounter += 3;
+                        //Se o segundo operando for label, será adicionado para tabela de simbolo
+                        addTabelaSimbolo(operando[1]);
+                    } else {
+                        codigoObjeto.append(instrucaoLimpa[1]).append("\t");
+                        pointCounter += 2;
+                    }
+                    codigoObjeto.append("\n");
+                    break;
+                case "ADD":
+                case "DIV":
+                case "SUB":
+                case "MUL":
+                    codigoObjeto.append(instrucaoLimpa[0]).append("\t");
+                    if (instrucaoLimpa[1].contains(",") && !instrucaoLimpa[1].contains("DX")) {
                         var operando = instrucaoLimpa[1].split(",");
                         codigoObjeto.append(operando[0]).append("\t").append(operando[1]).append("\t");
                         pointCounter += 3;
