@@ -191,21 +191,20 @@ public enum Mnemonico implements Acao {
             verifyNumberOfBits(instrucao, this.getNumberOfBits());
             var ax = registradores.get(AX);
             var opcodeRegister = instrucao.substring(8, 16);
-            var finalValue = new StringBuilder();
+            var resultado = new StringBuilder();
             if (opcodeRegister.equalsIgnoreCase(DX.getEndereco())) {
                 var dx = new StringBuilder(registradores.get(DX));
                 for (int i = 0; i < ax.toCharArray().length; i++) {
-                    finalValue.append(ax.charAt(i) == '0' || dx.charAt(i) == '0' ? '0' : '1');
+                    resultado.append(ax.charAt(i) == '0' || dx.charAt(i) == '0' ? '0' : '1');
                 }
             } else if (opcodeRegister.equalsIgnoreCase(AX.getEndereco())) {
-                finalValue.append(ax);
+                resultado.append(ax);
             } else {
                 throw new IllegalArgumentException(String.format(
                         "Opcode: %s não representa o registrador AX(%s) ou DX(%s)",
                         opcodeRegister, AX.getEndereco(), DX.getEndereco()));
             }
-            var sr = new StringBuilder(registradores.get(SR)).reverse();
-            updateRegistradores(registradores, sr, finalValue, true);
+            updateRegistradores(registradores, instrucao, resultado, true);
             return registradores;
         }
     }, AND_REG_OP("00100101", 24) {
@@ -214,17 +213,14 @@ public enum Mnemonico implements Acao {
             verifyNumberOfBits(instrucao, this.getNumberOfBits());
             var ax = registradores.get(AX);
             var opcodeOp = instrucao.substring(16, 24);
-            if (opcodeOp.toCharArray()[0] == '0') {
-                opcodeOp = String.format("%16s", opcodeOp).replaceAll(" ", "0");
-            } else {
-                opcodeOp = String.format("%16s", opcodeOp).replaceAll(" ", "1");
-            }
-            var finalValue = new StringBuilder();
+            opcodeOp = String
+                    .format("%16s", opcodeOp)
+                    .replaceAll(" ", opcodeOp.toCharArray()[0] == '0' ? "0" : "1");
+            var resultado = new StringBuilder();
             for (int i = 0; i < ax.toCharArray().length; i++) {
-                finalValue.append(ax.charAt(i) == '0' || opcodeOp.charAt(i) == '0' ? '0' : '1');
+                resultado.append(ax.charAt(i) == '0' || opcodeOp.charAt(i) == '0' ? '0' : '1');
             }
-            var sr = new StringBuilder(registradores.get(SR)).reverse();
-            updateRegistradores(registradores, sr, finalValue, true);
+            updateRegistradores(registradores, instrucao, resultado, true);
             return registradores;
         }
     }, NOT_REG("11111000", 16) {
@@ -232,17 +228,18 @@ public enum Mnemonico implements Acao {
         public Map<RegistradorEnum, String> acao(String instrucao, Map<RegistradorEnum, String> registradores, JTextArea console) {
             verifyNumberOfBits(instrucao, this.getNumberOfBits());
             var ax = registradores.get(AX);
-            var sr = new StringBuilder(registradores.get(SR)).reverse();
             var opcodeRegister = instrucao.substring(8, 16);
-            var finalValue = new StringBuilder();
+            var resultado = new StringBuilder();
             if (opcodeRegister.equalsIgnoreCase(AX.getEndereco())) {
                 for (char bit : ax.toCharArray()) {
-                    finalValue.append(bit == '1' ? '0' : '1');
+                    resultado.append(bit == '1' ? '0' : '1');
                 }
             } else {
-                throw new IllegalArgumentException(String.format("Operando: %s não existe!", opcodeRegister));
+                throw new IllegalArgumentException(String.format(
+                        "Opcode: %s não representa o registrador AX(%s)",
+                        opcodeRegister, AX.getEndereco()));
             }
-            updateRegistradores(registradores, sr, finalValue, true);
+            updateRegistradores(registradores, instrucao, resultado, true);
             return registradores;
         }
     }, OR_REG_REG("00001011", 16) {
@@ -250,19 +247,21 @@ public enum Mnemonico implements Acao {
         public Map<RegistradorEnum, String> acao(String instrucao, Map<RegistradorEnum, String> registradores, JTextArea console) {
             verifyNumberOfBits(instrucao, this.getNumberOfBits());
             var ax = registradores.get(AX);
-            var sr = new StringBuilder(registradores.get(SR)).reverse();
             var opcodeRegister = instrucao.substring(8, 16);
-            var finalValue = new StringBuilder();
+            var resultado = new StringBuilder();
             if (opcodeRegister.equalsIgnoreCase(DX.getEndereco())) {
                 var dx = new StringBuilder(registradores.get(DX));
                 for (int i = 0; i < ax.toCharArray().length; i++) {
-                    finalValue.append(ax.charAt(i) == '1' || dx.charAt(i) == '1' ? '1' : '0');
+                    resultado.append(ax.charAt(i) == '1' || dx.charAt(i) == '1' ? '1' : '0');
                 }
-            } else if (opcodeRegister.equalsIgnoreCase(AX.getEndereco())) finalValue.append(ax);
-            else {
-                throw new IllegalArgumentException(String.format("Operando: %s não existe!", opcodeRegister));
+            } else if (opcodeRegister.equalsIgnoreCase(AX.getEndereco())) {
+                resultado.append(ax);
+            } else {
+                throw new IllegalArgumentException(String.format(
+                        "Opcode: %s não representa o registrador AX(%s) ou DX(%s)",
+                        opcodeRegister, AX.getEndereco(), DX.getEndereco()));
             }
-            updateRegistradores(registradores, sr, finalValue, true);
+            updateRegistradores(registradores, instrucao, resultado, true);
             return registradores;
         }
     }, OR_REG_OP("00001101", 24) {
@@ -270,21 +269,15 @@ public enum Mnemonico implements Acao {
         public Map<RegistradorEnum, String> acao(String instrucao, Map<RegistradorEnum, String> registradores, JTextArea console) {
             verifyNumberOfBits(instrucao, this.getNumberOfBits());
             var ax = registradores.get(AX);
-            var sr = new StringBuilder(registradores.get(SR)).reverse();
             var opcodeOp = instrucao.substring(16, 24);
-            if (opcodeOp.toCharArray()[0] == '0') {
-                opcodeOp = String.format("%16s", opcodeOp).replaceAll(" ", "0");
-            } else {
-                opcodeOp = String.format("%16s", opcodeOp).replaceAll(" ", "1");
+            opcodeOp = String
+                    .format("%16s", opcodeOp)
+                    .replaceAll(" ", opcodeOp.toCharArray()[0] == '0' ? "0" : "1");
+            var resultado = new StringBuilder();
+            for (int i = 0; i < ax.toCharArray().length; i++) {
+                resultado.append(ax.charAt(i) == '1' || opcodeOp.charAt(i) == '1' ? '1' : '0');
             }
-            var finalValue = new StringBuilder();
-            if (ax.equalsIgnoreCase("1".repeat(ax.toCharArray().length))) finalValue.append(ax);
-            else {
-                for (int i = 0; i < ax.toCharArray().length; i++) {
-                    finalValue.append(ax.charAt(i) == '1' || opcodeOp.charAt(i) == '1' ? '1' : '0');
-                }
-            }
-            updateRegistradores(registradores, sr, finalValue, true);
+            updateRegistradores(registradores, instrucao, resultado, true);
             return registradores;
         }
     }, XOR_REG_REG("00110011", 16) {
@@ -292,20 +285,21 @@ public enum Mnemonico implements Acao {
         public Map<RegistradorEnum, String> acao(String instrucao, Map<RegistradorEnum, String> registradores, JTextArea console) {
             verifyNumberOfBits(instrucao, this.getNumberOfBits());
             var ax = registradores.get(AX);
-            var sr = new StringBuilder(registradores.get(SR)).reverse();
             var opcodeRegister = instrucao.substring(8, 16);
-            var finalValue = new StringBuilder();
+            var resultado = new StringBuilder();
             if (opcodeRegister.equalsIgnoreCase(DX.getEndereco())) {
                 var dx = new StringBuilder(registradores.get(DX));
                 for (int i = 0; i < ax.toCharArray().length; i++) {
-                    finalValue.append(ax.charAt(i) == dx.charAt(i) ? '0' : '1');
+                    resultado.append(ax.charAt(i) == dx.charAt(i) ? '0' : '1');
                 }
             } else if (opcodeRegister.equalsIgnoreCase(AX.getEndereco())) {
-                finalValue.append("0".repeat(ax.toCharArray().length));
+                resultado.append("0".repeat(ax.toCharArray().length));
             } else {
-                throw new IllegalArgumentException(String.format("Operando: %s não existe!", opcodeRegister));
+                throw new IllegalArgumentException(String.format(
+                        "Opcode: %s não representa o registrador AX(%s) ou DX(%s)",
+                        opcodeRegister, AX.getEndereco(), DX.getEndereco()));
             }
-            updateRegistradores(registradores, sr, finalValue, true);
+            updateRegistradores(registradores, instrucao, resultado, true);
             return registradores;
         }
     }, XOR_REG_OP("00110101", 24) {
@@ -313,23 +307,15 @@ public enum Mnemonico implements Acao {
         public Map<RegistradorEnum, String> acao(String instrucao, Map<RegistradorEnum, String> registradores, JTextArea console) {
             verifyNumberOfBits(instrucao, this.getNumberOfBits());
             var ax = registradores.get(AX);
-            var sr = new StringBuilder(registradores.get(SR)).reverse();
             var opcodeOp = instrucao.substring(16, 24);
-            if (opcodeOp.toCharArray()[0] == '0') {
-                opcodeOp = String.format("%16s", opcodeOp).replaceAll(" ", "0");
-            } else {
-                opcodeOp = String.format("%16s", opcodeOp).replaceAll(" ", "1");
+            opcodeOp = String
+                    .format("%16s", opcodeOp)
+                    .replaceAll(" ", opcodeOp.toCharArray()[0] == '0' ? "0" : "1");
+            var resultado = new StringBuilder();
+            for (int i = 0; i < ax.toCharArray().length; i++) {
+                resultado.append(ax.charAt(i) == opcodeOp.charAt(i) ? '0' : '1');
             }
-            var finalValue = new StringBuilder();
-            if (ax.equalsIgnoreCase("1".repeat(ax.toCharArray().length))
-                    || ax.equalsIgnoreCase("0".repeat(ax.toCharArray().length))) {
-                finalValue.append("0".repeat(ax.toCharArray().length));
-            } else {
-                for (int i = 0; i < ax.toCharArray().length; i++) {
-                    finalValue.append(ax.charAt(i) == opcodeOp.charAt(i) ? '0' : '1');
-                }
-            }
-            updateRegistradores(registradores, sr, finalValue, true);
+            updateRegistradores(registradores, instrucao, resultado, true);
             return registradores;
         }
     }, CMP_REG_REG("00111011", 16) {
@@ -337,15 +323,18 @@ public enum Mnemonico implements Acao {
         public Map<RegistradorEnum, String> acao(String instrucao, Map<RegistradorEnum, String> registradores, JTextArea console) {
             verifyNumberOfBits(instrucao, this.getNumberOfBits());
             var ax = registradores.get(AX);
-            var sr = new StringBuilder(registradores.get(SR)).reverse();
-            var operand = instrucao.substring(8, 16);
-            char finalValue;
-            if (operand.equalsIgnoreCase(DX.getEndereco())) {
-                finalValue = ax.equalsIgnoreCase(registradores.get(DX)) ? '1' : '0';
+            var opcodeRegister = instrucao.substring(8, 16);
+            char resultado;
+            if (opcodeRegister.equalsIgnoreCase(DX.getEndereco())) {
+                var dx = registradores.get(DX);
+                resultado = ax.equalsIgnoreCase(dx) ? '1' : '0';
             } else {
-                throw new IllegalArgumentException(String.format("Operando: %s não existe!", operand));
+                throw new IllegalArgumentException(String.format(
+                        "Opcode: %s não representa o registrador DX(%s)",
+                        opcodeRegister, DX.getEndereco()));
             }
-            sr.setCharAt(8, finalValue);
+            var sr = new StringBuilder(registradores.get(SR)).reverse();
+            sr.setCharAt(8, resultado);
             registradores.replace(SR, sr.reverse().toString());
             return registradores;
         }
@@ -354,10 +343,13 @@ public enum Mnemonico implements Acao {
         public Map<RegistradorEnum, String> acao(String instrucao, Map<RegistradorEnum, String> registradores, JTextArea console) {
             verifyNumberOfBits(instrucao, this.getNumberOfBits());
             var ax = registradores.get(AX);
+            var opcodeOp = instrucao.substring(16, 24);
+            opcodeOp = String
+                    .format("%16s", opcodeOp)
+                    .replaceAll(" ", opcodeOp.toCharArray()[0] == '0' ? "0" : "1");
+            var resultado = ax.equalsIgnoreCase(opcodeOp) ? '1' : '0';
             var sr = new StringBuilder(registradores.get(SR)).reverse();
-            var operand = instrucao.substring(8, 24);
-            var finalValue = ax.equalsIgnoreCase(operand) ? '1' : '0';
-            sr.setCharAt(8, finalValue);
+            sr.setCharAt(8, resultado);
             registradores.replace(SR, sr.reverse().toString());
             return registradores;
         }
@@ -373,7 +365,7 @@ public enum Mnemonico implements Acao {
             } else {
                 throw new IllegalArgumentException(String.format(
                         "Opcode: %s não representa o registrador AX(%s) ou DX(%s)",
-                            opcodeRegister, AX.getEndereco(), DX.getEndereco()));
+                        opcodeRegister, AX.getEndereco(), DX.getEndereco()));
             }
             registradores.replace(SP, pilha.peekEndereco());
             return registradores;
@@ -528,40 +520,16 @@ public enum Mnemonico implements Acao {
         }
     }
     
+    public int getNumberOfBits() {
+        return numberOfBits;
+    }
+    
     public static boolean verifyEmptyStack() {
         return pilha.isEmpty();
     }
     
     public static boolean verifyStackCapacity() {
         return !pilha.isSizeUnderLimit();
-    }
-    
-    public void updateRegistradores(Map<RegistradorEnum, String> registradores, StringBuilder sr, StringBuilder finalValue, boolean isLogic) {
-        fillRegisterSR(sr, finalValue, isLogic);
-        registradores.replace(SR, sr.reverse().toString());
-        registradores.replace(AX, finalValue.toString());
-    }
-    
-    //TODO: quando a operação não for lógica indicar o que deve ser feito para o CF e OF
-    public void fillRegisterSR(StringBuilder sr, StringBuilder finalValue, boolean isLogic) {
-        if (isLogic){
-            sr.setCharAt(0,'0'); // CF (carry) = 0
-            sr.setCharAt(12,'0'); // OF (overflow) = 0
-        } else {
-            sr.setCharAt(0,'1');
-            sr.setCharAt(12,'1');
-        }
-        sr.setCharAt(6, isEven(finalValue.toString()) ? '1' : '0'); // PF (parity) = isEven()
-        sr.setCharAt(8, isZero(finalValue.toString()) ? '1' : '0'); // ZF (zero) = isZero()
-        sr.setCharAt(9, finalValue.charAt(0)); // SF (sign) = most significant bit
-    }
-    
-    private boolean isEven(String number) {
-        return (number.split("1").length - 1) % 2 == 0;
-    }
-    
-    private boolean isZero(String number) {
-        return !number.contains("1");
     }
     
     public void verifyNumberOfBits(String instrucao, int numberOfBits) {
@@ -572,8 +540,65 @@ public enum Mnemonico implements Acao {
         
     }
     
-    public int getNumberOfBits() {
-        return numberOfBits;
+    public void updateRegistradores(Map<RegistradorEnum, String> registradores, String instrucao, StringBuilder resultado, boolean isLogic) {
+        registradores.replace(AX, resultado.toString());
+        registradores.replace(IP, fillRegisterIP(registradores.get(IP), instrucao));
+        registradores.replace(SR, fillRegisterSR(new StringBuilder(registradores.get(SR)).reverse(), resultado, isLogic));
+    }
+    
+    private String fillRegisterIP(String ip, String instrucao) {
+        switch (instrucao.length()) {
+            case 8 -> {
+                var ipDecimal = Integer.parseInt(ip, 2);
+                ipDecimal += 1;
+                ip = String
+                        .format("%16s", Integer.toBinaryString(ipDecimal))
+                        .replaceAll(" ", ip.toCharArray()[0] == 0 ? "0" : "1");
+                return ip;
+            }
+            case 16 -> {
+                var ipDecimal = Integer.parseInt(ip, 2);
+                ipDecimal += 2;
+                ip = String
+                        .format("%16s", Integer.toBinaryString(ipDecimal))
+                        .replaceAll(" ", ip.toCharArray()[0] == 0 ? "0" : "1");
+                return ip;
+            }
+            case 24 -> {
+                var ipDecimal = Integer.parseInt(ip, 2);
+                ipDecimal += 3;
+                ip = String
+                        .format("%16s", Integer.toBinaryString(ipDecimal))
+                        .replaceAll(" ", ip.toCharArray()[0] == 0 ? "0" : "1");
+                return ip;
+            }
+            default -> {
+                return ip;
+            }
+        }
+    }
+    
+    //TODO: quando a operação não for lógica indicar o que deve ser feito para o CF e OF
+    public String fillRegisterSR(StringBuilder sr, StringBuilder resultado, boolean isLogic) {
+        if (isLogic){
+            sr.setCharAt(0,'0'); // CF (carry) = 0
+            sr.setCharAt(12,'0'); // OF (overflow) = 0
+        } else {
+            sr.setCharAt(0,'1');
+            sr.setCharAt(12,'1');
+        }
+        sr.setCharAt(6, isEven(resultado.toString()) ? '1' : '0'); // PF (parity) = isEven()
+        sr.setCharAt(8, isZero(resultado.toString()) ? '1' : '0'); // ZF (zero) = isZero()
+        sr.setCharAt(9, resultado.charAt(0)); // SF (sign) = most significant bit
+        return sr.reverse().toString();
+    }
+    
+    private boolean isEven(String number) {
+        return (number.split("1").length - 1) % 2 == 0;
+    }
+    
+    private boolean isZero(String number) {
+        return !number.contains("1");
     }
     
 }
