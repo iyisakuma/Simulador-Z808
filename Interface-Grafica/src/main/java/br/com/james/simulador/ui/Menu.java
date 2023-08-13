@@ -552,12 +552,14 @@ public class Menu extends javax.swing.JFrame {
     }
     
     private boolean ehFimExecucao(int codigoAtual) {
-        return codigoAtual >= 0 && codigoAtual < instrucoes.size();
+        return codigoAtual >= 0 && instrucoes.containsKey(codigoAtual);
     }
     
     private void carregaRBM(String instrucao) {
         var tamanhoInstrucao = instrucao.length();
-        var operando = instrucao.substring(8, tamanhoInstrucao - 1);
+        var operando = tamanhoInstrucao == 8 ?
+                instrucao :
+                instrucao.substring(8, tamanhoInstrucao - 1);
         if (tamanhoInstrucao > 7 && tamanhoInstrucao % 2 == 1) {
             var tipoEnderecamento = TipoEnderecamento.getByBit(instrucao.charAt(tamanhoInstrucao - 1));
             switch (tipoEnderecamento) {

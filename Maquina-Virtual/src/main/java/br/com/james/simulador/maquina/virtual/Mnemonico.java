@@ -2,6 +2,7 @@ package br.com.james.simulador.maquina.virtual;
 
 import javax.swing.*;
 import java.util.Map;
+import java.util.Objects;
 
 import static br.com.james.simulador.maquina.virtual.RegistradorEnum.*;
 
@@ -139,6 +140,9 @@ public enum Mnemonico implements Acao {
         public Map<RegistradorEnum, String> acao(String instrucao, Map<RegistradorEnum, String> registradores, JTextArea console) {
             var endereco = Integer.valueOf(registradores.get(RBM));
             registradores.replace(RBM, endereco + "_" + registradores.get(REM));
+            instrucao += registradores.get(REM);
+            verifyNumberOfBits(instrucao, getNumberOfBits());
+            updateRegistradores(registradores, instrucao, new StringBuilder(registradores.get(AX)), TipoDeOperacao.RW);
             return registradores;
         }
     }, WRITE("00001000", 24) {
@@ -147,6 +151,8 @@ public enum Mnemonico implements Acao {
             String valor = registradores.get(RBM);
             String text = console.getText();
             console.setText(text + "\n" + Integer.toBinaryString(Integer.parseInt(valor)));
+            instrucao += valor;
+            updateRegistradores(registradores, instrucao, new StringBuilder(registradores.get(AX)), TipoDeOperacao.RW);
             return registradores;
         }
     }, AND_REG_REG("00100011", 16) {
@@ -333,7 +339,9 @@ public enum Mnemonico implements Acao {
                         "Opcode: %s não representa o registrador AX(%s) ou DX(%s)",
                         opcodeRegister, AX.getEndereco(), DX.getEndereco()));
             }
-            registradores.replace(SP, pilha.peek());
+            registradores.replace(SP, pilha.isEmpty()
+                    ? registradores.get(SP).replaceAll("1", "0")
+                    : pilha.peek());
             updateRegistradores(registradores, instrucao, new StringBuilder(registradores.get(AX)), TipoDeOperacao.PILHA);
             return registradores;
         }
@@ -342,7 +350,9 @@ public enum Mnemonico implements Acao {
         public Map<RegistradorEnum, String> acao(String instrucao, Map<RegistradorEnum, String> registradores, JTextArea console) {
             verifyNumberOfBits(instrucao, this.getNumberOfBits());
             registradores.replace(AUX, pilha.pop());
-            registradores.replace(SP, pilha.peek());
+            registradores.replace(SP, pilha.isEmpty()
+                    ? registradores.get(SP).replaceAll("1", "0")
+                    : pilha.peek());
             updateRegistradores(registradores, instrucao, new StringBuilder(registradores.get(AX)), TipoDeOperacao.PILHA);
             return registradores;
         }
@@ -351,7 +361,9 @@ public enum Mnemonico implements Acao {
         public Map<RegistradorEnum, String> acao(String instrucao, Map<RegistradorEnum, String> registradores, JTextArea console) {
             verifyNumberOfBits(instrucao, this.getNumberOfBits());
             registradores.replace(SR, pilha.pop());
-            registradores.replace(SP, pilha.peek());
+            registradores.replace(SP, pilha.isEmpty()
+                    ? registradores.get(SP).replaceAll("1", "0")
+                    : pilha.peek());
             updateRegistradores(registradores, instrucao, new StringBuilder(registradores.get(AX)), TipoDeOperacao.PILHA);
             return registradores;
         }
@@ -512,9 +524,22 @@ public enum Mnemonico implements Acao {
     }
     
     public void updateRegistradores(Map<RegistradorEnum, String> registradores, String instrucao, StringBuilder resultado, TipoDeOperacao tipoDeOperacao) {
-        registradores.replace(AX, resultado.toString());
+        registradores.replace(AX, fillRegisterAX(resultado, tipoDeOperacao));
         registradores.replace(IP, fillRegisterIP(registradores.get(IP), instrucao));
         registradores.replace(SR, fillRegisterSR(new StringBuilder(registradores.get(SR)).reverse(), resultado, tipoDeOperacao));
+    }
+    
+    private String fillRegisterAX(StringBuilder resultado, TipoDeOperacao tipoDeOperacao) {
+        if (Objects.requireNonNull(tipoDeOperacao) == TipoDeOperacao.ARITMETICA) {
+            String preencheResultado = resultado.toString();
+            if (resultado.length() != 16) {
+                preencheResultado = String
+                        .format("%16s", resultado)
+                        .replaceAll(" ", "0");
+            }
+            return preencheResultado;
+        }
+        return resultado.toString();
     }
     
     private String fillRegisterIP(String ip, String instrucao) {
@@ -543,28 +568,24 @@ public enum Mnemonico implements Acao {
     
     public String fillRegisterSR(StringBuilder sr, StringBuilder resultado, TipoDeOperacao tipoDeOperacao) {
         switch (tipoDeOperacao) {
-            case ARITMETICA:
+            case ARITMETICA -> {
                 var resultadoDecimal = Integer.parseInt(resultado.toString(), 2);
                 sr.setCharAt(0, resultadoDecimal > 32767 || resultadoDecimal < -32768 ? '1' : '0'); // CF (carry)
                 sr.setCharAt(6, isEven(resultado.toString()) ? '1' : '0'); // PF (parity) = isEven()
                 sr.setCharAt(8, isZero(resultado.toString()) ? '1' : '0'); // ZF (zero) = isZero()
                 sr.setCharAt(9, resultado.charAt(0)); // SF (sign) = most significant bit
                 sr.setCharAt(12, resultadoDecimal > 32767 || resultadoDecimal < -32768 ? '1' : '0'); // OF (overflow)
-                break;
-            case LOGICA:
+            }
+            case LOGICA -> {
                 sr.setCharAt(0, '0'); // CF (carry) = 0
                 sr.setCharAt(6, isEven(resultado.toString()) ? '1' : '0'); // PF (parity) = isEven()
                 sr.setCharAt(8, isZero(resultado.toString()) ? '1' : '0'); // ZF (zero) = isZero()
                 sr.setCharAt(9, resultado.charAt(0)); // SF (sign) = most significant bit
                 sr.setCharAt(12, '0'); // OF (overflow) = 0
-                break;
-            case COMPARACAO:
-                sr = resultado;
-                break;
-            case PILHA:
-                break;
-            default:
-                throw new IllegalStateException("Unexpected value: " + tipoDeOperacao);
+            }
+            case COMPARACAO -> sr = resultado;
+            default -> {
+            }
         }
         return sr.reverse().toString();
     }

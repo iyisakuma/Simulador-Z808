@@ -20,7 +20,7 @@ public class Executor {
         String text = console.getText();
         console.setText(text + "\n" + String.format("[%s]Execuntando o programa", new Date()));
         atualizaEndereco(registradores);
-        getMnemonico(instrucao).acao(instrucao, registradores, console);
+        getMnemonico(instrucao).acao(instrucao.substring(0, instrucao.length()-1), registradores, console);
     }
 
     private static Mnemonico getMnemonico(String instrucao) {

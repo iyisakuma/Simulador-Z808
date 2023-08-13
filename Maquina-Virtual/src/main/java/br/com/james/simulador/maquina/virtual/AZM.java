@@ -63,10 +63,6 @@ public class AZM {
                     codigoObjeto.append("END");
                     codigo.setText(codigoObjeto.toString());
                     return segundoPasso();
-                case "ADD":
-                case "DIV":
-                case "SUB":
-                case "MUL":
                 case "CMP":
                 case "AND":
                 case "NOT":
@@ -80,8 +76,6 @@ public class AZM {
                 case "POP":
                 case "PUSH":
                 case "STORE":
-                case "READ":
-                case "WRITE":
 
                 // Diretivas
                 case "ORD":
@@ -104,10 +98,33 @@ public class AZM {
                     }
                     codigoObjeto.append("\n");
                     break;
+                case "ADD":
+                case "DIV":
+                case "SUB":
+                case "MUL":
+                    codigoObjeto.append(instrucaoLimpa[0]).append("\t");
+                    if (instrucaoLimpa[1].contains(",") && !instrucaoLimpa[1].contains("DX")) {
+                        var operando = instrucaoLimpa[1].split(",");
+                        codigoObjeto.append(operando[0]).append("\t").append(operando[1]).append("\t");
+                        pointCounter += 3;
+                        //Se o segundo operando for label, será adicionado para tabela de simbolo
+                        addTabelaSimbolo(operando[1]);
+                    } else {
+                        var operando = instrucaoLimpa[1].split(",");
+                        codigoObjeto.append(operando[0]).append("\t").append(operando[1]).append("\t");
+                        pointCounter += 2;
+                    }
+                    codigoObjeto.append("\n");
+                    break;
                 case "POPF":
                 case "PUSHF":
                     ++pointCounter;
                     codigoObjeto.append(instrucaoLimpa[0]).append("\n");
+                    break;
+                case "READ":
+                case "WRITE":
+                    pointCounter += 3;
+                    codigoObjeto.append(instrucaoLimpa[0]).append("\t").append(instrucaoLimpa[1]).append("\n");
                     break;
                 default:
                     codigoObjeto.append(instrucaoLimpa[0])
