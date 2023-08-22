@@ -244,7 +244,7 @@ public class Menu extends javax.swing.JFrame {
         txtCodigo.setColumns(20);
         txtCodigo.setLineWrap(true);
         txtCodigo.setRows(5);
-        txtCodigo.setText("-> BEM-VIND@ AO SIMULADOR Z808 ;)\nIntegrantes:\n* Claudinei Francisco  Rosa \n* Hyhickle Umetsubo Gonçalves\n* Igor Yui Ishihara Sakuma\n* Maurício Caralho Mucci\n\nTodos os direitos reservador para o grupo James\n\nhttps://www.youtube.com/shorts/9WXjN32MFhk");
+        txtCodigo.setText("-> BEM-VIND@ AO SIMULADOR Z808 ;)\nIntegrantes:\n* Claudinei Francisco  Rosa de Lima \n* Hyhickle Umetsubo Gonçalves\n* Igor Yui Ishihara Sakuma\n* Maurício Carvalho Mucci\n* Luhan Borin Moura\n* Alexandre João Cardoso\n* Arthur Teles\nTodos os direitos reservador para o grupo James\n\nhttps://www.youtube.com/shorts/9WXjN32MFhk");
         txtCodigo.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
         jScrollPane2.setViewportView(txtCodigo);
 
@@ -271,9 +271,7 @@ public class Menu extends javax.swing.JFrame {
                     .addGroup(layout.createSequentialGroup()
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                             .addComponent(panelCodigo, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addGroup(layout.createSequentialGroup()
-                                .addComponent(lvlInput, javax.swing.GroupLayout.PREFERRED_SIZE, 248, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                            .addComponent(lvlInput, javax.swing.GroupLayout.PREFERRED_SIZE, 248, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addGroup(layout.createSequentialGroup()
                                 .addComponent(txtInput, javax.swing.GroupLayout.PREFERRED_SIZE, 618, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
@@ -288,7 +286,7 @@ public class Menu extends javax.swing.JFrame {
                                     .addComponent(jTabbedPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE)
                                     .addComponent(lblArquivoFonte, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                                     .addComponent(txtArquivoFonte)
-                                    .addComponent(lblArquivoObjeto, javax.swing.GroupLayout.DEFAULT_SIZE, 349, Short.MAX_VALUE)
+                                    .addComponent(lblArquivoObjeto, javax.swing.GroupLayout.DEFAULT_SIZE, 343, Short.MAX_VALUE)
                                     .addComponent(txtArquivoObjeto)))))
                     .addGroup(layout.createSequentialGroup()
                         .addComponent(btRun)
@@ -565,14 +563,15 @@ public class Menu extends javax.swing.JFrame {
             switch (tipoEnderecamento) {
                 case IMEDIATO:
                     registradores.replace(RegistradorEnum.RBM, String.format("%16s", operando).replaceAll(" ", "0"));
-                    return;
+                    break;
                 case DIRETO:
                     var endereco = Util.binarioParaDecimal(operando);
                     var valor = dados.getOrDefault(endereco, "0");
                     registradores.replace(RegistradorEnum.RBM, String.format("%16s", valor).replaceAll(" ", "0"));
-                    return;
+                    break;
             }
         }
+        
     }
     
     private BufferedReader abreArquivoObjeto() throws IOException {

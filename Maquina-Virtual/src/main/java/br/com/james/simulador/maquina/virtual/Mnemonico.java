@@ -10,7 +10,7 @@ import static br.com.james.simulador.maquina.virtual.RegistradorEnum.*;
  * @author yujisakuma
  */
 public enum Mnemonico implements Acao {
-    
+
     /**
      * 1. Quando adicionar um mnemonico adicionar o seu opcode em binário. 2.
      * Certificar que tenha 1 byte ou 2 bytes (depende da instrução). Além
@@ -42,7 +42,7 @@ public enum Mnemonico implements Acao {
             updateRegistradores(registradores, instrucao, resultado, TipoDeOperacao.ARITMETICA);
             return registradores;
         }
-    }, ADD_AX_OPD("00000101", 24) {
+    }, ADD_AX_OPD("00000101", 25) {
         @Override
         public Map<RegistradorEnum, String> acao(String instrucao, Map<RegistradorEnum, String> registradores, JTextArea console) {
             verifyNumberOfBits(instrucao, this.getNumberOfBits());
@@ -83,7 +83,7 @@ public enum Mnemonico implements Acao {
             updateRegistradores(registradores, instrucao, resultado, TipoDeOperacao.ARITMETICA);
             return registradores;
         }
-    }, SUB_AX_OPD("00100101", 24) {
+    }, SUB_AX_OPD("00100101", 25) {
         @Override
         public Map<RegistradorEnum, String> acao(String instrucao, Map<RegistradorEnum, String> registradores, JTextArea console) {
             verifyNumberOfBits(instrucao, this.getNumberOfBits());
@@ -98,14 +98,14 @@ public enum Mnemonico implements Acao {
             updateRegistradores(registradores, instrucao, resultado, TipoDeOperacao.ARITMETICA);
             return registradores;
         }
-    }, JUMP("11101011", 24) {
+    }, JUMP("11101011", 25) {
         @Override
         public Map<RegistradorEnum, String> acao(String instrucao, Map<RegistradorEnum, String> registradores, JTextArea console) {
             var endereco = registradores.get(RBM);
             registradores.replace(IP, endereco);
             return registradores;
         }
-    }, JZ("01110100", 24) {
+    }, JZ("01110100", 25) {
         @Override
         public Map<RegistradorEnum, String> acao(String instrucao, Map<RegistradorEnum, String> registradores, JTextArea console) {
             var valor = registradores.get(SR);
@@ -115,7 +115,7 @@ public enum Mnemonico implements Acao {
             }
             return registradores;
         }
-    }, JNZ("01110101", 24) {
+    }, JNZ("01110101", 25) {
         @Override
         public Map<RegistradorEnum, String> acao(String instrucao, Map<RegistradorEnum, String> registradores, JTextArea console) {
             var valor = registradores.get(SR);
@@ -125,7 +125,7 @@ public enum Mnemonico implements Acao {
             }
             return registradores;
         }
-    }, JP("01111010", 24) {
+    }, JP("01111010", 25) {
         @Override
         public Map<RegistradorEnum, String> acao(String instrucao, Map<RegistradorEnum, String> registradores, JTextArea console) {
             var valor = registradores.get(SR);
@@ -135,7 +135,7 @@ public enum Mnemonico implements Acao {
             }
             return registradores;
         }
-    }, READ("00010010", 24) {
+    }, READ("00010010", 25) {
         @Override
         public Map<RegistradorEnum, String> acao(String instrucao, Map<RegistradorEnum, String> registradores, JTextArea console) {
             var endereco = Integer.valueOf(registradores.get(RBM));
@@ -145,7 +145,7 @@ public enum Mnemonico implements Acao {
             updateRegistradores(registradores, instrucao, new StringBuilder(registradores.get(AX)), TipoDeOperacao.RW);
             return registradores;
         }
-    }, WRITE("00001000", 24) {
+    }, WRITE("00001000", 25) {
         @Override
         public Map<RegistradorEnum, String> acao(String instrucao, Map<RegistradorEnum, String> registradores, JTextArea console) {
             String valor = registradores.get(RBM);
@@ -177,12 +177,12 @@ public enum Mnemonico implements Acao {
             updateRegistradores(registradores, instrucao, resultado, TipoDeOperacao.LOGICA);
             return registradores;
         }
-    }, AND_REG_OP("00100101", 24) {
+    }, AND_REG_OP("00100101", 25) {
         @Override
         public Map<RegistradorEnum, String> acao(String instrucao, Map<RegistradorEnum, String> registradores, JTextArea console) {
             verifyNumberOfBits(instrucao, this.getNumberOfBits());
             var ax = registradores.get(AX);
-            var opcodeOp = instrucao.substring(16, 24);
+            var opcodeOp =registradores.get(RBM);
             opcodeOp = String
                     .format("%16s", opcodeOp)
                     .replaceAll(" ", opcodeOp.toCharArray()[0] == '0' ? "0" : "1");
@@ -234,12 +234,12 @@ public enum Mnemonico implements Acao {
             updateRegistradores(registradores, instrucao, resultado, TipoDeOperacao.LOGICA);
             return registradores;
         }
-    }, OR_REG_OP("00001101", 24) {
+    }, OR_REG_OP("00001101", 25) {
         @Override
         public Map<RegistradorEnum, String> acao(String instrucao, Map<RegistradorEnum, String> registradores, JTextArea console) {
             verifyNumberOfBits(instrucao, this.getNumberOfBits());
             var ax = registradores.get(AX);
-            var opcodeOp = instrucao.substring(16, 24);
+            var opcodeOp = registradores.get(RBM);
             opcodeOp = String
                     .format("%16s", opcodeOp)
                     .replaceAll(" ", opcodeOp.toCharArray()[0] == '0' ? "0" : "1");
@@ -272,12 +272,12 @@ public enum Mnemonico implements Acao {
             updateRegistradores(registradores, instrucao, resultado, TipoDeOperacao.LOGICA);
             return registradores;
         }
-    }, XOR_REG_OP("00110101", 24) {
+    }, XOR_REG_OP("00110101", 25) {
         @Override
         public Map<RegistradorEnum, String> acao(String instrucao, Map<RegistradorEnum, String> registradores, JTextArea console) {
             verifyNumberOfBits(instrucao, this.getNumberOfBits());
             var ax = registradores.get(AX);
-            var opcodeOp = instrucao.substring(16, 24);
+            var opcodeOp = registradores.get(RBM);
             opcodeOp = String
                     .format("%16s", opcodeOp)
                     .replaceAll(" ", opcodeOp.toCharArray()[0] == '0' ? "0" : "1");
@@ -309,12 +309,12 @@ public enum Mnemonico implements Acao {
             updateRegistradores(registradores, instrucao, new StringBuilder(registradores.get(AX)), TipoDeOperacao.COMPARACAO);
             return registradores;
         }
-    }, CMP_REG_OP("00111101", 24) {
+    }, CMP_REG_OP("00111101", 25) {
         @Override
         public Map<RegistradorEnum, String> acao(String instrucao, Map<RegistradorEnum, String> registradores, JTextArea console) {
             verifyNumberOfBits(instrucao, this.getNumberOfBits());
             var ax = registradores.get(AX);
-            var opcodeOp = instrucao.substring(16, 24);
+            var opcodeOp = registradores.get(RBM);
             opcodeOp = String
                     .format("%16s", opcodeOp)
                     .replaceAll(" ", opcodeOp.toCharArray()[0] == '0' ? "0" : "1");
@@ -345,7 +345,7 @@ public enum Mnemonico implements Acao {
             updateRegistradores(registradores, instrucao, new StringBuilder(registradores.get(AX)), TipoDeOperacao.PILHA);
             return registradores;
         }
-    }, POP_OPD("01011001", 24) {
+    }, POP_OPD("01011001", 25) {
         @Override
         public Map<RegistradorEnum, String> acao(String instrucao, Map<RegistradorEnum, String> registradores, JTextArea console) {
             verifyNumberOfBits(instrucao, this.getNumberOfBits());
@@ -552,7 +552,7 @@ public enum Mnemonico implements Acao {
                         .replaceAll(" ", "0");
                 return ip;
             }
-            case 24 -> {
+            case 25 -> {
                 var ipDecimal = Integer.parseInt(ip, 2);
                 ipDecimal += 2;
                 ip = String
@@ -598,4 +598,8 @@ public enum Mnemonico implements Acao {
         return !number.contains("1");
     }
     
+        
+    private final int BYTE_3 = 25;
+    private final int BYTE_2 = 17;
+    private final int BYTE_1 = 8;
 }

@@ -146,7 +146,6 @@ public class AZM {
                         
                         if (instrucaoLimpa[1].equals("EQU")) {
                             tabelaSimbolos.put(instrucaoLimpa[0], Integer.valueOf(instrucaoLimpa[2]));
-                            ++pointCounter;
                         } else {
                             pointCounter += 2;
                         }
@@ -168,6 +167,7 @@ public class AZM {
             try {
                 var instrucao = row.split("\t");
                 var linhaBin = new StringBuilder();
+                var max = instrucao.length - 1;
                 //linha | endereço | label | operação | operando 1 | operando 2
                 linhaBin.append(instrucao[1]).append("_");
                 switch (instrucao[2]) {
@@ -192,7 +192,7 @@ public class AZM {
                         buffer.write(linhaBin.toString());
                         break;
                     case "CMP":
-                        if (instrucao[5].equals("DX")) { // endereçamento via registrador DX
+                        if (instrucao[max].equals("DX")) { // endereçamento via registrador DX
                             linhaBin.append("00111011");
                         } else {
                             linhaBin.append("00111101");
@@ -201,7 +201,7 @@ public class AZM {
                         buffer.write(linhaBin.toString());
                         break;
                     case "AND":
-                        if (instrucao[5].equals("AX") || instrucao[5].equals("DX")) {  // endereçamento via registrador AX
+                        if (instrucao[max].equals("AX") || instrucao[max].equals("DX")) {  // endereçamento via registrador AX
                             linhaBin.append("00100011");
                         } else {
                             linhaBin.append("00100101");
@@ -210,7 +210,7 @@ public class AZM {
                         buffer.write(linhaBin.toString());
                         break;
                     case "OR":
-                        if (instrucao[5].equals("AX") || instrucao[5].equals("DX")) {  // endereçamento via registrador AX
+                        if (instrucao[max].equals("AX") || instrucao[max].equals("DX")) {  // endereçamento via registrador AX
                             linhaBin.append("00001011");
                         } else {
                             linhaBin.append("00001101");
@@ -219,7 +219,7 @@ public class AZM {
                         buffer.write(linhaBin.toString());
                         break;
                     case "XOR":
-                        if (instrucao[5].equals("AX") || instrucao[5].equals("DX")) {  // endereçamento via registrador AX
+                        if (instrucao[max].equals("AX") || instrucao[max].equals("DX")) {  // endereçamento via registrador AX
                             linhaBin.append("00110011");
                         } else {
                             linhaBin.append("00110101");
@@ -273,7 +273,7 @@ public class AZM {
                         buffer.write(linhaBin.toString());
                         break;
                     case "POP":
-                        if (instrucao[5].equals("AX") || instrucao[5].equals("DX")) {
+                        if (instrucao[max].equals("AX") || instrucao[max].equals("DX")) {
                             linhaBin.append("01011000");
                         } else {
                             linhaBin.append("01011001");
@@ -338,13 +338,13 @@ public class AZM {
     
     private String getOperandoDe(String[] instrucao) {
         String operando = instrucao[instrucao.length - 1];
-        var isDireto = operando.contains("&");
         if ("AX".equals(operando)) {
             return "11000000";
         }
         if ("DX".equals(operando)) {
             return "11000010";
         }
+        var isDireto = operando.contains("&");
         if (tabelaSimbolos.containsKey(operando)) {
             var value = tabelaSimbolos.get(operando.replace("&", ""));
             var binario = String.format("%16s", Integer.toBinaryString(Integer.parseInt(String.valueOf(value)))).replaceAll(" ", "0");
