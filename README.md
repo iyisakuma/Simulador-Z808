@@ -7,7 +7,7 @@
 * Para mais especificações sobre o trabalho, olhar a seguinte pasta: _Docs_
 * Integrantes: Alexandre Cardoso, Arthur Teles, Claudinei Lima, Igor Sakuma, Hyhickle Umetsubo, Luhan Moura, Mauricio Mucci
 * Apresentação em vídeo do checkpoint 1/4: https://www.youtube.com/watch?v=B0Xyzax42kE&feature=youtu.be
-* Apresentação em vídeo do checkpoint 2/4: -
+* Apresentação em vídeo do checkpoint 2/4: https://drive.google.com/file/d/1Cllt9SYG5J_Ogo-EpJJadJDsVfXgDuiw/view?usp=sharing
 * Apresentação em vídeo do checkpoint 3/4: -
 * Apresentação em vídeo do checkpoint 4/4: -
 
@@ -72,19 +72,32 @@ descrição.
 
 ![Interface](Docs/interface.png)
 
-* A interface gráfica possui 3 áreas principais: caixa de texto para instruções, caixa de texto para o console e 
-  uma tabela dos registradores.
-* As instruções são inseridas em:
+* A interface gráfica possui 6 áreas principais: 
+  1. Caixa de texto para código gerado;
+  2. Caixa de texto para o console; 
+  3. Caixa de texto para os arquivos anexados;
+  4. Tabela de registradores;
+  5. Tabela de símbolos.
 
-![Interface](Docs/instrucoes.png)
+* O código gerado pelo montador é exibido em:
 
-* Os erros ou exceções são exibidos em:
+![Interface](Docs/codigo.png)
+
+* As informações de sucesso, erros ou exceções são exibidos em:
 
 ![Interface](Docs/console.png)
+
+* OS arquivos anexados são exibidos em:
+
+![Interface](Docs/arquivos.png)
 
 * Os valores dos registradores são exibidos em:
 
 ![Interface](Docs/registradores.png)
+
+* Tabela de símbolos:
+
+![Interface](Docs/tabela_simbolos.png)
 
 #### Tecnologias Utilizadas 💻
 
